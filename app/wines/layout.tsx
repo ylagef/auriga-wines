@@ -2,8 +2,7 @@ import { ReactNode } from "react";
 
 function WinesLayout({ children }: { children: ReactNode }) {
   return (
-    <div>
-      WinesLayout
+    <div className="w-full p-8">
       <main>{children}</main>
     </div>
   );
