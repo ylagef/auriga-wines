@@ -45,21 +45,6 @@ interface FilterBarComponentProps {
         name: string;
       }[]
     | null;
-  searchParams: {
-    countries?: string;
-    grapes?: string;
-    regions?: string;
-    pairings?: string;
-    cellars?: string;
-    apellations?: string;
-    sortBy?:
-      | "price_asc"
-      | "price_desc"
-      | "year_asc"
-      | "year_desc"
-      | "created_at_asc"
-      | "created_at_desc";
-  };
 }
 
 function FilterBarComponent({
@@ -69,7 +54,6 @@ function FilterBarComponent({
   pairings,
   cellars,
   apellations,
-  searchParams,
 }: FilterBarComponentProps) {
   return (
     <div className="flex flex-col w-full gap-2 px-2">
@@ -81,7 +65,6 @@ function FilterBarComponent({
             value: String(country.id),
             label: country.name,
           }))}
-          searchParamValue={searchParams.countries}
         />
         <MultiSelect
           id="grapes"
@@ -90,7 +73,6 @@ function FilterBarComponent({
             value: String(grape.id),
             label: grape.name,
           }))}
-          searchParamValue={searchParams.grapes}
         />
         <MultiSelect
           id="regions"
@@ -99,7 +81,6 @@ function FilterBarComponent({
             value: String(country.id),
             label: country.name,
           }))}
-          searchParamValue={searchParams.regions}
         />
         <MultiSelect
           id="pairings"
@@ -108,7 +89,6 @@ function FilterBarComponent({
             value: String(country.id),
             label: country.name,
           }))}
-          searchParamValue={searchParams.pairings}
         />
         <MultiSelect
           id="cellars"
@@ -117,7 +97,6 @@ function FilterBarComponent({
             value: String(country.id),
             label: country.name,
           }))}
-          searchParamValue={searchParams.cellars}
         />
         <MultiSelect
           id="apellations"
@@ -126,7 +105,6 @@ function FilterBarComponent({
             value: String(country.id),
             label: country.name,
           }))}
-          searchParamValue={searchParams.apellations}
         />
       </div>
       <div className="flex items-center justify-between gap-2">

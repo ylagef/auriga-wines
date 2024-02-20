@@ -25,7 +25,7 @@ async function WinesPage({
   return (
     <>
       <div className="z-10 flex">
-        <FilterBar searchParams={searchParams} />
+        <FilterBar />
       </div>
 
       <div className="px-2 mt-8 overflow-y-auto">

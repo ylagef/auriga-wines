@@ -20,6 +20,7 @@ import {
 } from "react";
 import { cn } from "@/utils";
 import { useClickOutside } from "@/hooks/useClickOutside";
+import { useSearchParams as nextUseSearchParams } from "next/navigation";
 import { useSearchParams } from "@/hooks/useSearchParams";
 
 interface Option {
@@ -31,17 +32,18 @@ interface MultiSelectProps {
   options?: Option[];
   placeholder: string;
   id: string;
-  searchParamValue?: string;
 }
 
 export function MultiSelect({
   options = [],
   placeholder,
   id,
-  searchParamValue,
 }: MultiSelectProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const commandRef = useRef<HTMLDivElement>(null);
+  const searchParams = nextUseSearchParams();
+
+  const searchParamValue = searchParams.get(id);
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState<Option[]>(() => {
     const selectedValues = searchParamValue?.split(",");

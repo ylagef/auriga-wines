@@ -1,12 +1,7 @@
 import { createClient } from "@/utils/supabase/server";
 import Image from "next/image";
 import Link from "next/link";
-import React, { Suspense } from "react";
 import { Badge } from "./ui/Badge";
-import Skeleton from "react-loading-skeleton";
-import { Database } from "@/utils/supabase/types";
-
-type Wine = Database["public"]["Tables"]["wines"]["Row"];
 
 export const WinesList = async ({
   countries,
@@ -53,7 +48,7 @@ export const WinesList = async ({
       ascending: sortBy.includes("asc"),
     });
 
-  const { data: wines, error } = await query;
+  const { data: wines } = await query;
   const grapesArrayUnique = Array.from(
     new Set(wines?.map((wine) => wine.grapes).flat())
   );

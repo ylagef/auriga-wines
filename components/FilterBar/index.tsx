@@ -3,25 +3,7 @@ import { createClient } from "@/utils/supabase/server";
 import React from "react";
 import FilterBarComponent from "./component";
 
-async function FilterBar({
-  searchParams,
-}: {
-  searchParams: {
-    countries?: string;
-    grapes?: string;
-    regions?: string;
-    pairings?: string;
-    cellars?: string;
-    appellations?: string;
-    sortBy?:
-      | "price_asc"
-      | "price_desc"
-      | "year_asc"
-      | "year_desc"
-      | "created_at_asc"
-      | "created_at_desc";
-  };
-}) {
+async function FilterBar() {
   const supabase = createClient();
 
   const countriesQuery = supabase.from("countries").select("id, name");
@@ -56,7 +38,6 @@ async function FilterBar({
       pairings={pairings}
       cellars={cellars}
       apellations={apellations}
-      searchParams={searchParams}
     />
   );
 }
