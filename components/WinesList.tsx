@@ -30,7 +30,9 @@ export const WinesList = async ({
 
   const query = supabase
     .from("wines")
-    .select("id, name, description, price, year, photo_url, photo_size");
+    .select(
+      "id, name, description, price, year, photo_url, photo_size, grapes"
+    );
 
   if (countries?.length) query.in("country_id", countries.split(","));
   // Grapes is an array of numbers, check if included
@@ -46,6 +48,15 @@ export const WinesList = async ({
   console.log({ query });
 
   const { data: wines, error } = await query;
+  const grapesArrayUnique = Array.from(
+    new Set(wines?.map((wine) => wine.grapes).flat())
+  );
+  console.log({ grapesArrayUnique });
+  const { data: grapesData, error: errorGrapes } = await supabase
+    .from("grapes")
+    .select("id, name")
+    .in("id", grapesArrayUnique);
+  console.log({ grapesData, errorGrapes });
   console.error({ error });
 
   return (
@@ -71,8 +82,18 @@ export const WinesList = async ({
               className="object-contain h-60"
             />
 
-            <h3 className="text-sm font-bold text-center">{wine.name}</h3>
-            <div className="grid grow place-items-center">
+            <div className="flex flex-wrap items-center justify-center gap-1">
+              {grapesData
+                ?.filter((grape) => wine.grapes.includes(grape.id))
+                .map((grape) => (
+                  <Badge key={grape.id} variant="outline">
+                    {grape.name}
+                  </Badge>
+                ))}
+            </div>
+
+            <h3 className="text-sm font-bold text-center grow">{wine.name}</h3>
+            <div className="grid place-items-center">
               <p className="text-xs text-center text-gray-600">
                 {wine.description}
               </p>

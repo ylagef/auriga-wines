@@ -52,10 +52,6 @@ export function MultiSelect({
   useClickOutside({
     containerRefs: [commandRef],
     callback: () => {
-      updateSearchParams(
-        id,
-        selected.map((s) => s.value)
-      );
       setOpen(false);
     },
   });
@@ -102,6 +98,13 @@ export function MultiSelect({
       setInputValue("");
     }
   }, [open]);
+
+  useEffect(() => {
+    updateSearchParams(
+      id,
+      selected.map((s) => s.value)
+    );
+  }, [selected]);
 
   const selectables = options.filter(
     (option) => !selected.find((s) => s.value === option.value)
