@@ -11,10 +11,18 @@ type Wine = Database["public"]["Tables"]["wines"]["Row"];
 export const WinesList = async ({
   countries,
   grapes,
+  regions,
+  pairings,
+  cellars,
+  appellations,
   sortBy,
 }: {
   countries?: string;
   grapes?: string;
+  regions?: string;
+  pairings?: string;
+  cellars?: string;
+  appellations?: string;
   sortBy?: "price_asc" | "price_desc" | "year_asc" | "year_desc";
 }) => {
   // await new Promise((resolve) => setTimeout(resolve, 5000));
@@ -24,11 +32,18 @@ export const WinesList = async ({
     .from("wines")
     .select("id, name, description, price, year, photo_url, photo_size");
 
-  if (countries) query.eq("country_id", countries);
+  if (countries?.length) query.in("country_id", countries.split(","));
   // Grapes is an array of numbers, check if included
-  if (grapes) query.in("grapes", [grapes]);
-  if (sortBy)
+  if (grapes?.length) query.containedBy("grapes", grapes.split(","));
+  if (regions?.length) query.in("region_id", regions.split(","));
+  if (pairings?.length) query.containedBy("pairings", pairings.split(","));
+  if (cellars?.length) query.in("cellar_id", cellars.split(","));
+  if (appellations?.length) query.in("appellation_id", appellations.split(","));
+
+  if (sortBy?.length)
     query.order(sortBy.split("_")[0], { ascending: sortBy.includes("asc") });
+
+  console.log({ query });
 
   const { data: wines, error } = await query;
   console.error({ error });

@@ -30,16 +30,6 @@ async function FilterBar() {
     apellationsQuery,
   ]);
 
-  console.log({ countries, grapes, regions, pairings, cellars, apellations });
-  console.log({
-    countriesError,
-    grapesError,
-    regionsError,
-    pairingsError,
-    cellarsError,
-    apellationsError,
-  });
-
   return (
     <FilterBarComponent
       countries={countries}

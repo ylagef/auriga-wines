@@ -72,15 +72,20 @@ function FilterBarComponent({
     const searchParams = url.searchParams;
 
     return {
-      country: searchParams.get("countries") || "",
-      grape: searchParams.get("grapes") || "",
+      countries: searchParams.get("countries") || "",
+      grapes: searchParams.get("grapes") || "",
+      regions: searchParams.get("regions") || "",
+      pairings: searchParams.get("pairings") || "",
+      cellars: searchParams.get("cellars") || "",
+      appellations: searchParams.get("apellations") || "",
     };
   }, []);
 
   return (
-    <div className="flex flex-col w-full gap-2 px-4">
+    <div className="flex flex-col w-full gap-2 px-2">
       <div className="flex flex-wrap justify-center w-full gap-2">
         <MultiSelect
+          id="countries"
           placeholder="Países"
           options={
             countries?.map((country) => ({
@@ -88,8 +93,10 @@ function FilterBarComponent({
               label: country.name,
             })) || []
           }
+          initialSelected={initialValues?.countries?.split(",")}
         />
         <MultiSelect
+          id="grapes"
           placeholder="Uvas"
           options={
             grapes?.map((grape) => ({
@@ -97,8 +104,10 @@ function FilterBarComponent({
               label: grape.name,
             })) || []
           }
+          initialSelected={initialValues?.grapes?.split(",")}
         />
         <MultiSelect
+          id="regions"
           placeholder="Regiones"
           options={
             regions?.map((country) => ({
@@ -106,8 +115,10 @@ function FilterBarComponent({
               label: country.name,
             })) || []
           }
+          initialSelected={initialValues?.regions?.split(",")}
         />
         <MultiSelect
+          id="pairings"
           placeholder="Maridajes"
           options={
             pairings?.map((country) => ({
@@ -115,8 +126,10 @@ function FilterBarComponent({
               label: country.name,
             })) || []
           }
+          initialSelected={initialValues?.pairings?.split(",")}
         />
         <MultiSelect
+          id="cellars"
           placeholder="Bodegas"
           options={
             cellars?.map((country) => ({
@@ -124,8 +137,10 @@ function FilterBarComponent({
               label: country.name,
             })) || []
           }
+          initialSelected={initialValues?.cellars?.split(",")}
         />
         <MultiSelect
+          id="apellations"
           placeholder="D.O."
           options={
             apellations?.map((country) => ({
@@ -133,6 +148,7 @@ function FilterBarComponent({
               label: country.name,
             })) || []
           }
+          initialSelected={initialValues?.appellations?.split(",")}
         />
       </div>
       <div className="flex items-center justify-between gap-2">

@@ -20,6 +20,7 @@ import {
 } from "react";
 import { cn } from "@/utils";
 import { useClickOutside } from "@/hooks/useClickOutside";
+import { useSearchParams } from "@/hooks/useSearchParams";
 
 interface Option {
   value: string;
@@ -29,19 +30,28 @@ interface Option {
 interface MultiSelectProps {
   options: Option[];
   placeholder: string;
+  initialSelected?: string[];
+  id: string;
 }
 
-export function MultiSelect({ options, placeholder }: MultiSelectProps) {
+export function MultiSelect({
+  options,
+  placeholder,
+  initialSelected,
+  id,
+}: MultiSelectProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const commandRef = useRef<HTMLDivElement>(null);
   const [open, setOpen] = useState(false);
-  const [selected, setSelected] = useState<Option[]>([]);
+  const [selected, setSelected] = useState<Option[]>(
+    options.filter((option) => initialSelected?.includes(option.value))
+  );
   const [inputValue, setInputValue] = useState("");
+  const { addSearchParams } = useSearchParams();
 
   useClickOutside({
     containerRefs: [commandRef],
     callback: () => {
-      console.log("click");
       setOpen(false);
     },
   });
@@ -88,13 +98,13 @@ export function MultiSelect({ options, placeholder }: MultiSelectProps) {
   }, [open]);
 
   useEffect(() => {
-    console.log("selected", selected);
+    addSearchParams(
+      id,
+      selected.map((s) => s.value)
+    );
   }, [selected]);
 
   const selectables = options.filter((option) => !selected.includes(option));
-  console.log("selectables", selectables);
-  console.log("selected", selected);
-  console.log(inputRef.current?.clientWidth);
 
   return (
     <>
@@ -106,7 +116,7 @@ export function MultiSelect({ options, placeholder }: MultiSelectProps) {
         ref={commandRef}
         onKeyDown={handleKeyDown}
         className={cn(
-          "px-1 overflow-visible bg-transparent transition-[width] h-7",
+          "overflow-visible bg-transparent transition-[width] h-7",
           open && "z-10"
         )}
         style={{

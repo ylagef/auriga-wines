@@ -9,11 +9,13 @@ async function WinesPage({
   searchParams: {
     countries?: string;
     grapes?: string;
+    regions?: string;
+    pairings?: string;
+    cellars?: string;
+    appellations?: string;
     sortBy?: "price_asc" | "price_desc" | "year_asc" | "year_desc";
   };
 }) {
-  console.log({ searchParams });
-
   return (
     <>
       <div className="z-10 flex">
