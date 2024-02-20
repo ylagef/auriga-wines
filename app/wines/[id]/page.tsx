@@ -14,7 +14,6 @@ async function WineDetail({
     .select()
     .eq("id", params.id)
     .single();
-  console.log(wine);
 
   if (!wine) return <div>Wine not found</div>;
 

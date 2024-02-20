@@ -53,24 +53,19 @@ export const WinesList = async ({
       ascending: sortBy.includes("asc"),
     });
 
-  console.log({ query });
-
   const { data: wines, error } = await query;
   const grapesArrayUnique = Array.from(
     new Set(wines?.map((wine) => wine.grapes).flat())
   );
-  console.log({ grapesArrayUnique });
+
   const { data: grapesData, error: errorGrapes } = await supabase
     .from("grapes")
     .select("id, name")
     .in("id", grapesArrayUnique);
-  console.log({ grapesData, errorGrapes });
-  console.error({ error });
 
   return (
     <div className="z-0 grid justify-center w-full grid-cols-3 gap-8 scroll-smooth">
       {wines?.map((wine) => {
-        console.log({ wine });
         const size = wine.photo_size as { width: number; height: number };
         return (
           <Link
