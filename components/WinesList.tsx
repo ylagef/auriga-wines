@@ -64,7 +64,7 @@ export const WinesList = async ({
             </Badge>
 
             <Image
-              src={`https://jacopngdwpoypvunhunq.supabase.co/storage/v1/object/public/wines/w${wine.photo_url}`}
+              src={`https://jacopngdwpoypvunhunq.supabase.co/storage/v1/object/public/wines/${wine.photo_url}`}
               alt={wine.name}
               width={size.width || 100}
               height={size.height || 100}
