@@ -1,0 +1,13 @@
+input::placeholder {
+  color: theme("colors.gray.500");
+}
+
+#sort-container > [role="combobox"] > span {
+  margin-right: 0.25rem;
+  font-size: 0.9em;
+  color: theme("colors.gray.500");
+}
+#sort-container > [role="combobox"] {
+  /* height: 30px; */
+  background-color: theme("colors.white");
+}

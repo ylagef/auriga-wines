@@ -1,5 +1,7 @@
 import { GeistSans } from "geist/font/sans";
 import "./globals.css";
+import "react-loading-skeleton/dist/skeleton.css";
+import Image from "next/image";
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -18,10 +20,18 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={GeistSans.className}>
-      <body className="">
-        <main className="flex flex-col items-center min-h-screen">
-          {children}
-        </main>
+      <body className="antialiased">
+        <header className="sticky top-0 z-10 flex items-center justify-center p-2 bg-white/30 backdrop-blur">
+          <Image
+            src="/images/auriga-logo.svg"
+            alt="Auriga"
+            width={200}
+            height={37.5}
+            className="h-6"
+          />
+        </header>
+
+        <main className="flex flex-col items-center grow">{children}</main>
       </body>
     </html>
   );

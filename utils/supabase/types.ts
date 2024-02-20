@@ -9,48 +9,48 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      apellation: {
+      apellations: {
         Row: {
           created_at: string
           description: string | null
           id: number
-          name: string | null
-          region: number | null
+          name: string
+          region_id: number | null
           updated_at: string | null
         }
         Insert: {
           created_at?: string
           description?: string | null
           id?: number
-          name?: string | null
-          region?: number | null
+          name: string
+          region_id?: number | null
           updated_at?: string | null
         }
         Update: {
           created_at?: string
           description?: string | null
           id?: number
-          name?: string | null
-          region?: number | null
+          name?: string
+          region_id?: number | null
           updated_at?: string | null
         }
         Relationships: [
           {
             foreignKeyName: "public_apellation_region_fkey"
-            columns: ["region"]
+            columns: ["region_id"]
             isOneToOne: false
             referencedRelation: "regions"
             referencedColumns: ["id"]
           }
         ]
       }
-      cellar: {
+      cellars: {
         Row: {
           apellation_id: number | null
           created_at: string
           description: string | null
           id: number
-          name: string | null
+          name: string
           updated_at: string | null
         }
         Insert: {
@@ -58,7 +58,7 @@ export type Database = {
           created_at?: string
           description?: string | null
           id?: number
-          name?: string | null
+          name: string
           updated_at?: string | null
         }
         Update: {
@@ -66,7 +66,7 @@ export type Database = {
           created_at?: string
           description?: string | null
           id?: number
-          name?: string | null
+          name?: string
           updated_at?: string | null
         }
         Relationships: [
@@ -74,7 +74,7 @@ export type Database = {
             foreignKeyName: "public_cellar_apellation_id_fkey"
             columns: ["apellation_id"]
             isOneToOne: false
-            referencedRelation: "apellation"
+            referencedRelation: "apellations"
             referencedColumns: ["id"]
           }
         ]
@@ -188,63 +188,86 @@ export type Database = {
           active: boolean
           apellation_id: number | null
           cellar_id: number | null
+          country_id: number | null
           created_at: string
           description: string | null
           grapes: number[]
           id: number
           name: string
           pairings_id: number[] | null
+          photo_size: Json | null
           photo_url: string | null
           price: number
+          region_id: number | null
           tags: string[] | null
           updated_at: string
-          year: number | null
+          year: number
         }
         Insert: {
           active?: boolean
           apellation_id?: number | null
           cellar_id?: number | null
+          country_id?: number | null
           created_at?: string
           description?: string | null
           grapes: number[]
           id?: number
           name: string
           pairings_id?: number[] | null
+          photo_size?: Json | null
           photo_url?: string | null
           price: number
+          region_id?: number | null
           tags?: string[] | null
           updated_at?: string
-          year?: number | null
+          year: number
         }
         Update: {
           active?: boolean
           apellation_id?: number | null
           cellar_id?: number | null
+          country_id?: number | null
           created_at?: string
           description?: string | null
           grapes?: number[]
           id?: number
           name?: string
           pairings_id?: number[] | null
+          photo_size?: Json | null
           photo_url?: string | null
           price?: number
+          region_id?: number | null
           tags?: string[] | null
           updated_at?: string
-          year?: number | null
+          year?: number
         }
         Relationships: [
           {
             foreignKeyName: "public_wines_apellation_id_fkey"
             columns: ["apellation_id"]
             isOneToOne: false
-            referencedRelation: "apellation"
+            referencedRelation: "apellations"
             referencedColumns: ["id"]
           },
           {
             foreignKeyName: "public_wines_cellar_id_fkey"
             columns: ["cellar_id"]
             isOneToOne: false
-            referencedRelation: "cellar"
+            referencedRelation: "cellars"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "public_wines_country_id_fkey"
+            columns: ["country_id"]
+            isOneToOne: false
+            referencedRelation: "countries"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "public_wines_region_id_fkey"
+            columns: ["region_id"]
+            isOneToOne: false
+            referencedRelation: "regions"
             referencedColumns: ["id"]
           }
         ]

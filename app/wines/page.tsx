@@ -1,42 +1,31 @@
-import { createClient } from "@/utils/supabase/server";
-import Image from "next/image";
-import Link from "next/link";
+import FilterBar from "@/components/FilterBar";
+import { WinesList } from "@/components/WinesList";
+import { WineListSkeleton } from "@/components/skeletons/WineListSkeleton";
+import { Suspense } from "react";
 
-async function WinesPage() {
-  const supabase = createClient();
+async function WinesPage({
+  searchParams,
+}: {
+  searchParams: {
+    countries?: string;
+    grapes?: string;
+    sortBy?: "price_asc" | "price_desc" | "year_asc" | "year_desc";
+  };
+}) {
+  console.log({ searchParams });
 
-  const { data: wines, error } = await supabase.from("wines").select();
-  console.log(wines, error);
   return (
-    <div className="container grid justify-center w-full grid-cols-3 gap-4 mx-auto">
-      {wines?.map((wine) => {
-        // Random number between 1 and 6
-        const photoId = Math.floor(Math.random() * 6) + 1;
-        return (
-          <Link
-            href={`/wines/${wine.id}`}
-            key={wine.id}
-            className="flex flex-col items-center justify-center gap-2 p-4"
-          >
-            <Image
-              src={`https://jacopngdwpoypvunhunq.supabase.co/storage/v1/object/public/wines/w${photoId}.png`}
-              alt={wine.name}
-              width={150}
-              height={150}
-              className="object-contain w-60 aspect-square"
-            />
-            <h3 className="font-bold">{wine.name}</h3>
-            <p className="text-sm text-center">{wine.description}</p>
-            <span>
-              {Intl.NumberFormat("es-ES", {
-                style: "currency",
-                currency: "EUR",
-              }).format(wine.price)}
-            </span>
-          </Link>
-        );
-      })}
-    </div>
+    <>
+      <div className="z-10 flex">
+        <FilterBar />
+      </div>
+
+      <div className="px-2 mt-8 overflow-y-auto">
+        <Suspense fallback={<WineListSkeleton />} key={searchParams.toString()}>
+          <WinesList {...searchParams} />
+        </Suspense>
+      </div>
+    </>
   );
 }
 
