@@ -21,6 +21,7 @@ async function WinesPage({
       | "created_at_asc"
       | "created_at_desc";
   };
+  name?: string;
 }) {
   return (
     <>

@@ -11,6 +11,7 @@ export const WinesList = async ({
   cellars,
   appellations,
   sortBy,
+  name,
 }: {
   countries?: string;
   grapes?: string;
@@ -25,6 +26,7 @@ export const WinesList = async ({
     | "year_desc"
     | "created_at_asc"
     | "created_at_desc";
+  name?: string;
 }) => {
   // await new Promise((resolve) => setTimeout(resolve, 5000));
   const supabase = createClient();
@@ -42,6 +44,7 @@ export const WinesList = async ({
   if (pairings?.length) query.containedBy("pairings", pairings.split(","));
   if (cellars?.length) query.in("cellar_id", cellars.split(","));
   if (appellations?.length) query.in("appellation_id", appellations.split(","));
+  if (name?.length) query.ilike("name", `%${name}%`);
 
   if (sortBy?.length)
     query.order(sortBy.split(/_(asc|desc)/)[0], {
@@ -49,11 +52,12 @@ export const WinesList = async ({
     });
 
   const { data: wines } = await query;
+
   const grapesArrayUnique = Array.from(
     new Set(wines?.map((wine) => wine.grapes).flat())
   );
 
-  const { data: grapesData, error: errorGrapes } = await supabase
+  const { data: grapesData } = await supabase
     .from("grapes")
     .select("id, name")
     .in("id", grapesArrayUnique);

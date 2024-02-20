@@ -1,7 +1,7 @@
 "use client";
 import { useRouter } from "next/navigation";
 
-export const useSearchParams = () => {
+export const useUpdateSearchParams = () => {
   const router = useRouter();
 
   const updateSearchParams = (key: string, value: string | string[]) => {

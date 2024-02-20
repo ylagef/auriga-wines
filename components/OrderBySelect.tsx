@@ -1,5 +1,5 @@
 "use client";
-import { useSearchParams } from "@/hooks/useSearchParams";
+import { useUpdateSearchParams } from "@/hooks/useUpdateSearchParams";
 import {
   Select,
   SelectContent,
@@ -10,7 +10,7 @@ import {
 import { useState } from "react";
 
 export const OrderBySelect = () => {
-  const { updateSearchParams } = useSearchParams();
+  const { updateSearchParams } = useUpdateSearchParams();
   const [open, setOpen] = useState(false);
 
   return (

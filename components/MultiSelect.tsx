@@ -21,7 +21,7 @@ import {
 import { cn } from "@/utils";
 import { useClickOutside } from "@/hooks/useClickOutside";
 import { useSearchParams as nextUseSearchParams } from "next/navigation";
-import { useSearchParams } from "@/hooks/useSearchParams";
+import { useUpdateSearchParams } from "@/hooks/useUpdateSearchParams";
 
 interface Option {
   value: string;
@@ -53,7 +53,7 @@ export function MultiSelect({
     return selectedOptions || [];
   });
   const [inputValue, setInputValue] = useState("");
-  const { updateSearchParams } = useSearchParams();
+  const { updateSearchParams } = useUpdateSearchParams();
 
   useEffect(() => {
     const selectedValues = searchParamValue?.split(",");
