@@ -194,6 +194,7 @@ export type Database = {
           grapes: number[]
           id: number
           name: string
+          new: boolean
           pairings_id: number[] | null
           photo_size: Json | null
           photo_url: string | null
@@ -213,6 +214,7 @@ export type Database = {
           grapes: number[]
           id?: number
           name: string
+          new?: boolean
           pairings_id?: number[] | null
           photo_size?: Json | null
           photo_url?: string | null
@@ -232,6 +234,7 @@ export type Database = {
           grapes?: number[]
           id?: number
           name?: string
+          new?: boolean
           pairings_id?: number[] | null
           photo_size?: Json | null
           photo_url?: string | null

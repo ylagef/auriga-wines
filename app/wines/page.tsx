@@ -13,7 +13,13 @@ async function WinesPage({
     pairings?: string;
     cellars?: string;
     appellations?: string;
-    sortBy?: "price_asc" | "price_desc" | "year_asc" | "year_desc";
+    sortBy?:
+      | "price_asc"
+      | "price_desc"
+      | "year_asc"
+      | "year_desc"
+      | "created_at_asc"
+      | "created_at_desc";
   };
 }) {
   return (

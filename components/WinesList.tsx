@@ -23,7 +23,13 @@ export const WinesList = async ({
   pairings?: string;
   cellars?: string;
   appellations?: string;
-  sortBy?: "price_asc" | "price_desc" | "year_asc" | "year_desc";
+  sortBy?:
+    | "price_asc"
+    | "price_desc"
+    | "year_asc"
+    | "year_desc"
+    | "created_at_asc"
+    | "created_at_desc";
 }) => {
   // await new Promise((resolve) => setTimeout(resolve, 5000));
   const supabase = createClient();
@@ -31,7 +37,7 @@ export const WinesList = async ({
   const query = supabase
     .from("wines")
     .select(
-      "id, name, description, price, year, photo_url, photo_size, grapes"
+      "id, name, description, price, year, photo_url, photo_size, grapes, new"
     );
 
   if (countries?.length) query.in("country_id", countries.split(","));
@@ -43,7 +49,9 @@ export const WinesList = async ({
   if (appellations?.length) query.in("appellation_id", appellations.split(","));
 
   if (sortBy?.length)
-    query.order(sortBy.split("_")[0], { ascending: sortBy.includes("asc") });
+    query.order(sortBy.split(/_(asc|desc)/)[0], {
+      ascending: sortBy.includes("asc"),
+    });
 
   console.log({ query });
 
@@ -70,6 +78,11 @@ export const WinesList = async ({
             key={wine.id}
             className="relative flex flex-col items-center gap-2 animate-fade-in"
           >
+            {wine.new && (
+              <Badge variant="default" className="absolute top-0 left-0">
+                Nuevo
+              </Badge>
+            )}
             <Badge variant="secondary" className="absolute top-0 right-0">
               {wine.year}
             </Badge>

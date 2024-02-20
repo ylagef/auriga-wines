@@ -33,6 +33,12 @@ export const OrderBySelect = () => {
           <SelectItem value="price_desc">Precio descendente</SelectItem>
           <SelectItem value="year_asc">Año ascendente</SelectItem>
           <SelectItem value="year_desc">Año descendente</SelectItem>
+          <SelectItem value="created_at_asc">
+            Fecha añadido ascendente
+          </SelectItem>
+          <SelectItem value="created_at_desc">
+            Fecha añadido descendente
+          </SelectItem>
         </SelectContent>
       </Select>
     </>
