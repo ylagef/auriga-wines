@@ -3,7 +3,25 @@ import { createClient } from "@/utils/supabase/server";
 import React from "react";
 import FilterBarComponent from "./component";
 
-async function FilterBar() {
+async function FilterBar({
+  searchParams,
+}: {
+  searchParams: {
+    countries?: string;
+    grapes?: string;
+    regions?: string;
+    pairings?: string;
+    cellars?: string;
+    appellations?: string;
+    sortBy?:
+      | "price_asc"
+      | "price_desc"
+      | "year_asc"
+      | "year_desc"
+      | "created_at_asc"
+      | "created_at_desc";
+  };
+}) {
   const supabase = createClient();
 
   const countriesQuery = supabase.from("countries").select("id, name");
@@ -15,12 +33,12 @@ async function FilterBar() {
 
   // Promise all
   const [
-    { data: countries, error: countriesError },
-    { data: grapes, error: grapesError },
-    { data: regions, error: regionsError },
-    { data: pairings, error: pairingsError },
-    { data: cellars, error: cellarsError },
-    { data: apellations, error: apellationsError },
+    { data: countries },
+    { data: grapes },
+    { data: regions },
+    { data: pairings },
+    { data: cellars },
+    { data: apellations },
   ] = await Promise.all([
     countriesQuery,
     grapesQuery,
@@ -38,6 +56,7 @@ async function FilterBar() {
       pairings={pairings}
       cellars={cellars}
       apellations={apellations}
+      searchParams={searchParams}
     />
   );
 }

@@ -28,26 +28,38 @@ interface Option {
 }
 
 interface MultiSelectProps {
-  options: Option[];
+  options?: Option[];
   placeholder: string;
-  initialSelected?: string[];
   id: string;
+  searchParamValue?: string;
 }
 
 export function MultiSelect({
-  options,
+  options = [],
   placeholder,
-  initialSelected,
   id,
+  searchParamValue,
 }: MultiSelectProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const commandRef = useRef<HTMLDivElement>(null);
   const [open, setOpen] = useState(false);
-  const [selected, setSelected] = useState<Option[]>(
-    options.filter((option) => initialSelected?.includes(option.value))
-  );
+  const [selected, setSelected] = useState<Option[]>(() => {
+    const selectedValues = searchParamValue?.split(",");
+    const selectedOptions = options.filter((option) =>
+      selectedValues?.includes(option.value)
+    );
+    return selectedOptions || [];
+  });
   const [inputValue, setInputValue] = useState("");
   const { updateSearchParams } = useSearchParams();
+
+  useEffect(() => {
+    const selectedValues = searchParamValue?.split(",");
+    const selectedOptions = options.filter((option) =>
+      selectedValues?.includes(option.value)
+    );
+    setSelected(selectedOptions);
+  }, [searchParamValue]);
 
   useClickOutside({
     containerRefs: [commandRef],
