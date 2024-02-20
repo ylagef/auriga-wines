@@ -104,7 +104,9 @@ export function MultiSelect({
     );
   }, [selected]);
 
-  const selectables = options.filter((option) => !selected.includes(option));
+  const selectables = options.filter(
+    (option) => !selected.find((s) => s.value === option.value)
+  );
 
   return (
     <>
