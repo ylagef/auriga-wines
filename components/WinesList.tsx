@@ -99,8 +99,8 @@ export const WinesList = async ({
                 ))}
             </div>
 
-            <h3 className="font-bold text-center grow">{wine.name}</h3>
-            <div className="grid place-items-center">
+            <h3 className="font-bold text-center">{wine.name}</h3>
+            <div className="grid place-items-center grow">
               <p className="text-xs text-center text-gray-600">
                 {wine.description}
               </p>
