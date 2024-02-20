@@ -10,7 +10,7 @@ import {
 import { useState } from "react";
 
 export const OrderBySelect = () => {
-  const { addSearchParams } = useSearchParams();
+  const { updateSearchParams } = useSearchParams();
   const [open, setOpen] = useState(false);
 
   return (
@@ -22,7 +22,7 @@ export const OrderBySelect = () => {
       <Select
         onOpenChange={(o) => setOpen(o)}
         onValueChange={(v) => {
-          addSearchParams("sortBy", v);
+          updateSearchParams("sortBy", v);
         }}
       >
         <SelectTrigger className="shadow-sm">

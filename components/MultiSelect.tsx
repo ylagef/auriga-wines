@@ -47,11 +47,15 @@ export function MultiSelect({
     options.filter((option) => initialSelected?.includes(option.value))
   );
   const [inputValue, setInputValue] = useState("");
-  const { addSearchParams } = useSearchParams();
+  const { updateSearchParams } = useSearchParams();
 
   useClickOutside({
     containerRefs: [commandRef],
     callback: () => {
+      updateSearchParams(
+        id,
+        selected.map((s) => s.value)
+      );
       setOpen(false);
     },
   });
@@ -94,15 +98,10 @@ export function MultiSelect({
   }, [options]);
 
   useEffect(() => {
-    if (!open) setInputValue("");
+    if (!open) {
+      setInputValue("");
+    }
   }, [open]);
-
-  useEffect(() => {
-    addSearchParams(
-      id,
-      selected.map((s) => s.value)
-    );
-  }, [selected]);
 
   const selectables = options.filter(
     (option) => !selected.find((s) => s.value === option.value)
