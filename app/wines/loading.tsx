@@ -5,7 +5,8 @@ import Skeleton from "react-loading-skeleton";
 function WinesLoading() {
   return (
     <>
-      <Skeleton height={21} />
+      <Skeleton height={30} />
+      <Skeleton height={38} />
       <WineListSkeleton />
     </>
   );
