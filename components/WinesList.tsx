@@ -63,7 +63,7 @@ export const WinesList = async ({
     .in("id", grapesArrayUnique);
 
   return (
-    <div className="z-0 grid justify-center w-full grid-cols-1 gap-8 sm:grid-cols-3 scroll-smooth">
+    <div className="z-0 grid justify-center w-full grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3 scroll-smooth">
       {wines?.map((wine) => {
         const size = wine.photo_size as { width: number; height: number };
         return (
@@ -99,7 +99,7 @@ export const WinesList = async ({
                 ))}
             </div>
 
-            <h3 className="text-sm font-bold text-center grow">{wine.name}</h3>
+            <h3 className="font-bold text-center grow">{wine.name}</h3>
             <div className="grid place-items-center">
               <p className="text-xs text-center text-gray-600">
                 {wine.description}
