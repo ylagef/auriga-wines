@@ -17,13 +17,13 @@ export const WinesList = async ({
   from_price,
   to_price,
 }: SearchParams) => {
-  // await new Promise((resolve) => setTimeout(resolve, 5000));
+  await new Promise((resolve) => setTimeout(resolve, 2000));
   const supabase = createClient();
 
   const query = supabase
     .from("wines")
     .select(
-      "id, name, description, price, year, photo_url, photo_size, grapes, new, apellation:apellation_id(name)"
+      "id, name, description, price, year, photo_url, photo_size, grapes, new, apellation:apellation_id(name), country:country_id(name), region:region_id(name)"
     );
 
   if (countries?.length) query.in("country_id", countries.split(","));
@@ -46,12 +46,14 @@ export const WinesList = async ({
   const { data: wines } = await query.returns<
     (Database["public"]["Tables"]["wines"]["Row"] & {
       apellation: { name: string };
+      country: { name: string };
+      region: { name: string };
     })[]
   >();
   console.log(wines);
 
   return (
-    <div className="z-0 grid justify-center w-full grid-cols-1 gap-8 sm:grid-cols-3 scroll-smooth">
+    <div className="z-0 grid justify-center w-full grid-cols-1 gap-10 sm:grid-cols-2 md:grid-cols-3 scroll-smooth">
       {wines?.map((wine) => {
         const size = wine.photo_size as { width: number; height: number };
         return (
@@ -65,6 +67,7 @@ export const WinesList = async ({
                 Nuevo
               </Badge>
             )}
+
             <Badge variant="secondary" className="absolute top-0 right-0">
               {wine.year}
             </Badge>
@@ -77,8 +80,14 @@ export const WinesList = async ({
               className="object-contain h-60"
             />
 
-            <div className="flex items-center justify-center">
-              <Badge variant="outline">{wine.apellation.name}</Badge>
+            <div className="flex flex-wrap items-center justify-center gap-1">
+              {wine.country && (
+                <Badge variant="outline">{wine.country.name}</Badge>
+              )}
+
+              {wine.apellation && (
+                <Badge variant="outline">{wine.apellation.name}</Badge>
+              )}
             </div>
 
             <h3 className="font-bold text-center">{wine.name}</h3>

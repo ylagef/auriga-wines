@@ -69,7 +69,7 @@ function FilterBarComponent({
   maxWinePrice,
 }: FilterBarComponentProps) {
   return (
-    <div className="flex flex-col w-full gap-2 px-2">
+    <div className="flex flex-col w-full gap-2">
       <div className="flex flex-wrap justify-center w-full gap-2">
         <MultiSelect
           id="countries"

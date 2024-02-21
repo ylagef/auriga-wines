@@ -29,8 +29,13 @@ async function WinesPage({ searchParams }: { searchParams: SearchParams }) {
         <FilterBar />
       </div>
 
-      <div className="px-2 mt-8 overflow-y-auto">
-        <Suspense fallback={<WineListSkeleton />} key={searchParams.toString()}>
+      <div className="mt-8 overflow-y-auto">
+        <Suspense
+          fallback={<WineListSkeleton />}
+          key={Object.entries(searchParams)
+            .map(([key, value]) => `${key}-${value}`)
+            .join("-")}
+        >
           <WinesList {...searchParams} />
         </Suspense>
       </div>
