@@ -32,9 +32,7 @@ async function WinesPage({ searchParams }: { searchParams: SearchParams }) {
       <div className="mt-8 overflow-y-auto">
         <Suspense
           fallback={<WineListSkeleton />}
-          key={Object.entries(searchParams)
-            .map(([key, value]) => `${key}-${value}`)
-            .join("-")}
+          key={JSON.stringify(searchParams)}
         >
           <WinesList {...searchParams} />
         </Suspense>
