@@ -12,6 +12,11 @@ async function FilterBar() {
   const pairingsQuery = supabase.from("pairings").select("id, name");
   const cellarsQuery = supabase.from("cellars").select("id, name");
   const apellationsQuery = supabase.from("apellations").select("id, name");
+  const maxWinePriceQuery = supabase
+    .from("wines")
+    .select("price")
+    .order("price", { ascending: false })
+    .limit(1);
 
   // Promise all
   const [
@@ -21,6 +26,7 @@ async function FilterBar() {
     { data: pairings },
     { data: cellars },
     { data: apellations },
+    { data: maxWinePrice },
   ] = await Promise.all([
     countriesQuery,
     grapesQuery,
@@ -28,6 +34,7 @@ async function FilterBar() {
     pairingsQuery,
     cellarsQuery,
     apellationsQuery,
+    maxWinePriceQuery,
   ]);
 
   return (
@@ -38,6 +45,7 @@ async function FilterBar() {
       pairings={pairings}
       cellars={cellars}
       apellations={apellations}
+      maxWinePrice={maxWinePrice}
     />
   );
 }

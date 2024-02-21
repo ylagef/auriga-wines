@@ -4,7 +4,10 @@ import { useRouter } from "next/navigation";
 export const useUpdateSearchParams = () => {
   const router = useRouter();
 
-  const updateSearchParams = (key: string, value: string | string[]) => {
+  const updateSearchParams = (
+    key: string,
+    value: string | number | string[]
+  ) => {
     const url = new URL(window.location.href);
 
     if (Array.isArray(value)) {
@@ -16,7 +19,7 @@ export const useUpdateSearchParams = () => {
     } else if (value === "") {
       url.searchParams.delete(key);
     } else {
-      url.searchParams.set(key, value);
+      url.searchParams.set(key, String(value));
     }
     router.push(`${url.pathname}?${url.searchParams.toString()}`);
   };

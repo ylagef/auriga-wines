@@ -2,6 +2,7 @@ import { createClient } from "@/utils/supabase/server";
 import Image from "next/image";
 import Link from "next/link";
 import { Badge } from "./ui/Badge";
+import { SearchParams } from "@/app/wines/page";
 
 export const WinesList = async ({
   countries,
@@ -12,22 +13,9 @@ export const WinesList = async ({
   appellations,
   sortBy,
   name,
-}: {
-  countries?: string;
-  grapes?: string;
-  regions?: string;
-  pairings?: string;
-  cellars?: string;
-  appellations?: string;
-  sortBy?:
-    | "price_asc"
-    | "price_desc"
-    | "year_asc"
-    | "year_desc"
-    | "created_at_asc"
-    | "created_at_desc";
-  name?: string;
-}) => {
+  from_price,
+  to_price,
+}: SearchParams) => {
   // await new Promise((resolve) => setTimeout(resolve, 5000));
   const supabase = createClient();
 
@@ -45,11 +33,14 @@ export const WinesList = async ({
   if (cellars?.length) query.in("cellar_id", cellars.split(","));
   if (appellations?.length) query.in("appellation_id", appellations.split(","));
   if (name?.length) query.ilike("name", `%${name}%`);
+  if (from_price?.length) query.gte("price", from_price);
+  if (to_price?.length) query.lte("price", to_price);
 
-  if (sortBy?.length)
+  if (sortBy?.length) {
     query.order(sortBy.split(/_(asc|desc)/)[0], {
       ascending: sortBy.includes("asc"),
     });
+  }
 
   const { data: wines } = await query;
 

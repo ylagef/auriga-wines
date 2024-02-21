@@ -134,7 +134,7 @@ export function MultiSelect({
         ref={commandRef}
         onKeyDown={handleKeyDown}
         className={cn(
-          "overflow-visible bg-transparent transition-[width] h-7",
+          "overflow-visible bg-transparent transition-[width] h-10",
           open && "z-10"
         )}
         style={{
@@ -145,7 +145,11 @@ export function MultiSelect({
           <div className="flex gap-1">
             {selected.map((option) => {
               return (
-                <Badge key={option.value} variant="secondary">
+                <Badge
+                  key={option.value}
+                  variant="secondary"
+                  className="text-gray-600"
+                >
                   {option.label}
                   <button
                     className="ml-1 rounded-full outline-none ring-offset-background focus:ring-2 focus:ring-ring focus:ring-offset-2"
@@ -173,7 +177,7 @@ export function MultiSelect({
               onBlur={() => setOpen(false)}
               onFocus={() => setOpen(true)}
               placeholder={placeholder}
-              className="flex-1 w-full text-center bg-transparent outline-none placeholder:text-muted-foreground"
+              className="flex-1 w-full text-center bg-transparent outline-none placeholder:text-gray-600"
               style={{
                 width: `${placeholder.length + 1}ch`,
               }}
