@@ -21,7 +21,6 @@ export const RangeSelect = ({ max }: { max: number }) => {
 
   useEffect(() => {
     if (debouncedSearchTermFrom === null) return;
-    console.log({ debouncedSearchTermFrom });
     updateSearchParams(
       "from_price",
       debouncedSearchTermFrom === MIN ? "" : debouncedSearchTermFrom
@@ -30,7 +29,6 @@ export const RangeSelect = ({ max }: { max: number }) => {
 
   useEffect(() => {
     if (debouncedSearchTermTo === null) return;
-    console.log({ debouncedSearchTermTo });
     updateSearchParams(
       "to_price",
       debouncedSearchTermTo === maxRounded ? "" : debouncedSearchTermTo
@@ -77,11 +75,9 @@ export const RangeSelect = ({ max }: { max: number }) => {
           </div>
         )}
         renderThumb={({ index, props, isDragged }) => {
-          console.log(props);
           const getAbsolute = () => {
             if (index === 0) {
               if (values[0] < 100) return { left: 0 };
-              console.log(Math.floor(values[0]));
               return { left: -String(values[1]).length * 5 };
             } else {
               if (values[1] > maxRounded - 100) return { right: 0 };

@@ -42,10 +42,7 @@ export const NameFilter = () => {
         {name?.length && !focus ? (
           <button
             className="absolute text-gray-600 transform -translate-y-1/2 cursor-pointer right-1 top-1/2"
-            onClick={() => {
-              console.log("click");
-              setName("");
-            }}
+            onClick={() => setName("")}
           >
             <XIcon className="h-4 aspect-square" />
           </button>
