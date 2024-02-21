@@ -121,12 +121,14 @@ function FilterBarComponent({
           id="year"
           min={maxYears?.[0]?.year || 1800}
           max={new Date().getFullYear()}
+          step={1}
           labelFormatter={(value) => String(value)}
         />
         <RangeSelect
           id="price"
           min={0}
           max={maxWinePrice?.[0]?.price || 100}
+          step={5}
           labelFormatter={(value) =>
             Intl.NumberFormat("es-ES", {
               style: "currency",

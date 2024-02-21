@@ -44,6 +44,7 @@ interface RangeSelectProps {
   id: string;
   min: number;
   max: number;
+  step?: number;
   labelFormatter?: (value: number | string) => string;
 }
 
@@ -51,6 +52,7 @@ export const RangeSelect = ({
   id,
   min,
   max,
+  step,
   labelFormatter,
 }: RangeSelectProps) => {
   const rangeRef = useRef<Range>(null);
@@ -91,7 +93,7 @@ export const RangeSelect = ({
       <Range
         ref={rangeRef}
         values={values}
-        step={STEP}
+        step={step}
         min={min}
         max={max}
         onChange={(values) => setValues(values)}
@@ -113,8 +115,8 @@ export const RangeSelect = ({
                 background: getTrackBackground({
                   values,
                   colors: ["#ccc", "#aaaaaa", "#ccc"],
-                  min: min,
-                  max: max,
+                  min,
+                  max,
                 }),
                 alignSelf: "center",
               }}
