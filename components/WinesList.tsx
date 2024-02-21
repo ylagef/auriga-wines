@@ -51,9 +51,22 @@ export const WinesList = async ({
     })[]
   >();
 
+  if (!wines?.length) {
+    return (
+      <div className="flex flex-col items-center justify-center w-full gap-2 mt-10 animate-fade-in">
+        <p className="text-center">
+          Aún no disponemos de vinos con estos criterios de búsqueda.
+        </p>
+        <p className="text-sm text-center">
+          Cambia los filtros o consulta a nuestros empleados.
+        </p>
+      </div>
+    );
+  }
+
   return (
     <div className="z-0 grid justify-center w-full grid-cols-1 gap-10 sm:grid-cols-2 md:grid-cols-3 scroll-smooth">
-      {wines?.map((wine) => {
+      {wines.map((wine) => {
         const size = wine.photo_size as { width: number; height: number };
         return (
           <Link
