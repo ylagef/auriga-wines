@@ -65,7 +65,7 @@ export const WinesList = async ({
   }
 
   return (
-    <div className="z-0 grid justify-center w-full grid-cols-1 gap-10 sm:grid-cols-2 md:grid-cols-3 scroll-smooth">
+    <div className="z-0 grid justify-center w-full grid-cols-1 gap-10 px-2 sm:grid-cols-2 md:grid-cols-3 scroll-smooth">
       {wines.map((wine, index) => {
         const size = wine.photo_size as { width: number; height: number };
         return (
