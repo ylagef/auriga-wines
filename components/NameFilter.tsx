@@ -28,7 +28,7 @@ export const NameFilter = () => {
         <div className="fixed top-0 left-0 z-10 w-screen h-screen bg-white/50" />
       )}
 
-      <div className="relative z-20 animate-fade-in">
+      <div className="relative focus-within:z-20 animate-fade-in">
         <Input
           onFocus={() => setFocus(true)}
           onBlur={() => setFocus(false)}
