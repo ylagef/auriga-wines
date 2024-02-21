@@ -29,7 +29,8 @@ export default function RootLayout({
             alt="Auriga"
             width={200}
             height={37.5}
-            className="h-6"
+            className="w-auto h-6"
+            priority
           />
         </header>
 

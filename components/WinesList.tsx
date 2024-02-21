@@ -66,7 +66,7 @@ export const WinesList = async ({
 
   return (
     <div className="z-0 grid justify-center w-full grid-cols-1 gap-10 sm:grid-cols-2 md:grid-cols-3 scroll-smooth">
-      {wines.map((wine) => {
+      {wines.map((wine, index) => {
         const size = wine.photo_size as { width: number; height: number };
         return (
           <Link
@@ -90,6 +90,7 @@ export const WinesList = async ({
               width={size.width || 100}
               height={size.height || 100}
               className="object-contain h-60"
+              priority={index < 6}
             />
 
             <div className="flex flex-wrap items-center justify-center gap-1">
