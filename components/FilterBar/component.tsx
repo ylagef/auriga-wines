@@ -9,6 +9,7 @@ import { NameFilter } from "../NameFilter";
 import { OrderBySelect } from "../OrderBySelect";
 import { PriceRangeSelect } from "../PriceRangeSelect";
 import { YearRangeSelect } from "../YearRangeSelect";
+import { RangeSelect } from "../RangeSelect";
 
 interface FilterBarComponentProps {
   countries:
@@ -116,8 +117,24 @@ function FilterBarComponent({
         <NameFilter />
       </div>
       <div className="flex justify-between gap-6">
-        <PriceRangeSelect max={maxWinePrice?.[0]?.price || 100} />
-        <YearRangeSelect min={maxYears?.[0]?.year || 1800} />
+        <RangeSelect
+          id="year"
+          min={maxYears?.[0]?.year || 1800}
+          max={new Date().getFullYear()}
+          labelFormatter={(value) => String(value)}
+        />
+        <RangeSelect
+          id="price"
+          min={0}
+          max={maxWinePrice?.[0]?.price || 100}
+          labelFormatter={(value) =>
+            Intl.NumberFormat("es-ES", {
+              style: "currency",
+              currency: "EUR",
+              maximumFractionDigits: 0,
+            }).format(Number(value))
+          }
+        />
         <OrderBySelect />
       </div>
       <div className="flex justify-end">

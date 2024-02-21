@@ -9,12 +9,21 @@ const ThumbLabel = ({
   rangeRef,
   values,
   index,
+  labelFormatter,
 }: {
   rangeRef: Range | null;
   values: number[];
   index: number;
+  labelFormatter?: (value: number | string) => string;
 }) => {
-  const [labelValue, style] = useThumbOverlap(rangeRef, values, index, 1);
+  const [labelValue, style] = useThumbOverlap(
+    rangeRef,
+    values,
+    index,
+    1,
+    undefined,
+    labelFormatter
+  );
 
   return (
     <div
@@ -29,16 +38,26 @@ const ThumbLabel = ({
   );
 };
 
-const STEP = 1;
+const STEP = 5;
 
-export const YearRangeSelect = ({ min }: { min: number }) => {
+interface RangeSelectProps {
+  id: string;
+  min: number;
+  max: number;
+  labelFormatter?: (value: number | string) => string;
+}
+
+export const RangeSelect = ({
+  id,
+  min,
+  max,
+  labelFormatter,
+}: RangeSelectProps) => {
   const rangeRef = useRef<Range>(null);
-
-  const max = new Date().getFullYear();
   const searchParams = useSearchParams();
   const [values, setValues] = useState([
-    Number(searchParams.get("from_year")) || min,
-    Number(searchParams.get("to_year")) || max,
+    Number(searchParams.get(`from_${id}`)) || min,
+    Number(searchParams.get(`to_${id}`)) || max,
   ]);
   const debouncedSearchTermFrom = useDebounce(values[0], 500);
   const debouncedSearchTermTo = useDebounce(values[1], 500);
@@ -47,7 +66,7 @@ export const YearRangeSelect = ({ min }: { min: number }) => {
   useEffect(() => {
     if (debouncedSearchTermFrom === null) return;
     updateSearchParams(
-      "from_year",
+      `from_${id}`,
       debouncedSearchTermFrom === min ? "" : debouncedSearchTermFrom
     );
   }, [debouncedSearchTermFrom]);
@@ -55,15 +74,15 @@ export const YearRangeSelect = ({ min }: { min: number }) => {
   useEffect(() => {
     if (debouncedSearchTermTo === null) return;
     updateSearchParams(
-      "to_year",
+      `to_${id}`,
       debouncedSearchTermTo === max ? "" : debouncedSearchTermTo
     );
   }, [debouncedSearchTermTo]);
 
   useEffect(() => {
     setValues([
-      Number(searchParams.get("from_year")) || min,
-      Number(searchParams.get("to_year")) || max,
+      Number(searchParams.get(`from_${id}`)) || min,
+      Number(searchParams.get(`to_${id}`)) || max,
     ]);
   }, [searchParams]);
 
@@ -75,11 +94,7 @@ export const YearRangeSelect = ({ min }: { min: number }) => {
         step={STEP}
         min={min}
         max={max}
-        onChange={(values) => {
-          // if (values[1] - values[0] < 200) return;
-
-          setValues(values);
-        }}
+        onChange={(values) => setValues(values)}
         renderTrack={({ props, children }) => (
           <div
             onMouseDown={props.onMouseDown}
@@ -98,8 +113,8 @@ export const YearRangeSelect = ({ min }: { min: number }) => {
                 background: getTrackBackground({
                   values,
                   colors: ["#ccc", "#aaaaaa", "#ccc"],
-                  min,
-                  max,
+                  min: min,
+                  max: max,
                 }),
                 alignSelf: "center",
               }}
@@ -130,6 +145,7 @@ export const YearRangeSelect = ({ min }: { min: number }) => {
                 rangeRef={rangeRef.current}
                 values={values}
                 index={index}
+                labelFormatter={labelFormatter}
               />
 
               <div
