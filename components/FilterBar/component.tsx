@@ -7,8 +7,6 @@ import { MultiSelect } from "../MultiSelect";
 import Link from "next/link";
 import { NameFilter } from "../NameFilter";
 import { OrderBySelect } from "../OrderBySelect";
-import { PriceRangeSelect } from "../PriceRangeSelect";
-import { YearRangeSelect } from "../YearRangeSelect";
 import { RangeSelect } from "../RangeSelect";
 
 interface FilterBarComponentProps {
