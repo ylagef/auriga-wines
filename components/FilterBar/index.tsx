@@ -17,6 +17,11 @@ async function FilterBar() {
     .select("price")
     .order("price", { ascending: false })
     .limit(1);
+  const maxYearsQuery = supabase
+    .from("wines")
+    .select("year")
+    .order("year", { ascending: true })
+    .limit(1);
 
   // Promise all
   const [
@@ -27,6 +32,7 @@ async function FilterBar() {
     { data: cellars },
     { data: apellations },
     { data: maxWinePrice },
+    { data: maxYears },
   ] = await Promise.all([
     countriesQuery,
     grapesQuery,
@@ -35,6 +41,7 @@ async function FilterBar() {
     cellarsQuery,
     apellationsQuery,
     maxWinePriceQuery,
+    maxYearsQuery,
   ]);
 
   return (
@@ -46,6 +53,7 @@ async function FilterBar() {
       cellars={cellars}
       apellations={apellations}
       maxWinePrice={maxWinePrice}
+      maxYears={maxYears}
     />
   );
 }

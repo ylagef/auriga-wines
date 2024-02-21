@@ -7,7 +7,8 @@ import { MultiSelect } from "../MultiSelect";
 import Link from "next/link";
 import { NameFilter } from "../NameFilter";
 import { OrderBySelect } from "../OrderBySelect";
-import { RangeSelect } from "../RangeSelect";
+import { PriceRangeSelect } from "../PriceRangeSelect";
+import { YearRangeSelect } from "../YearRangeSelect";
 
 interface FilterBarComponentProps {
   countries:
@@ -51,6 +52,11 @@ interface FilterBarComponentProps {
         price: number;
       }[]
     | null;
+  maxYears:
+    | {
+        year: number;
+      }[]
+    | null;
 }
 
 function FilterBarComponent({
@@ -61,6 +67,7 @@ function FilterBarComponent({
   cellars,
   apellations,
   maxWinePrice,
+  maxYears,
 }: FilterBarComponentProps) {
   return (
     <div className="flex flex-col w-full gap-2">
@@ -109,7 +116,8 @@ function FilterBarComponent({
         <NameFilter />
       </div>
       <div className="flex justify-between gap-6">
-        <RangeSelect max={maxWinePrice?.[0]?.price || 100} />
+        <PriceRangeSelect max={maxWinePrice?.[0]?.price || 100} />
+        <YearRangeSelect min={maxYears?.[0]?.year || 1800} />
         <OrderBySelect />
       </div>
       <div className="flex justify-end">

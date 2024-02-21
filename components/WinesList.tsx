@@ -21,6 +21,8 @@ export const WinesList = async ({
     name,
     from_price,
     to_price,
+    from_year,
+    to_year,
   } = searchParams;
 
   await new Promise((resolve) => setTimeout(resolve, 2000));
@@ -42,6 +44,8 @@ export const WinesList = async ({
   if (name?.length) query.ilike("name", `%${name}%`);
   if (from_price?.length) query.gte("price", from_price);
   if (to_price?.length) query.lte("price", to_price);
+  if (from_year?.length) query.gte("year", from_year);
+  if (to_year?.length) query.lte("year", to_year);
 
   if (sortBy?.length) {
     query.order(sortBy.split(/_(asc|desc)/)[0], {
@@ -49,7 +53,6 @@ export const WinesList = async ({
     });
   }
 
-  console.log(query);
   const { data: wines } = await query.returns<
     (Database["public"]["Tables"]["wines"]["Row"] & {
       apellation: { name: string };

@@ -2,55 +2,82 @@ import { useUpdateSearchParams } from "@/hooks/useUpdateSearchParams";
 import { cn } from "@/utils";
 import { useDebounce } from "@uidotdev/usehooks";
 import { useSearchParams } from "next/navigation";
-import React, { useEffect, useState } from "react";
-import { Range, getTrackBackground } from "react-range";
+import React, { CSSProperties, useEffect, useRef, useState } from "react";
+import { Range, getTrackBackground, useThumbOverlap } from "react-range";
 
-const STEP = 5;
-const MIN = 0;
+const ThumbLabel = ({
+  rangeRef,
+  values,
+  index,
+}: {
+  rangeRef: Range | null;
+  values: number[];
+  index: number;
+}) => {
+  const [labelValue, style] = useThumbOverlap(rangeRef, values, index, 1);
 
-export const RangeSelect = ({ max }: { max: number }) => {
-  const maxRounded = Math.ceil(max / 100) * 100;
+  return (
+    <div
+      data-label={index}
+      className={
+        "absolute text-xs -bottom-5 text-gray-700 transition-all bg-white w-max"
+      }
+      style={style as CSSProperties}
+    >
+      {labelValue as string}
+    </div>
+  );
+};
+
+const STEP = 1;
+
+export const YearRangeSelect = ({ min }: { min: number }) => {
+  const rangeRef = useRef<Range>(null);
+
+  const max = new Date().getFullYear();
   const searchParams = useSearchParams();
   const [values, setValues] = useState([
-    Number(searchParams.get("from_price")) || MIN,
-    Number(searchParams.get("to_price")) || maxRounded,
+    Number(searchParams.get("from_year")) || min,
+    Number(searchParams.get("to_year")) || max,
   ]);
-  const debouncedSearchTermFrom = useDebounce(values[0], 300);
-  const debouncedSearchTermTo = useDebounce(values[1], 300);
+  const debouncedSearchTermFrom = useDebounce(values[0], 500);
+  const debouncedSearchTermTo = useDebounce(values[1], 500);
   const { updateSearchParams } = useUpdateSearchParams();
 
   useEffect(() => {
     if (debouncedSearchTermFrom === null) return;
     updateSearchParams(
-      "from_price",
-      debouncedSearchTermFrom === MIN ? "" : debouncedSearchTermFrom
+      "from_year",
+      debouncedSearchTermFrom === min ? "" : debouncedSearchTermFrom
     );
   }, [debouncedSearchTermFrom]);
 
   useEffect(() => {
     if (debouncedSearchTermTo === null) return;
     updateSearchParams(
-      "to_price",
-      debouncedSearchTermTo === maxRounded ? "" : debouncedSearchTermTo
+      "to_year",
+      debouncedSearchTermTo === max ? "" : debouncedSearchTermTo
     );
   }, [debouncedSearchTermTo]);
 
   useEffect(() => {
     setValues([
-      Number(searchParams.get("from_price")) || MIN,
-      Number(searchParams.get("to_price")) || maxRounded,
+      Number(searchParams.get("from_year")) || min,
+      Number(searchParams.get("to_year")) || max,
     ]);
   }, [searchParams]);
 
   return (
     <div className="flex flex-wrap items-center justify-center h-10 px-3 grow">
       <Range
+        ref={rangeRef}
         values={values}
         step={STEP}
-        min={MIN}
-        max={maxRounded}
+        min={min}
+        max={max}
         onChange={(values) => {
-          if (values[1] - values[0] < 200) return;
+          // if (values[1] - values[0] < 200) return;
+
           setValues(values);
         }}
         renderTrack={({ props, children }) => (
@@ -71,8 +98,8 @@ export const RangeSelect = ({ max }: { max: number }) => {
                 background: getTrackBackground({
                   values,
                   colors: ["#ccc", "#aaaaaa", "#ccc"],
-                  min: MIN,
-                  max: maxRounded,
+                  min,
+                  max,
                 }),
                 alignSelf: "center",
               }}
@@ -82,16 +109,6 @@ export const RangeSelect = ({ max }: { max: number }) => {
           </div>
         )}
         renderThumb={({ index, props, isDragged }) => {
-          const getAbsolute = () => {
-            if (index === 0) {
-              if (values[0] < 100) return { left: 0 };
-              return { left: -String(values[1]).length * 5 };
-            } else {
-              if (values[1] > maxRounded - 100) return { right: 0 };
-              return { right: -String(values[1]).length * 5 };
-            }
-          };
-
           return (
             <div
               ref={props.ref}
@@ -109,18 +126,11 @@ export const RangeSelect = ({ max }: { max: number }) => {
                 display: props.ref.current ? "flex" : "none",
               }}
             >
-              <div
-                className={cn(
-                  "absolute text-xs -bottom-5 text-gray-700 transition-all"
-                )}
-                style={getAbsolute()}
-              >
-                {Intl.NumberFormat("es-ES", {
-                  style: "currency",
-                  currency: "EUR",
-                  maximumFractionDigits: 0,
-                }).format(values[index])}
-              </div>
+              <ThumbLabel
+                rangeRef={rangeRef.current}
+                values={values}
+                index={index}
+              />
 
               <div
                 className={cn(

@@ -20,6 +20,8 @@ export interface SearchParams {
   name?: string;
   from_price?: string;
   to_price?: string;
+  from_year?: string;
+  to_year?: string;
 }
 
 async function WinesPage({ searchParams }: { searchParams: SearchParams }) {
