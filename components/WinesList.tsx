@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Badge } from "./ui/Badge";
 import { SearchParams } from "@/app/wines/page";
+import { Database } from "@/utils/supabase/types";
 
 export const WinesList = async ({
   countries,
@@ -22,7 +23,7 @@ export const WinesList = async ({
   const query = supabase
     .from("wines")
     .select(
-      "id, name, description, price, year, photo_url, photo_size, grapes, new"
+      "id, name, description, price, year, photo_url, photo_size, grapes, new, apellation:apellation_id(name)"
     );
 
   if (countries?.length) query.in("country_id", countries.split(","));
@@ -42,19 +43,15 @@ export const WinesList = async ({
     });
   }
 
-  const { data: wines } = await query;
-
-  const grapesArrayUnique = Array.from(
-    new Set(wines?.map((wine) => wine.grapes).flat())
-  );
-
-  const { data: grapesData } = await supabase
-    .from("grapes")
-    .select("id, name")
-    .in("id", grapesArrayUnique);
+  const { data: wines } = await query.returns<
+    (Database["public"]["Tables"]["wines"]["Row"] & {
+      apellation: { name: string };
+    })[]
+  >();
+  console.log(wines);
 
   return (
-    <div className="z-0 grid justify-center w-full grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3 scroll-smooth">
+    <div className="z-0 grid justify-center w-full grid-cols-1 gap-8 sm:grid-cols-3 scroll-smooth">
       {wines?.map((wine) => {
         const size = wine.photo_size as { width: number; height: number };
         return (
@@ -80,23 +77,13 @@ export const WinesList = async ({
               className="object-contain h-60"
             />
 
-            <div className="flex flex-wrap items-center justify-center gap-1">
-              {grapesData
-                ?.filter((grape) => wine.grapes.includes(grape.id))
-                .map((grape) => (
-                  <Badge key={grape.id} variant="outline">
-                    {grape.name}
-                  </Badge>
-                ))}
+            <div className="flex items-center justify-center">
+              <Badge variant="outline">{wine.apellation.name}</Badge>
             </div>
 
             <h3 className="font-bold text-center">{wine.name}</h3>
-            <div className="grid place-items-center grow">
-              <p className="text-xs text-center text-gray-600">
-                {wine.description}
-              </p>
-            </div>
-            <span>
+
+            <span className="text-sm">
               {Intl.NumberFormat("es-ES", {
                 style: "currency",
                 currency: "EUR",
