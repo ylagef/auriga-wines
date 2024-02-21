@@ -3,17 +3,11 @@
 import "./styles.css";
 
 import { MultiSelect } from "../MultiSelect";
-import { Input } from "../ui/Input";
 
 import Link from "next/link";
-import { OrderBySelect } from "../OrderBySelect";
-import { useUpdateSearchParams } from "@/hooks/useUpdateSearchParams";
-import { use, useEffect, useState } from "react";
-import { useDebounce } from "@uidotdev/usehooks";
-import { useSearchParams } from "next/navigation";
-import { Range } from "react-range";
-import { RangeSelect } from "../RangeSelect";
 import { NameFilter } from "../NameFilter";
+import { OrderBySelect } from "../OrderBySelect";
+import { RangeSelect } from "../RangeSelect";
 
 interface FilterBarComponentProps {
   countries:

@@ -81,7 +81,7 @@ export const RangeSelect = ({ max }: { max: number }) => {
             </div>
           </div>
         )}
-        renderThumb={({ index, props, isDragged, value }) => {
+        renderThumb={({ index, props, isDragged }) => {
           const getAbsolute = () => {
             if (index === 0) {
               if (values[0] < 100) return { left: 0 };
@@ -94,7 +94,15 @@ export const RangeSelect = ({ max }: { max: number }) => {
 
           return (
             <div
-              {...props}
+              ref={props.ref}
+              tabIndex={props.tabIndex}
+              aria-valuenow={props["aria-valuenow"]}
+              aria-valuemin={props["aria-valuemin"]}
+              aria-valuemax={props["aria-valuemax"]}
+              onKeyDown={props.onKeyDown}
+              onKeyUp={props.onKeyUp}
+              role={props.role}
+              key={props.key}
               className="flex items-center justify-center transition-all focus-visible:outline-none animate-fade-in"
               style={{
                 ...props.style,
