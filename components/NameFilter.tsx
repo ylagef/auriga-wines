@@ -7,10 +7,10 @@ import { useEffect, useState } from "react";
 import { Input } from "./ui/Input";
 
 export const NameFilter = () => {
-  const [name, setName] = useState<string | null>(null);
+  const searchParams = useSearchParams();
+  const [name, setName] = useState<string | null>(searchParams.get("name"));
   const [focus, setFocus] = useState(false);
   const debouncedSearchTerm = useDebounce(name, 300);
-  const searchParams = useSearchParams();
   const { updateSearchParams } = useUpdateSearchParams();
 
   useEffect(() => {
@@ -18,13 +18,17 @@ export const NameFilter = () => {
     updateSearchParams("name", debouncedSearchTerm);
   }, [debouncedSearchTerm]);
 
+  useEffect(() => {
+    setName(searchParams.get("name"));
+  }, [searchParams]);
+
   return (
     <>
       {focus && (
         <div className="fixed top-0 left-0 z-10 w-screen h-screen bg-white/50" />
       )}
 
-      <div className="relative z-20">
+      <div className="relative z-20 animate-fade-in">
         <Input
           onFocus={() => setFocus(true)}
           onBlur={() => setFocus(false)}
@@ -36,7 +40,6 @@ export const NameFilter = () => {
           )}
           onChange={(e) => setName(e.target.value)}
           value={name || ""}
-          defaultValue={searchParams.get("name") || ""}
         />
 
         {name?.length && !focus ? (

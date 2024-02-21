@@ -134,7 +134,7 @@ export function MultiSelect({
         ref={commandRef}
         onKeyDown={handleKeyDown}
         className={cn(
-          "overflow-visible bg-transparent transition-[width] h-10",
+          "overflow-visible bg-transparent transition-[width] h-10 animate-fade-in",
           open && "z-10"
         )}
         style={{

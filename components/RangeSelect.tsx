@@ -35,6 +35,13 @@ export const RangeSelect = ({ max }: { max: number }) => {
     );
   }, [debouncedSearchTermTo]);
 
+  useEffect(() => {
+    setValues([
+      Number(searchParams.get("from_price")) || MIN,
+      Number(searchParams.get("to_price")) || maxRounded,
+    ]);
+  }, [searchParams]);
+
   return (
     <div className="flex flex-wrap items-center justify-center h-10 px-3 grow">
       <Range
@@ -50,7 +57,7 @@ export const RangeSelect = ({ max }: { max: number }) => {
           <div
             onMouseDown={props.onMouseDown}
             onTouchStart={props.onTouchStart}
-            className="flex w-full h-6"
+            className="flex w-full h-6 animate-fade-in"
             style={{
               ...props.style,
             }}
@@ -74,7 +81,7 @@ export const RangeSelect = ({ max }: { max: number }) => {
             </div>
           </div>
         )}
-        renderThumb={({ index, props, isDragged }) => {
+        renderThumb={({ index, props, isDragged, value }) => {
           const getAbsolute = () => {
             if (index === 0) {
               if (values[0] < 100) return { left: 0 };
@@ -84,12 +91,14 @@ export const RangeSelect = ({ max }: { max: number }) => {
               return { right: -String(values[1]).length * 5 };
             }
           };
+
           return (
             <div
               {...props}
-              className="flex items-center justify-center focus-visible:outline-none"
+              className="flex items-center justify-center transition-all focus-visible:outline-none animate-fade-in"
               style={{
                 ...props.style,
+                display: props.ref.current ? "flex" : "none",
               }}
             >
               <div
