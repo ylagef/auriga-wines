@@ -34,7 +34,7 @@ async function WinesPage({ searchParams }: { searchParams: SearchParams }) {
           fallback={<WineListSkeleton />}
           key={JSON.stringify(searchParams)}
         >
-          <WinesList {...searchParams} />
+          <WinesList searchParams={searchParams} />
         </Suspense>
       </div>
     </>

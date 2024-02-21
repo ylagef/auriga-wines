@@ -6,17 +6,23 @@ import { SearchParams } from "@/app/wines/page";
 import { Database } from "@/utils/supabase/types";
 
 export const WinesList = async ({
-  countries,
-  grapes,
-  regions,
-  pairings,
-  cellars,
-  appellations,
-  sortBy,
-  name,
-  from_price,
-  to_price,
-}: SearchParams) => {
+  searchParams,
+}: {
+  searchParams: SearchParams;
+}) => {
+  const {
+    countries,
+    grapes,
+    regions,
+    pairings,
+    cellars,
+    appellations,
+    sortBy,
+    name,
+    from_price,
+    to_price,
+  } = searchParams;
+
   await new Promise((resolve) => setTimeout(resolve, 2000));
   const supabase = createClient();
 
@@ -64,13 +70,19 @@ export const WinesList = async ({
     );
   }
 
+  const parsedSearchParams = new URLSearchParams(
+    searchParams as Record<string, string>
+  ).toString();
+
   return (
     <div className="z-0 grid justify-center w-full grid-cols-1 gap-10 px-2 sm:grid-cols-2 md:grid-cols-3 scroll-smooth">
       {wines.map((wine, index) => {
         const size = wine.photo_size as { width: number; height: number };
         return (
           <Link
-            href={`/wines/${wine.id}`}
+            href={`/wines/${wine.id}${
+              parsedSearchParams ? `?${parsedSearchParams}` : ""
+            }`}
             key={wine.id}
             className="relative flex flex-col items-center gap-2 animate-fade-in"
           >
