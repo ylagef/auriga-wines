@@ -16,7 +16,7 @@ export const WinesList = async ({
     regions,
     pairings,
     cellars,
-    appellations,
+    apellations,
     sortBy,
     name,
     from_price,
@@ -38,7 +38,7 @@ export const WinesList = async ({
   if (regions?.length) query.in("region_id", regions.split(","));
   if (pairings?.length) query.containedBy("pairings", pairings.split(","));
   if (cellars?.length) query.in("cellar_id", cellars.split(","));
-  if (appellations?.length) query.in("appellation_id", appellations.split(","));
+  if (apellations?.length) query.in("apellation_id", apellations.split(","));
   if (name?.length) query.ilike("name", `%${name}%`);
   if (from_price?.length) query.gte("price", from_price);
   if (to_price?.length) query.lte("price", to_price);
@@ -49,6 +49,7 @@ export const WinesList = async ({
     });
   }
 
+  console.log(query);
   const { data: wines } = await query.returns<
     (Database["public"]["Tables"]["wines"]["Row"] & {
       apellation: { name: string };

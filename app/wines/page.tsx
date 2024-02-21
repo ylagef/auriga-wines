@@ -9,7 +9,7 @@ export interface SearchParams {
   regions?: string;
   pairings?: string;
   cellars?: string;
-  appellations?: string;
+  apellations?: string;
   sortBy?:
     | "price_asc"
     | "price_desc"
