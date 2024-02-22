@@ -60,6 +60,7 @@ export const WinesList = async ({
       region: { name: string };
     })[]
   >();
+  console.log(wines);
 
   if (!wines?.length) {
     return (
@@ -88,7 +89,7 @@ export const WinesList = async ({
               parsedSearchParams ? `?${parsedSearchParams}` : ""
             }`}
             key={wine.id}
-            className="relative flex flex-col items-center gap-2 animate-fade-in"
+            className="relative flex flex-col items-center gap-2 -z-10 animate-fade-in"
           >
             {wine.new && (
               <Badge variant="default" className="absolute top-0 left-0">
