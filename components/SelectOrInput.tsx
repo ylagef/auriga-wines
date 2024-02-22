@@ -36,7 +36,7 @@ export const SelectOrInput = ({
       {showNew ? (
         <Input
           id={id}
-          name={id}
+          name={`new-${id}`}
           type="text"
           placeholder={placeholder}
           className="animate-fade-in"

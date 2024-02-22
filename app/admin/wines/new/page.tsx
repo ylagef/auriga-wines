@@ -1,3 +1,4 @@
+import { createWine } from "@/actions/create-wine";
 import { WineForm } from "@/components/WineForm";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
@@ -10,7 +11,7 @@ async function NewPage() {
         Volver a la lista
       </Link>
 
-      <WineForm />
+      <WineForm action={createWine} />
     </div>
   );
 }

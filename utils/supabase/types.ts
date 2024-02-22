@@ -105,7 +105,6 @@ export type Database = {
           created_at: string
           description: string | null
           id: number
-          logo_url: string
           name: string
           updated_at: string
         }
@@ -113,7 +112,6 @@ export type Database = {
           created_at?: string
           description?: string | null
           id?: number
-          logo_url: string
           name: string
           updated_at?: string
         }
@@ -121,7 +119,6 @@ export type Database = {
           created_at?: string
           description?: string | null
           id?: number
-          logo_url?: string
           name?: string
           updated_at?: string
         }

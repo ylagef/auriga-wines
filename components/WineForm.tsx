@@ -1,4 +1,3 @@
-import { createWine } from "@/actions/create-wine";
 import { GrapesInput } from "@/components/GrapesInput";
 import { SelectOrInput } from "@/components/SelectOrInput";
 import { Button } from "@/components/ui/Button";
@@ -10,9 +9,10 @@ import { createClient } from "@/utils/supabase/server";
 
 interface WineFormProps {
   wine?: Wine;
+  action: (_: FormData) => Promise<void>;
 }
 
-export const WineForm = async ({ wine }: WineFormProps) => {
+export const WineForm = async ({ wine, action }: WineFormProps) => {
   const supabase = createClient();
 
   const countriesQuery = supabase.from("countries").select("id, name");
@@ -39,10 +39,9 @@ export const WineForm = async ({ wine }: WineFormProps) => {
   ]);
 
   return (
-    <form
-      className="flex flex-col gap-6 p-8 animate-fade-in"
-      action={createWine}
-    >
+    <form className="flex flex-col gap-6 p-8 animate-fade-in" action={action}>
+      {wine?.id && <input type="hidden" name="id" value={wine.id} />}
+
       <div className="flex flex-col w-full gap-2">
         <Label htmlFor="name">Nombre</Label>
         <Input
@@ -154,7 +153,9 @@ export const WineForm = async ({ wine }: WineFormProps) => {
         <GrapesInput grapes={grapes} selected={wine?.grapes} />
       </div>
 
-      <Button className="w-full mx-auto mt-8 font-bold max-w-72">AÑADIR</Button>
+      <Button className="w-full mx-auto mt-8 font-bold max-w-72">
+        {wine ? "Actualizar" : "Crear"}
+      </Button>
     </form>
   );
 };

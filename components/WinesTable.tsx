@@ -38,6 +38,7 @@ import {
   DropdownMenuTrigger,
 } from "./ui/DropdownMenu";
 import Image from "next/image";
+import { deleteWine } from "@/actions/create-wine";
 
 interface DataTableProps {
   data: Wine[];
@@ -171,7 +172,13 @@ export const WinesTable = ({ data }: DataTableProps) => {
             <AlertDialogCancel onClick={() => setAlertOpen(null)}>
               Cancelar
             </AlertDialogCancel>
-            <AlertDialogAction className="text-white bg-red-700">
+            <AlertDialogAction
+              className="text-white bg-red-700"
+              onClick={async () => {
+                await deleteWine(Number(alertOpen));
+                setAlertOpen(null);
+              }}
+            >
               Eliminar
             </AlertDialogAction>
           </AlertDialogFooter>
