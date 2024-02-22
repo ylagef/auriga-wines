@@ -1,4 +1,5 @@
 import { WinesTable } from "@/components/WinesTable";
+import { Button } from "@/components/ui/Button";
 
 import { createClient } from "@/utils/supabase/server";
 import Link from "next/link";
@@ -28,11 +29,8 @@ export default async function AdminPage() {
       {/* <AuthButton /> */}
 
       <div className="flex justify-end w-full">
-        <Link
-          href="/admin/wines/new"
-          className="px-4 py-2 font-bold text-white bg-black rounded hover:opacity-85"
-        >
-          Añadir nuevo
+        <Link href="/admin/wines/new" className="flex items-center gap-2">
+          <Button>Añadir nuevo</Button>
         </Link>
       </div>
 
