@@ -89,7 +89,7 @@ export const RangeSelect = ({
   }, [searchParams]);
 
   return (
-    <div className="flex flex-wrap items-center justify-center h-10 px-3 grow">
+    <div className="flex flex-wrap items-center justify-center w-1/2 h-10 px-3 grow sm:w-auto">
       <Range
         ref={rangeRef}
         values={values}

@@ -134,15 +134,15 @@ export function MultiSelect({
         ref={commandRef}
         onKeyDown={handleKeyDown}
         className={cn(
-          "overflow-visible bg-transparent transition-[width] h-10 animate-fade-in",
+          "overflow-visible bg-transparent transition-[width] h-10 animate-fade-in max-w-full",
           open && "z-10"
         )}
         style={{
           width: inputWidth,
         }}
       >
-        <div className="flex items-center justify-center h-10 px-2 py-1 text-sm bg-white border rounded-md shadow-sm group border-input ring-offset-background focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2">
-          <div className="flex gap-1">
+        <div className="flex items-center justify-center h-10 max-w-full px-2 py-1 text-sm bg-white border rounded-md shadow-sm group border-input ring-offset-background focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2">
+          <div className="flex w-full gap-1 overflow-x-auto">
             {selected.map((option) => {
               return (
                 <Badge
@@ -150,7 +150,8 @@ export function MultiSelect({
                   variant="secondary"
                   className="text-gray-600"
                 >
-                  {option.label}
+                  <label className="whitespace-nowrap">{option.label}</label>
+
                   <button
                     className="ml-1 rounded-full outline-none ring-offset-background focus:ring-2 focus:ring-ring focus:ring-offset-2"
                     onKeyDown={(e) => {

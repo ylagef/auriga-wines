@@ -34,7 +34,7 @@ export const NameFilter = () => {
           onBlur={() => setFocus(false)}
           placeholder="Nombre"
           className={cn(
-            "text-center shadow-sm placeholder:text-gray-600 focus:w-72 transition-[width]",
+            "text-center shadow-sm placeholder:text-gray-600 focus:w-72 transition-[width] max-w-full",
             name?.length && "pr-8",
             name?.length ? `w-40` : "w-24"
           )}

@@ -114,7 +114,7 @@ function FilterBarComponent({
 
         <NameFilter />
       </div>
-      <div className="flex justify-between gap-6">
+      <div className="flex flex-wrap justify-between gap-6">
         <RangeSelect
           id="year"
           min={maxYears?.[0]?.year || 1800}

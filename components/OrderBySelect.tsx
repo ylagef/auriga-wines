@@ -25,7 +25,7 @@ export const OrderBySelect = () => {
           updateSearchParams("sortBy", v);
         }}
       >
-        <SelectTrigger className="w-48 text-left text-gray-600 shadow-sm animate-fade-in">
+        <SelectTrigger className="w-full text-left text-gray-600 shadow-sm sm:w-48 animate-fade-in">
           <SelectValue placeholder="Ordenar por..." />
         </SelectTrigger>
         <SelectContent className="bg-white shadow-sm">
