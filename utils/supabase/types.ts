@@ -15,7 +15,6 @@ export type Database = {
           description: string | null
           id: number
           name: string
-          region_id: number | null
           updated_at: string | null
         }
         Insert: {
@@ -23,7 +22,6 @@ export type Database = {
           description?: string | null
           id?: number
           name: string
-          region_id?: number | null
           updated_at?: string | null
         }
         Update: {
@@ -31,22 +29,12 @@ export type Database = {
           description?: string | null
           id?: number
           name?: string
-          region_id?: number | null
           updated_at?: string | null
         }
-        Relationships: [
-          {
-            foreignKeyName: "public_apellation_region_fkey"
-            columns: ["region_id"]
-            isOneToOne: false
-            referencedRelation: "regions"
-            referencedColumns: ["id"]
-          }
-        ]
+        Relationships: []
       }
       cellars: {
         Row: {
-          apellation_id: number | null
           created_at: string
           description: string | null
           id: number
@@ -54,7 +42,6 @@ export type Database = {
           updated_at: string | null
         }
         Insert: {
-          apellation_id?: number | null
           created_at?: string
           description?: string | null
           id?: number
@@ -62,22 +49,13 @@ export type Database = {
           updated_at?: string | null
         }
         Update: {
-          apellation_id?: number | null
           created_at?: string
           description?: string | null
           id?: number
           name?: string
           updated_at?: string | null
         }
-        Relationships: [
-          {
-            foreignKeyName: "public_cellar_apellation_id_fkey"
-            columns: ["apellation_id"]
-            isOneToOne: false
-            referencedRelation: "apellations"
-            referencedColumns: ["id"]
-          }
-        ]
+        Relationships: []
       }
       countries: {
         Row: {
@@ -124,61 +102,26 @@ export type Database = {
         }
         Relationships: []
       }
-      pairings: {
+      regions: {
         Row: {
           created_at: string
-          description: string | null
           id: number
           name: string
           updated_at: string
         }
         Insert: {
           created_at?: string
-          description?: string | null
           id?: number
           name: string
           updated_at?: string
         }
         Update: {
           created_at?: string
-          description?: string | null
           id?: number
           name?: string
           updated_at?: string
         }
         Relationships: []
-      }
-      regions: {
-        Row: {
-          country: number | null
-          created_at: string
-          id: number
-          name: string
-          updated_at: string
-        }
-        Insert: {
-          country?: number | null
-          created_at?: string
-          id?: number
-          name: string
-          updated_at?: string
-        }
-        Update: {
-          country?: number | null
-          created_at?: string
-          id?: number
-          name?: string
-          updated_at?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "public_regions_country_fkey"
-            columns: ["country"]
-            isOneToOne: false
-            referencedRelation: "countries"
-            referencedColumns: ["id"]
-          }
-        ]
       }
       wines: {
         Row: {
