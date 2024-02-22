@@ -14,9 +14,10 @@ interface GrapesInputProps {
         name: string;
       }[]
     | null;
+  selected?: number[] | null;
 }
 
-export const GrapesInput = ({ grapes }: GrapesInputProps) => {
+export const GrapesInput = ({ grapes, selected }: GrapesInputProps) => {
   const [allGrapes, setAllGrapes] = useState<
     {
       id?: number;
@@ -24,6 +25,14 @@ export const GrapesInput = ({ grapes }: GrapesInputProps) => {
     }[]
   >(grapes || []);
   const [newGrape, setNewGrape] = useState("");
+
+  const handleAddNewGrape = (name: string) => {
+    if (newGrape?.length < 3) return;
+    if (allGrapes?.some((grape) => grape.name === name)) return;
+
+    setAllGrapes([...allGrapes, { name }]);
+    setNewGrape("");
+  };
 
   return (
     <>
@@ -34,7 +43,12 @@ export const GrapesInput = ({ grapes }: GrapesInputProps) => {
             key={grape.id || grape.name}
           >
             {grape.id ? (
-              <Checkbox id={String(grape.id)} name="grape" value={grape.id} />
+              <Checkbox
+                id={String(grape.id)}
+                name="grape"
+                value={grape.id}
+                defaultChecked={selected?.includes(grape.id)}
+              />
             ) : (
               <Checkbox id={grape.name} name="new-grape" value={grape.name} />
             )}
@@ -50,14 +64,19 @@ export const GrapesInput = ({ grapes }: GrapesInputProps) => {
           className="rounded-r-none w-52"
           value={newGrape}
           onChange={(e) => setNewGrape(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key !== "Enter") {
+              return;
+            }
+            e.preventDefault();
+            handleAddNewGrape(newGrape);
+          }}
         />
         <Button
           type="button"
           className="rounded-l-none"
-          onClick={() => {
-            setAllGrapes([...allGrapes, { name: newGrape }]);
-            setNewGrape("");
-          }}
+          disabled={newGrape?.length < 3}
+          onClick={() => handleAddNewGrape(newGrape)}
         >
           <PlusIcon size={16} />
         </Button>

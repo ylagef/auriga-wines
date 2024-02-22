@@ -5,9 +5,14 @@ import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Label } from "@/components/ui/Label";
 import { Textarea } from "@/components/ui/Textarea";
+import { Wine } from "@/utils/supabase/parsedTypes";
 import { createClient } from "@/utils/supabase/server";
 
-export const WineForm = async () => {
+interface WineFormProps {
+  wine?: Wine;
+}
+
+export const WineForm = async ({ wine }: WineFormProps) => {
   const supabase = createClient();
 
   const countriesQuery = supabase.from("countries").select("id, name");
@@ -34,18 +39,28 @@ export const WineForm = async () => {
   ]);
 
   return (
-    <form className="flex flex-col gap-6 p-8" action={createWine}>
+    <form
+      className="flex flex-col gap-6 p-8 animate-fade-in"
+      action={createWine}
+    >
       <div className="flex flex-col w-full gap-2">
         <Label htmlFor="name">Nombre</Label>
-        <Input required id="name" name="name" placeholder="Viña Costeira" />
+        <Input
+          required
+          id="name"
+          name="name"
+          placeholder="Viña Costeira"
+          defaultValue={wine?.name}
+        />
       </div>
 
       <div className="flex flex-col w-full gap-2">
-        <Label htmlFor="photo">Descripción</Label>
+        <Label htmlFor="description">Descripción</Label>
         <Textarea
           id="description"
           name="description"
           placeholder="Descripción del vino"
+          defaultValue={wine?.description || ""}
         />
       </div>
 
@@ -58,6 +73,9 @@ export const WineForm = async () => {
             name="price"
             type="number"
             placeholder="10"
+            min={0}
+            step={0.01}
+            defaultValue={wine?.price}
           />
         </div>
 
@@ -71,13 +89,19 @@ export const WineForm = async () => {
             placeholder="2020"
             min={1700}
             max={new Date().getFullYear()}
+            defaultValue={wine?.year}
           />
         </div>
       </div>
 
       <div className="flex flex-col w-full gap-2">
         <Label htmlFor="photo">Foto</Label>
-        <Input required id="photo" name="photo" type="file" />
+        <Input
+          required={!wine?.photo_url}
+          id="photo"
+          name="photo"
+          type="file"
+        />
       </div>
       <div className="grid grid-cols-1 gap-6 sm:gap-2 sm:grid-cols-2">
         <div className="flex flex-col w-full gap-2">
@@ -86,6 +110,7 @@ export const WineForm = async () => {
             id="country"
             options={countries}
             placeholder="Nombre del país"
+            selected={wine?.country_id}
           />
         </div>
 
@@ -95,6 +120,7 @@ export const WineForm = async () => {
             id="region"
             options={regions}
             placeholder="Nombre de la región"
+            selected={wine?.region_id}
           />
         </div>
       </div>
@@ -106,6 +132,7 @@ export const WineForm = async () => {
             id="apellation"
             options={apellations}
             placeholder="Nombre de la D.O."
+            selected={wine?.apellation_id}
           />
         </div>
 
@@ -115,18 +142,19 @@ export const WineForm = async () => {
             id="cellar"
             options={cellars}
             placeholder="Nombre de la bodega"
+            selected={wine?.cellar_id}
           />
         </div>
       </div>
 
-      <div className="flex flex-col items-center w-full gap-2">
+      <div className="flex flex-col w-full gap-2">
         <Label htmlFor="grape" className="self-start">
           Uvas
         </Label>
-        <GrapesInput grapes={grapes} />
+        <GrapesInput grapes={grapes} selected={wine?.grapes} />
       </div>
 
-      <Button type="submit">Crear</Button>
+      <Button className="w-full mx-auto mt-8 font-bold max-w-72">AÑADIR</Button>
     </form>
   );
 };

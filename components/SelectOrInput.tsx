@@ -20,12 +20,14 @@ interface SelectOrInputProps {
         name: string;
       }[]
     | null;
+  selected?: number | null;
 }
 
 export const SelectOrInput = ({
   id,
   options,
   placeholder,
+  selected,
 }: SelectOrInputProps) => {
   const [showNew, setShowNew] = useState(false);
 
@@ -41,7 +43,11 @@ export const SelectOrInput = ({
           required
         />
       ) : (
-        <Select name={id} required>
+        <Select
+          name={id}
+          required
+          defaultValue={selected ? String(selected) : undefined}
+        >
           <SelectTrigger className="w-full text-left shadow-sm animate-fade-in">
             <SelectValue placeholder="Seleccionar..." />
           </SelectTrigger>
