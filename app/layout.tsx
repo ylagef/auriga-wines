@@ -34,7 +34,7 @@ export default function RootLayout({
           />
         </header>
 
-        <main className="flex flex-col items-center grow">{children}</main>
+        <main className="flex flex-col items-center py-2 grow">{children}</main>
         <SpeedInsights />
         <Analytics />
       </body>

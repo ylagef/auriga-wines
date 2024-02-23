@@ -1,3 +1,4 @@
+import { SignOutButton } from "@/components/SignOutButton";
 import { WinesTable } from "@/components/WinesTable";
 import { Button } from "@/components/ui/Button";
 import { Wine, WineDB } from "@/utils/supabase/parsedTypes";
@@ -32,10 +33,11 @@ export default async function AdminPage() {
     <div className="flex flex-col items-center flex-1 w-full max-w-6xl gap-4 px-4">
       {/* <AuthButton /> */}
 
-      <div className="flex justify-end w-full">
+      <div className="flex justify-between w-full gap-2">
         <Link href="/admin/wines/new" className="flex items-center gap-2">
           <Button>Añadir nuevo</Button>
         </Link>
+        <SignOutButton />
       </div>
 
       <WinesTable data={wines} />
