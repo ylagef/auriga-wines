@@ -15,11 +15,12 @@ export const WineElement = ({
   const size = wine.photo_size as { width: number; height: number };
   return (
     <Link
-      href={`/wines/${wine.id}${
-        parsedSearchParams ? `?${parsedSearchParams}` : ""
-      }`}
+      href={{
+        pathname: `/wines/${wine.id}`,
+        query: parsedSearchParams,
+      }}
       key={wine.id}
-      className="relative flex flex-col items-center gap-2 -z-10 animate-fade-in"
+      className="relative flex flex-col items-center gap-2 animate-fade-in"
     >
       {wine.new && (
         <Badge variant="default" className="absolute top-0 left-0">
