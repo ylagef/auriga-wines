@@ -43,7 +43,10 @@ export const WineForm = async ({ wine, action }: WineFormProps) => {
   ]);
 
   return (
-    <form className="flex flex-col gap-6 p-8 animate-fade-in" action={action}>
+    <form
+      className="flex flex-col gap-6 px-4 py-8 animate-fade-in"
+      action={action}
+    >
       {wine?.id !== undefined ? (
         <input type="hidden" name="id" value={wine.id} />
       ) : null}
@@ -157,7 +160,7 @@ export const WineForm = async ({ wine, action }: WineFormProps) => {
 
       <div className="flex flex-col w-full gap-2">
         <Label htmlFor="active" className="self-start">
-          Visibilidad
+          Otros
         </Label>
         <label className="flex items-center gap-2">
           <Checkbox id="active" name="active" defaultChecked={wine?.active} />

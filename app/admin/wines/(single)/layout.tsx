@@ -1,19 +1,18 @@
-import { createWine } from "@/actions/wine";
-import { WineForm } from "@/components/WineForm";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
+import React from "react";
 
-async function NewPage() {
+function SingleLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="container">
+    <div className="container px-4">
       <Link href="/admin/wines" className="flex items-center gap-2">
         <ArrowLeft className="w-6 h-6" />
         Volver a la lista
       </Link>
 
-      <WineForm action={createWine} />
+      {children}
     </div>
   );
 }
 
-export default NewPage;
+export default SingleLayout;

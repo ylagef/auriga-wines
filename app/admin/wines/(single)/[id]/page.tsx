@@ -1,8 +1,6 @@
 import { updateWine } from "@/actions/wine";
 import { WineForm } from "@/components/WineForm";
 import { createClient } from "@/utils/supabase/server";
-import { ArrowLeft } from "lucide-react";
-import Link from "next/link";
 
 async function EditPage({
   params,
@@ -21,16 +19,7 @@ async function EditPage({
 
   if (!wine) return <div>Wine not found</div>;
 
-  return (
-    <div className="container">
-      <Link href="/admin/wines" className="flex items-center gap-2">
-        <ArrowLeft className="w-6 h-6" />
-        Volver a la lista
-      </Link>
-
-      <WineForm wine={wine} action={updateWine} />
-    </div>
-  );
+  return <WineForm wine={wine} action={updateWine} />;
 }
 
 export default EditPage;
