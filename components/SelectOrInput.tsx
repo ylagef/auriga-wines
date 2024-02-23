@@ -10,6 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./ui/Select";
+import { Switch } from "./ui/Switch";
 
 interface SelectOrInputProps {
   id: string;
@@ -63,8 +64,8 @@ export const SelectOrInput = ({
         </Select>
       )}
 
-      <label className="flex items-center gap-2 pl-4">
-        <Checkbox
+      <label className="flex items-center gap-2">
+        <Switch
           checked={showNew}
           onCheckedChange={() => setShowNew((prev) => !prev)}
         />

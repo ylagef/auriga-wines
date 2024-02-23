@@ -4,12 +4,11 @@ import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Label } from "@/components/ui/Label";
 import { Textarea } from "@/components/ui/Textarea";
-import { Wine, WineDB } from "@/utils/supabase/parsedTypes";
+import { WineDB } from "@/utils/supabase/parsedTypes";
 import { createClient } from "@/utils/supabase/server";
-import { Checkbox } from "./ui/Checkbox";
-import Image from "next/image";
-import { TrashIcon } from "lucide-react";
 import { WinePhotoFormInput } from "./WinePhotoFormInput";
+import { Checkbox } from "./ui/Checkbox";
+import { Switch } from "./ui/Switch";
 
 interface WineFormProps {
   wine?: WineDB;
@@ -163,11 +162,11 @@ export const WineForm = async ({ wine, action }: WineFormProps) => {
           Otros
         </Label>
         <label className="flex items-center gap-2">
-          <Checkbox id="active" name="active" defaultChecked={wine?.active} />
+          <Switch id="active" name="active" defaultChecked={wine?.active} />
           Activo
         </label>
         <label className="flex items-center gap-2">
-          <Checkbox id="new" name="new" defaultChecked={wine?.new} />
+          <Switch id="new" name="new" defaultChecked={wine?.new} />
           Nuevo
         </label>
       </div>
