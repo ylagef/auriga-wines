@@ -58,13 +58,15 @@ export const columns: (
         height: number;
       };
       return (
-        <Image
-          src={`${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/wines/${row.original.photo_url}`}
-          alt={row.original.name}
-          width={size?.width || 20}
-          height={size?.height || 20}
-          className="object-contain h-20"
-        />
+        <div className="w-24 aspect-square">
+          <Image
+            src={`${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/wines/${row.original.photo_url}`}
+            alt={row.original.name}
+            width={size?.width || 20}
+            height={size?.height || 20}
+            className="object-contain w-auto h-full"
+          />
+        </div>
       );
     },
   },
@@ -129,7 +131,7 @@ export const columns: (
             }
             className="cursor-pointer"
           >
-            {row.original.active ? "Ocultar" : "Mostrar"}
+            {row.original.active ? "Desactivar" : "Activar"}
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem

@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Label } from "@/components/ui/Label";
 import { Textarea } from "@/components/ui/Textarea";
-import { Wine } from "@/utils/supabase/parsedTypes";
+import { Wine, WineDB } from "@/utils/supabase/parsedTypes";
 import { createClient } from "@/utils/supabase/server";
 import { Checkbox } from "./ui/Checkbox";
 import Image from "next/image";
@@ -12,7 +12,7 @@ import { TrashIcon } from "lucide-react";
 import { WinePhotoFormInput } from "./WinePhotoFormInput";
 
 interface WineFormProps {
-  wine?: Wine;
+  wine?: WineDB;
   action: (_: FormData) => Promise<void>;
 }
 

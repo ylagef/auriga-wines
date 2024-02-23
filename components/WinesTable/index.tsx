@@ -9,7 +9,7 @@ import {
   TableRow,
 } from "@/components/ui/Table";
 import { cn } from "@/utils";
-import { Wine } from "@/utils/supabase/parsedTypes";
+import { Wine, WineDB } from "@/utils/supabase/parsedTypes";
 import {
   SortingState,
   flexRender,
@@ -22,7 +22,7 @@ import { Dialog } from "./Dialog";
 import { columns } from "./columns";
 
 interface DataTableProps {
-  data: Wine[];
+  data: any[];
 }
 
 export const WinesTable = ({ data }: DataTableProps) => {

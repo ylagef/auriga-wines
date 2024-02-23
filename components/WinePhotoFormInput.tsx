@@ -5,11 +5,11 @@ import React, { useRef, useState } from "react";
 import { Input } from "./ui/Input";
 import { Button } from "./ui/Button";
 import { TrashIcon } from "lucide-react";
-import { Wine } from "@/utils/supabase/parsedTypes";
+import { Wine, WineDB } from "@/utils/supabase/parsedTypes";
 import { cn } from "@/utils";
 
 interface WinePhotoFormInputProps {
-  wine?: Wine;
+  wine?: WineDB;
 }
 
 export const WinePhotoFormInput = ({ wine }: WinePhotoFormInputProps) => {
