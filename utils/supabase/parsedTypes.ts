@@ -5,3 +5,5 @@ export type Wine = Database["public"]["Tables"]["wines"]["Row"] & {
   country: { name: string };
   region: { name: string };
 };
+
+export type WineDB = Database["public"]["Tables"]["wines"]["Row"];

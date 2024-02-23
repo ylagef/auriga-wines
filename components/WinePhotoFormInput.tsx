@@ -43,8 +43,8 @@ export const WinePhotoFormInput = ({ wine }: WinePhotoFormInputProps) => {
               : "/images/bottle.svg"
           }
           alt="Foto del vino"
-          width={size.width || 100}
-          height={size.height || 100}
+          width={size?.width || 100}
+          height={size?.height || 100}
           className="object-contain w-auto h-full"
         />
       </div>

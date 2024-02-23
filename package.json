@@ -24,6 +24,7 @@
     "clsx": "^2.1.0",
     "cmdk": "^0.2.1",
     "geist": "^1.2.1",
+    "js-md5": "^0.8.3",
     "lucide-react": "^0.334.0",
     "next": "latest",
     "postcss": "8.4.33",

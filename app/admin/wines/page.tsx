@@ -25,7 +25,7 @@ export default async function AdminPage() {
   if (!wines) return <div>Wines not found</div>;
 
   return (
-    <div className="container flex flex-col items-center flex-1 w-full gap-4">
+    <div className="container flex flex-col items-center flex-1 w-full gap-4 px-4">
       {/* <AuthButton /> */}
 
       <div className="flex justify-end w-full">
