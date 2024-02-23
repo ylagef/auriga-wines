@@ -173,7 +173,7 @@ export const createWine = async (formData: FormData) => {
   console.log({ data, error });
 
   const insertedWine = data?.[0];
-  if (!insertedWine) return "Error creating wine";
+  if (!insertedWine) throw new Error("Error creating wine");
 
   const photo = formData.get("photo") as File;
   if (photo.size > 0) {
