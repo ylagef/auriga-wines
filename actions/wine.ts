@@ -1,12 +1,17 @@
 "use server";
 
+import { Wine } from "@/utils/supabase/parsedTypes";
 import { createClient } from "@/utils/supabase/server";
 import { revalidatePath } from "next/cache";
 import sharp from "sharp";
 
-const supabase = createClient();
+const revalidatePaths = () => {
+  revalidatePath("/admin/wines");
+  revalidatePath("/wines");
+};
 
 const handleAddNewGrapes = async (newGrapes: string[]) => {
+  const supabase = createClient();
   const newGrapesArray = newGrapes.map((name) => ({ name }));
   const { data, error } = await supabase
     .from("grapes")
@@ -17,8 +22,8 @@ const handleAddNewGrapes = async (newGrapes: string[]) => {
 };
 
 const handleAddNewElement = async (table: string, name: string) => {
+  const supabase = createClient();
   const { data, error } = await supabase.from(table).insert({ name }).select();
-  console.log(table, { data, error });
   return data;
 };
 
@@ -35,6 +40,7 @@ export const createWine = async (formData: FormData) => {
     cellar_id: Number(formData.get("cellar")),
     photo_url: "",
     photo_size: { width: 0, height: 0 },
+    active: formData.get("active") === "on",
   };
 
   const newGrapes = formData.getAll("new-grape") as string[];
@@ -47,14 +53,14 @@ export const createWine = async (formData: FormData) => {
   const newCountry = formData.get("new-country") as string;
   if (newCountry) {
     const newCountryData = await handleAddNewElement("countries", newCountry);
-    if (!newCountryData) throw new Error("Error creating new country");
+    if (!newCountryData) return "Error creating new country";
     wine.country_id = newCountryData[0].id;
   }
 
   const newRegion = formData.get("new-region") as string;
   if (newRegion) {
     const newRegionData = await handleAddNewElement("regions", newRegion);
-    if (!newRegionData) throw new Error("Error creating new region");
+    if (!newRegionData) return "Error creating new region";
     wine.region_id = newRegionData[0].id;
   }
 
@@ -64,50 +70,61 @@ export const createWine = async (formData: FormData) => {
       "apellations",
       newApellation
     );
-    if (!newApellationData) throw new Error("Error creating new apellation");
+    if (!newApellationData) return "Error creating new apellation";
     wine.apellation_id = newApellationData[0].id;
   }
 
   const newCellar = formData.get("new-cellar") as string;
   if (newCellar) {
     const newCellarData = await handleAddNewElement("cellars", newCellar);
-    if (!newCellarData) throw new Error("Error creating new cellar");
+    if (!newCellarData) return "Error creating new cellar";
     wine.cellar_id = newCellarData[0].id;
   }
 
+  const { data, error } = await supabase.from("wines").insert(wine).select();
+  console.log({ data, error });
+  if (!data?.[0]) return "Error creating wine";
+  const insertedWine = data[0];
+
   const photo = formData.get("photo") as File;
   if (photo) {
+    console.log("Uploading photo", photo, `${insertedWine.id}-${photo.name}`);
     const { data: photoData, error: photoError } = await supabase.storage
       .from("wines")
-      .upload(`${wine.name}-${photo.name}`, photo, {
-        cacheControl: "3600",
-        upsert: false,
-      });
+      .upload(`${insertedWine.id}-${photo.name}`, photo);
     console.log({ photoData, photoError });
-    if (!photoData) throw new Error("Error uploading photo");
+    if (!photoData) return "Error uploading photo";
 
     const buffer = await photo.arrayBuffer();
     const metadata = await sharp(Buffer.from(buffer)).metadata();
     console.log(`Image dimensions are ${metadata.width}x${metadata.height}`);
 
-    wine.photo_url = photoData?.path;
-    wine.photo_size = {
-      width: metadata.width || 0,
-      height: metadata.height || 0,
-    };
+    // Update wine with photo data
+    const { data: wineData, error: wineError } = await supabase
+      .from("wines")
+      .update({
+        photo_url: photoData?.path,
+        photo_size: {
+          width: metadata.width || 0,
+          height: metadata.height || 0,
+        },
+      })
+      .eq("id", insertedWine.id)
+      .select();
+
+    revalidatePaths();
+
+    console.log({ wineData, wineError });
+    return wineData;
   }
 
-  const { data, error } = await supabase.from("wines").insert(wine).select();
-
+  revalidatePaths();
   console.log({ data, error });
-
-  revalidatePath("/admin/wines");
-  revalidatePath("/wines");
-
   return data;
 };
 
 export const updateWine = async (formData: FormData) => {
+  const supabase = createClient();
   const wine = {
     id: Number(formData.get("id")),
     name: formData.get("name") as string,
@@ -119,7 +136,9 @@ export const updateWine = async (formData: FormData) => {
     region_id: Number(formData.get("region")),
     apellation_id: Number(formData.get("apellation")),
     cellar_id: Number(formData.get("cellar")),
-    // photo: formData.get("photo") as string,
+    photo_url: "",
+    photo_size: { width: 0, height: 0 },
+    active: formData.get("active") === "on",
   };
   const newGrapes = formData.getAll("new-grape") as string[];
   if (newGrapes.length > 0) {
@@ -137,14 +156,37 @@ export const updateWine = async (formData: FormData) => {
     .select();
 
   console.log({ data, error, count, status, statusText });
-  revalidatePath("/admin/wines");
-  revalidatePath("/wines");
+  revalidatePaths();
 };
 
-export const deleteWine = async (id: number) => {
-  const { data, error } = await supabase.from("wines").delete().eq("id", id);
-
+export const deleteWine = async (wine: Wine) => {
+  const supabase = createClient();
+  console.log("Deleting wine", wine);
+  const { data, error } = await supabase
+    .from("wines")
+    .delete()
+    .eq("id", wine.id);
   console.log({ data, error });
-  revalidatePath("/admin/wines");
-  revalidatePath("/wines");
+
+  // Remove the image if exists
+  if (wine.photo_url) {
+    console.log("Removing photo", wine.photo_url);
+    const { data: photoData, error: photoError } = await supabase.storage
+      .from("wines")
+      .remove([wine.photo_url]);
+    console.log({ photoData, photoError });
+  }
+
+  revalidatePaths();
+};
+
+export const toggleActiveWine = async (id: number, value: boolean) => {
+  const supabase = createClient();
+  const { data, error } = await supabase
+    .from("wines")
+    .update({ active: value })
+    .eq("id", id)
+    .select();
+  console.log({ data, error });
+  revalidatePaths();
 };

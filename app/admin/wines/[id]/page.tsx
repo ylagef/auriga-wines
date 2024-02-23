@@ -1,4 +1,4 @@
-import { updateWine } from "@/actions/create-wine";
+import { updateWine } from "@/actions/wine";
 import { WineForm } from "@/components/WineForm";
 import { createClient } from "@/utils/supabase/server";
 import { ArrowLeft } from "lucide-react";

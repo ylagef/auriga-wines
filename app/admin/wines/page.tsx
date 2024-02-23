@@ -19,7 +19,7 @@ export default async function AdminPage() {
   const { data: wines } = await supabase
     .from("wines")
     .select(
-      "id, name, description, price, year, photo_url, photo_size, grapes, new, apellation:apellation_id(name), country:country_id(name), region:region_id(name), created_at"
+      "id, name, description, price, year, photo_url, photo_size, grapes, new, apellation:apellation_id(name), country:country_id(name), region:region_id(name), created_at, active"
     );
 
   if (!wines) return <div>Wines not found</div>;

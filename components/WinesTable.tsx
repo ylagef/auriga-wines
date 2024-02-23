@@ -38,7 +38,7 @@ import {
   DropdownMenuTrigger,
 } from "./ui/DropdownMenu";
 import Image from "next/image";
-import { deleteWine } from "@/actions/create-wine";
+import { deleteWine, toggleActiveWine } from "@/actions/wine";
 
 interface DataTableProps {
   data: Wine[];
@@ -76,7 +76,7 @@ export const WinesTable = ({ data }: DataTableProps) => {
         };
         return (
           <Image
-            src={`https://jacopngdwpoypvunhunq.supabase.co/storage/v1/object/public/wines/${row.original.photo_url}`}
+            src={`${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/wines/${row.original.photo_url}`}
             alt={row.original.name}
             width={size?.width || 20}
             height={size?.height || 20}
@@ -115,32 +115,40 @@ export const WinesTable = ({ data }: DataTableProps) => {
     },
     {
       header: "Acciones",
-      cell: ({ row }) => {
-        console.log(row);
-
-        return (
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <button className="flex items-center justify-center w-full">
-                <MoreHorizontal className="w-4 h-4" />
-              </button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem>
-                <Link href={`/admin/wines/${row.original.id}`}>Editar</Link>
-              </DropdownMenuItem>
-
-              <DropdownMenuSeparator />
-              <DropdownMenuItem
-                className="text-red-700"
-                onClick={() => setAlertOpen(String(row.original.id))}
+      cell: ({ row }) => (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <button className="flex items-center justify-center w-full">
+              <MoreHorizontal className="w-4 h-4" />
+            </button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem asChild>
+              <Link
+                href={`/admin/wines/${row.original.id}`}
+                className="cursor-pointer"
               >
-                Eliminar
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        );
-      },
+                Editar
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() =>
+                toggleActiveWine(row.original.id, !row.original.active)
+              }
+              className="cursor-pointer"
+            >
+              {row.original.active ? "Ocultar" : "Mostrar"}
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem
+              className="text-red-700 cursor-pointer"
+              onClick={() => setAlertOpen(String(row.original.id))}
+            >
+              Eliminar
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      ),
     },
   ];
 
@@ -175,7 +183,9 @@ export const WinesTable = ({ data }: DataTableProps) => {
             <AlertDialogAction
               className="text-white bg-red-700"
               onClick={async () => {
-                await deleteWine(Number(alertOpen));
+                const wine = data.find((wine) => String(wine.id) === alertOpen);
+                if (!wine) return;
+                await deleteWine(wine);
                 setAlertOpen(null);
               }}
             >
@@ -210,6 +220,7 @@ export const WinesTable = ({ data }: DataTableProps) => {
               <TableRow
                 key={row.id}
                 data-state={row.getIsSelected() && "selected"}
+                className={cn(!row.original.active && "opacity-50")}
               >
                 {row.getVisibleCells().map((cell) => (
                   <TableCell key={cell.id}>
@@ -221,7 +232,7 @@ export const WinesTable = ({ data }: DataTableProps) => {
           ) : (
             <TableRow>
               <TableCell colSpan={columns.length} className="h-24 text-center">
-                No results.
+                No hay resultados
               </TableCell>
             </TableRow>
           )}

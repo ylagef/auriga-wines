@@ -1,4 +1,4 @@
-import { createWine } from "@/actions/create-wine";
+import { createWine } from "@/actions/wine";
 import { WineForm } from "@/components/WineForm";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";

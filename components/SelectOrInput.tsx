@@ -52,11 +52,13 @@ export const SelectOrInput = ({
             <SelectValue placeholder="Seleccionar..." />
           </SelectTrigger>
           <SelectContent className="w-full bg-white shadow-sm">
-            {options?.map((country) => (
-              <SelectItem key={country.id} value={String(country.id)}>
-                {country.name}
-              </SelectItem>
-            ))}
+            {options
+              ?.sort((a, z) => a.name.localeCompare(z.name))
+              ?.map((country) => (
+                <SelectItem key={country.id} value={String(country.id)}>
+                  {country.name}
+                </SelectItem>
+              ))}
           </SelectContent>
         </Select>
       )}

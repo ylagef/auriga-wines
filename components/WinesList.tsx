@@ -60,7 +60,6 @@ export const WinesList = async ({
       region: { name: string };
     })[]
   >();
-  console.log(wines);
 
   if (!wines?.length) {
     return (
@@ -102,7 +101,7 @@ export const WinesList = async ({
             </Badge>
 
             <Image
-              src={`https://jacopngdwpoypvunhunq.supabase.co/storage/v1/object/public/wines/${wine.photo_url}`}
+              src={`${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/wines/${wine.photo_url}`}
               alt={wine.name}
               width={size.width || 100}
               height={size.height || 100}

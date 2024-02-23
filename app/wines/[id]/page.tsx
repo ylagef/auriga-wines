@@ -27,7 +27,7 @@ async function WineDetail({
   return (
     <div className="flex flex-col items-center w-full gap-4 animate-fade-in">
       <Image
-        src={`https://jacopngdwpoypvunhunq.supabase.co/storage/v1/object/public/wines/${wine.photo_url}`}
+        src={`${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/wines/${wine.photo_url}`}
         alt={wine.name}
         width={size.width || 100}
         height={size.height || 100}

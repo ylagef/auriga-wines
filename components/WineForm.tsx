@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/Label";
 import { Textarea } from "@/components/ui/Textarea";
 import { Wine } from "@/utils/supabase/parsedTypes";
 import { createClient } from "@/utils/supabase/server";
+import { Checkbox } from "./ui/Checkbox";
 
 interface WineFormProps {
   wine?: Wine;
@@ -151,6 +152,16 @@ export const WineForm = async ({ wine, action }: WineFormProps) => {
           Uvas
         </Label>
         <GrapesInput grapes={grapes} selected={wine?.grapes} />
+      </div>
+
+      <div className="flex flex-col w-full gap-2">
+        <Label htmlFor="active" className="self-start">
+          Visibilidad
+        </Label>
+        <label className="flex items-center gap-2">
+          <Checkbox id="active" name="active" defaultChecked={wine?.active} />
+          Activo
+        </label>
       </div>
 
       <Button className="w-full mx-auto mt-8 font-bold max-w-72">
