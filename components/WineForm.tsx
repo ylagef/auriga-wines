@@ -7,6 +7,9 @@ import { Textarea } from "@/components/ui/Textarea";
 import { Wine } from "@/utils/supabase/parsedTypes";
 import { createClient } from "@/utils/supabase/server";
 import { Checkbox } from "./ui/Checkbox";
+import Image from "next/image";
+import { TrashIcon } from "lucide-react";
+import { WinePhotoFormInput } from "./WinePhotoFormInput";
 
 interface WineFormProps {
   wine?: Wine;
@@ -42,6 +45,11 @@ export const WineForm = async ({ wine, action }: WineFormProps) => {
   return (
     <form className="flex flex-col gap-6 p-8 animate-fade-in" action={action}>
       {wine?.id && <input type="hidden" name="id" value={wine.id} />}
+
+      <div className="flex flex-col w-full gap-2">
+        <Label htmlFor="photo">Foto</Label>
+        <WinePhotoFormInput wine={wine} />
+      </div>
 
       <div className="flex flex-col w-full gap-2">
         <Label htmlFor="name">Nombre</Label>
@@ -94,15 +102,6 @@ export const WineForm = async ({ wine, action }: WineFormProps) => {
         </div>
       </div>
 
-      <div className="flex flex-col w-full gap-2">
-        <Label htmlFor="photo">Foto</Label>
-        <Input
-          required={!wine?.photo_url}
-          id="photo"
-          name="photo"
-          type="file"
-        />
-      </div>
       <div className="grid grid-cols-1 gap-6 sm:gap-2 sm:grid-cols-2">
         <div className="flex flex-col w-full gap-2">
           <Label htmlFor="country">País</Label>
