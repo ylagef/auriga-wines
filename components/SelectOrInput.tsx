@@ -11,6 +11,7 @@ import {
   SelectValue,
 } from "./ui/Select";
 import { Switch } from "./ui/Switch";
+import { cn } from "@/utils";
 
 interface SelectOrInputProps {
   id: string;
@@ -22,6 +23,7 @@ interface SelectOrInputProps {
       }[]
     | null;
   selected?: number | null;
+  className?: string;
 }
 
 export const SelectOrInput = ({
@@ -29,6 +31,7 @@ export const SelectOrInput = ({
   options,
   placeholder,
   selected,
+  className,
 }: SelectOrInputProps) => {
   const [showNew, setShowNew] = useState(false);
 
@@ -40,7 +43,7 @@ export const SelectOrInput = ({
           name={`new-${id}`}
           type="text"
           placeholder={placeholder}
-          className="animate-fade-in"
+          className={cn("animate-fade-in", className)}
           required
         />
       ) : (
@@ -49,7 +52,12 @@ export const SelectOrInput = ({
           required
           defaultValue={selected ? String(selected) : undefined}
         >
-          <SelectTrigger className="w-full text-left shadow-sm animate-fade-in">
+          <SelectTrigger
+            className={cn(
+              "w-full text-left shadow-sm animate-fade-in",
+              className
+            )}
+          >
             <SelectValue placeholder="Seleccionar..." />
           </SelectTrigger>
           <SelectContent className="w-full bg-white shadow-sm">

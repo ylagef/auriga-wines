@@ -6,6 +6,7 @@ import { md5 } from "js-md5";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import sharp from "sharp";
+import { z } from "zod";
 
 const revalidatePaths = () => {
   revalidatePath("/admin/wines");
@@ -31,19 +32,32 @@ const handleAddNewElement = async (table: string, name: string) => {
 
 const getWineObject = (formData: FormData): Partial<WineDB> => {
   console.log("Getting wine object", formData);
-  const wine: Partial<WineDB> = {
-    id: formData.get("id") ? Number(formData.get("id") as string) : undefined,
+  const wine: Partial<
+    Wine & {
+      photo: File;
+    }
+  > = {
+    id: formData.get("id") ? Number(formData.get("id")) : undefined,
     name: formData.get("name") as string,
     description: formData.get("description") as string,
-    price: Number(formData.get("price")),
-    year: Number(formData.get("year")),
+    price: formData.get("price") ? Number(formData.get("price")) : undefined,
+    year: formData.get("year") ? Number(formData.get("year")) : undefined,
     grapes: formData.getAll("grape").map(Number) || [],
-    country_id: Number(formData.get("country")),
-    region_id: Number(formData.get("region")),
-    apellation_id: Number(formData.get("apellation")),
-    cellar_id: Number(formData.get("cellar")),
+    country_id: formData.get("country")
+      ? Number(formData.get("country"))
+      : undefined,
+    region_id: formData.get("region")
+      ? Number(formData.get("region"))
+      : undefined,
+    apellation_id: formData.get("apellation")
+      ? Number(formData.get("apellation"))
+      : undefined,
+    cellar_id: formData.get("cellar")
+      ? Number(formData.get("cellar"))
+      : undefined,
     active: formData.get("active") === "on",
     tags: formData.getAll("tag").map(Number) || [],
+    photo: formData.get("photo") as File,
   };
 
   console.log("Wine object", wine);
@@ -75,7 +89,7 @@ const handleNewObjects = async (wine: Partial<Wine>, formData: FormData) => {
           "countries",
           newCountry
         );
-        if (!newCountryData) throw new Error("Error creating new country");
+        if (!newCountryData) return { errors: ["Error creating new country"] };
         wine.country_id = newCountryData[0].id;
         console.log("Promise newCountry end", wine.country_id);
       })()
@@ -88,7 +102,7 @@ const handleNewObjects = async (wine: Partial<Wine>, formData: FormData) => {
       (async () => {
         console.log("Promise newRegion running...");
         const newRegionData = await handleAddNewElement("regions", newRegion);
-        if (!newRegionData) throw new Error("Error creating new region");
+        if (!newRegionData) return { errors: ["Error creating new region"] };
         wine.region_id = newRegionData[0].id;
         console.log("Promise newRegion end", wine.region_id);
       })()
@@ -105,7 +119,7 @@ const handleNewObjects = async (wine: Partial<Wine>, formData: FormData) => {
           newApellation
         );
         if (!newApellationData)
-          throw new Error("Error creating new apellation");
+          return { errors: ["Error creating new apellation"] };
         wine.apellation_id = newApellationData[0].id;
         console.log("Promise newApellation end", wine.apellation_id);
       })()
@@ -118,7 +132,7 @@ const handleNewObjects = async (wine: Partial<Wine>, formData: FormData) => {
       (async () => {
         console.log("Promise newCellar running...");
         const newCellarData = await handleAddNewElement("cellars", newCellar);
-        if (!newCellarData) throw new Error("Error creating new cellar");
+        if (!newCellarData) return { errors: ["Error creating new cellar"] };
         wine.cellar_id = newCellarData[0].id;
         console.log("Promise newCellar end", wine.cellar_id);
       })()
@@ -160,10 +174,84 @@ const handlePhotoUpload = async (photo: File, wine: WineDB) => {
   console.log({ wineData, wineError });
 };
 
-export const createWine = async (formData: FormData) => {
+const zodSchema = z
+  .object({
+    name: z
+      .string({
+        required_error: "Campo requerido",
+      })
+      .min(3, { message: "Mínimo 3 caracteres" })
+      .max(50, {
+        message: "Máximo 50 caracteres",
+      }),
+    description: z
+      .string({
+        required_error: "Campo requerido",
+      })
+      .min(3, { message: "Mínimo 3 caracteres" })
+      .max(1000, {
+        message: "Máximo 1000 caracteres",
+      }),
+    price: z
+      .number({
+        required_error: "Campo requerido",
+      })
+      .min(0.01, { message: "Mínimo 0.01" }),
+    year: z
+      .number({
+        required_error: "Campo requerido",
+      })
+      .min(1700, { message: "Mínimo 1700" })
+      .max(new Date().getFullYear(), {
+        message: "Año no válido",
+      }),
+    grapes: z.array(z.number()),
+    country: z.number({
+      required_error: "Campo requerido",
+    }),
+    region: z.number({
+      required_error: "Campo requerido",
+    }),
+    apellation: z.number({
+      required_error: "Campo requerido",
+    }),
+    cellar: z.number({
+      required_error: "Campo requerido",
+    }),
+    active: z.boolean(),
+    tags: z.array(
+      z.number({
+        required_error: "Campo requerido",
+      })
+    ),
+    photo: z.any(),
+  })
+  .required();
+
+const validateObject = (
+  obj: Partial<
+    Wine & {
+      photo: File;
+    }
+  >
+) => {
+  const validatedSchema = zodSchema.safeParse(obj);
+  if (!validatedSchema.success) {
+    console.error("Validation error", validatedSchema.error.flatten());
+    return {
+      errors: validatedSchema.error.flatten().fieldErrors,
+    };
+  }
+};
+
+export const createWine = async (_: any, formData: FormData) => {
   const supabase = createClient();
 
   const wine = getWineObject(formData);
+  console.log({ wine });
+  const validatedSchema = validateObject(wine);
+  console.log({ validatedSchema });
+  if (validatedSchema?.errors) return validatedSchema;
 
   await handleNewObjects(wine, formData);
 
@@ -174,7 +262,7 @@ export const createWine = async (formData: FormData) => {
   console.log({ data, error });
 
   const insertedWine = data?.[0];
-  if (!insertedWine) throw new Error("Error creating wine");
+  if (!insertedWine) return { errors: ["Error inserting wine"] };
 
   const photo = formData.get("photo") as File;
   if (photo.size > 0) {
@@ -186,7 +274,7 @@ export const createWine = async (formData: FormData) => {
   redirect(`/admin/wines`);
 };
 
-export const updateWine = async (formData: FormData) => {
+export const updateWine = async (_: any, formData: FormData) => {
   const supabase = createClient();
   const wine = getWineObject(formData);
 
@@ -194,7 +282,7 @@ export const updateWine = async (formData: FormData) => {
 
   console.log({ wine });
 
-  if (!wine.id) throw new Error("Wine id is required");
+  if (!wine.id) return { errors: ["Wine id is required"] };
 
   const { data, error, count, status, statusText } = await supabase
     .from("wines")

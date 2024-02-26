@@ -1,3 +1,5 @@
+"use client";
+
 import { GrapesInput } from "@/components/GrapesInput";
 import { SelectOrInput } from "@/components/SelectOrInput";
 import { Button } from "@/components/ui/Button";
@@ -5,46 +7,50 @@ import { Input } from "@/components/ui/Input";
 import { Label } from "@/components/ui/Label";
 import { Textarea } from "@/components/ui/Textarea";
 import { WineDB } from "@/utils/supabase/parsedTypes";
-import { createClient } from "@/utils/supabase/server";
-import { WinePhotoFormInput } from "./WinePhotoFormInput";
-import { Checkbox } from "./ui/Checkbox";
-import { Switch } from "./ui/Switch";
+import { useFormState } from "react-dom";
+import { WinePhotoFormInput } from "../WinePhotoFormInput";
+import { Switch } from "../ui/Switch";
+import { SubmitButton } from "./button";
+import { cn } from "@/utils";
+import { useEffect, useState } from "react";
 
 interface WineFormProps {
   wine?: WineDB;
-  action: (_: FormData) => Promise<void>;
+  action: (
+    _: any,
+    formData: FormData
+  ) => Promise<{
+    errors: any;
+  }>;
+  countries: { id: number; name: string }[] | null;
+  grapes: { id: number; name: string }[] | null;
+  regions: { id: number; name: string }[] | null;
+  cellars: { id: number; name: string }[] | null;
+  apellations: { id: number; name: string }[] | null;
 }
 
-export const WineForm = async ({ wine, action }: WineFormProps) => {
-  const supabase = createClient();
+export const Form = ({
+  wine,
+  action,
+  countries,
+  grapes,
+  regions,
+  cellars,
+  apellations,
+}: WineFormProps) => {
+  const [state, formAction] = useFormState(action, { errors: {} });
+  const [errors, setErrors] = useState(state.errors);
 
-  const countriesQuery = supabase.from("countries").select("id, name");
-  const grapesQuery = supabase.from("grapes").select("id, name");
-  const regionsQuery = supabase.from("regions").select("id, name");
-  // const pairingsQuery = supabase.from("pairings").select("id, name");
-  const cellarsQuery = supabase.from("cellars").select("id, name");
-  const apellationsQuery = supabase.from("apellations").select("id, name");
-
-  const [
-    { data: countries },
-    { data: grapes },
-    { data: regions },
-    // { data: pairings },
-    { data: cellars },
-    { data: apellations },
-  ] = await Promise.all([
-    countriesQuery,
-    grapesQuery,
-    regionsQuery,
-    // pairingsQuery,
-    cellarsQuery,
-    apellationsQuery,
-  ]);
+  useEffect(() => {
+    setErrors(state.errors);
+  }, [state.errors]);
+  console.log("Form state", state);
 
   return (
     <form
       className="flex flex-col gap-6 px-4 py-8 animate-fade-in"
-      action={action}
+      action={formAction}
+      onFocus={() => setErrors({})}
     >
       {wine?.id !== undefined ? (
         <input type="hidden" name="id" value={wine.id} />
@@ -61,9 +67,16 @@ export const WineForm = async ({ wine, action }: WineFormProps) => {
           required
           id="name"
           name="name"
-          placeholder="Viña Costeira"
+          placeholder="Nombre del vino"
           defaultValue={wine?.name}
+          className={cn(
+            "transition-all",
+            errors?.name && "border-red-500 border-2 bg-red-500/10"
+          )}
         />
+        {errors?.name && (
+          <span className="text-xs text-red-500">{errors.name}</span>
+        )}
       </div>
 
       <div className="flex flex-col w-full gap-2">
@@ -73,7 +86,14 @@ export const WineForm = async ({ wine, action }: WineFormProps) => {
           name="description"
           placeholder="Descripción del vino"
           defaultValue={wine?.description || ""}
+          className={cn(
+            "transition-all",
+            errors?.description && "border-red-500 border-2 bg-red-500/10"
+          )}
         />
+        {errors?.description && (
+          <span className="text-xs text-red-500">{errors.description}</span>
+        )}
       </div>
 
       <div className="grid grid-cols-1 gap-6 sm:gap-2 sm:grid-cols-2">
@@ -88,7 +108,14 @@ export const WineForm = async ({ wine, action }: WineFormProps) => {
             min={0}
             step={0.01}
             defaultValue={wine?.price}
+            className={cn(
+              "transition-all",
+              errors?.price && "border-red-500 border-2 bg-red-500/10"
+            )}
           />
+          {errors?.price && (
+            <span className="text-xs text-red-500">{errors.price}</span>
+          )}
         </div>
 
         <div className="flex flex-col gap-2">
@@ -99,10 +126,17 @@ export const WineForm = async ({ wine, action }: WineFormProps) => {
             name="year"
             type="number"
             placeholder="2020"
-            min={1700}
+            // min={1700}
             max={new Date().getFullYear()}
             defaultValue={wine?.year}
+            className={cn(
+              "transition-all",
+              errors?.year && "border-red-500 border-2 bg-red-500/10"
+            )}
           />
+          {errors?.year && (
+            <span className="text-xs text-red-500">{errors.year}</span>
+          )}
         </div>
       </div>
 
@@ -114,7 +148,14 @@ export const WineForm = async ({ wine, action }: WineFormProps) => {
             options={countries}
             placeholder="Nombre del país"
             selected={wine?.country_id}
+            className={cn(
+              "transition-all",
+              errors?.country && "border-red-500 border-2 bg-red-500/10"
+            )}
           />
+          {errors?.country && (
+            <span className="text-xs text-red-500">{errors.country}</span>
+          )}
         </div>
 
         <div className="flex flex-col w-full gap-2">
@@ -124,7 +165,14 @@ export const WineForm = async ({ wine, action }: WineFormProps) => {
             options={regions}
             placeholder="Nombre de la región"
             selected={wine?.region_id}
+            className={cn(
+              "transition-all",
+              errors?.region && "border-red-500 border-2 bg-red-500/10"
+            )}
           />
+          {errors?.region && (
+            <span className="text-xs text-red-500">{errors.region}</span>
+          )}
         </div>
       </div>
 
@@ -136,7 +184,14 @@ export const WineForm = async ({ wine, action }: WineFormProps) => {
             options={apellations}
             placeholder="Nombre de la D.O."
             selected={wine?.apellation_id}
+            className={cn(
+              "transition-all",
+              errors?.apellation && "border-red-500 border-2 bg-red-500/10"
+            )}
           />
+          {errors?.apellation && (
+            <span className="text-xs text-red-500">{errors.apellation}</span>
+          )}
         </div>
 
         <div className="flex flex-col w-full gap-2">
@@ -146,7 +201,14 @@ export const WineForm = async ({ wine, action }: WineFormProps) => {
             options={cellars}
             placeholder="Nombre de la bodega"
             selected={wine?.cellar_id}
+            className={cn(
+              "transition-all",
+              errors?.cellar && "border-red-500 border-2 bg-red-500/10"
+            )}
           />
+          {errors?.cellar && (
+            <span className="text-xs text-red-500">{errors.cellar}</span>
+          )}
         </div>
       </div>
 
@@ -177,17 +239,15 @@ export const WineForm = async ({ wine, action }: WineFormProps) => {
         <label className="flex items-center gap-2">
           <Switch
             id="bestseller"
-            value="bestseller"
-            name="2"
+            value="2"
+            name="tag"
             defaultChecked={wine?.tags?.includes(2)}
           />
           Más vendido
         </label>
       </div>
 
-      <Button className="w-full mx-auto mt-8 font-bold max-w-72">
-        {wine ? "Actualizar" : "Crear"}
-      </Button>
+      <SubmitButton>{wine ? "Actualizar" : "Crear"}</SubmitButton>
     </form>
   );
 };
