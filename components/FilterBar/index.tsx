@@ -9,7 +9,6 @@ async function FilterBar() {
   const countriesQuery = supabase.from("countries").select("id, name");
   const grapesQuery = supabase.from("grapes").select("id, name");
   const regionsQuery = supabase.from("regions").select("id, name");
-  const pairingsQuery = supabase.from("pairings").select("id, name");
   const cellarsQuery = supabase.from("cellars").select("id, name");
   const apellationsQuery = supabase.from("apellations").select("id, name");
   const maxWinePriceQuery = supabase
@@ -23,25 +22,27 @@ async function FilterBar() {
     .order("year", { ascending: true })
     .limit(1);
 
+  const tagsQuery = supabase.from("tags").select("id, name");
+
   // Promise all
   const [
     { data: countries },
     { data: grapes },
     { data: regions },
-    { data: pairings },
     { data: cellars },
     { data: apellations },
     { data: maxWinePrice },
     { data: maxYears },
+    { data: tags },
   ] = await Promise.all([
     countriesQuery,
     grapesQuery,
     regionsQuery,
-    pairingsQuery,
     cellarsQuery,
     apellationsQuery,
     maxWinePriceQuery,
     maxYearsQuery,
+    tagsQuery,
   ]);
 
   return (
@@ -49,11 +50,11 @@ async function FilterBar() {
       countries={countries}
       grapes={grapes}
       regions={regions}
-      pairings={pairings}
       cellars={cellars}
       apellations={apellations}
       maxWinePrice={maxWinePrice}
       maxYears={maxYears}
+      tags={tags}
     />
   );
 }

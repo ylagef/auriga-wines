@@ -28,12 +28,6 @@ interface FilterBarComponentProps {
         name: string;
       }[]
     | null;
-  pairings:
-    | {
-        id: number;
-        name: string;
-      }[]
-    | null;
   cellars:
     | {
         id: number;
@@ -56,17 +50,23 @@ interface FilterBarComponentProps {
         year: number;
       }[]
     | null;
+  tags:
+    | {
+        id: number;
+        name: string;
+      }[]
+    | null;
 }
 
 function FilterBarComponent({
   countries,
   grapes,
   regions,
-  pairings,
   cellars,
   apellations,
   maxWinePrice,
   maxYears,
+  tags,
 }: FilterBarComponentProps) {
   return (
     <div className="flex flex-col w-full gap-2">
@@ -87,14 +87,14 @@ function FilterBarComponent({
             label: country.name,
           }))}
         />
-        {/* <MultiSelect
-          id="pairings"
-          placeholder="Maridajes"
-          options={pairings?.map((country) => ({
+        <MultiSelect
+          id="grapes"
+          placeholder="Uva predominante"
+          options={grapes?.map((country) => ({
             value: String(country.id),
             label: country.name,
           }))}
-        /> */}
+        />
         <MultiSelect
           id="cellars"
           placeholder="Bodegas"
@@ -111,9 +111,17 @@ function FilterBarComponent({
             label: country.name,
           }))}
         />
-
+        <MultiSelect
+          id="tags"
+          placeholder="Tags"
+          options={tags?.map((tag) => ({
+            value: String(tag.id),
+            label: tag.name,
+          }))}
+        />
         <NameFilter />
       </div>
+
       <div className="flex flex-wrap justify-between gap-6">
         <RangeSelect
           id="year"

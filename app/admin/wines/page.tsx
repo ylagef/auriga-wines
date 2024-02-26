@@ -1,10 +1,9 @@
 import { SignOutButton } from "@/components/SignOutButton";
 import { WinesTable } from "@/components/WinesTable";
 import { Button } from "@/components/ui/Button";
-import { Wine, WineDB } from "@/utils/supabase/parsedTypes";
 
 import { createClient } from "@/utils/supabase/server";
-import { QueryData } from "@supabase/supabase-js";
+import { Database } from "@/utils/supabase/types";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
@@ -19,15 +18,26 @@ export default async function AdminPage() {
     return redirect("/login");
   }
 
-  const { data: wines } = await supabase
+  const query = supabase
     .from("wines")
     .select(
-      "id, name, description, price, year, photo_url, photo_size, grapes, new, apellation:apellation_id(name), country:country_id(name), region:region_id(name), created_at, active"
+      "id, name, description, price, year, photo_url, photo_size, grapes, tags, apellation:apellation_id(name), country:country_id(name), region:region_id(name), active"
     );
 
-  if (!wines) return <div>Wines not found</div>;
+  const tagsQuery = supabase.from("tags").select("id, name, class_name");
 
-  type WinesWithForeign = QueryData<typeof wines>;
+  const [{ data: wines }, { data: tagsData }] = await Promise.all([
+    query.returns<
+      (Database["public"]["Tables"]["wines"]["Row"] & {
+        apellation: { name: string };
+        country: { name: string };
+        region: { name: string };
+      })[]
+    >(),
+    tagsQuery,
+  ]);
+
+  if (!wines) return <div>Wines not found</div>;
 
   return (
     <div className="flex flex-col items-center flex-1 w-full max-w-6xl gap-4 px-4">
@@ -40,7 +50,7 @@ export default async function AdminPage() {
         <SignOutButton />
       </div>
 
-      <WinesTable data={wines} />
+      <WinesTable data={wines} tags={tagsData} />
     </div>
   );
 }

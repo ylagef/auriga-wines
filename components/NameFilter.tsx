@@ -6,6 +6,8 @@ import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Input } from "./ui/Input";
 
+const PLACEHOLDER = "Nombre";
+
 export const NameFilter = () => {
   const searchParams = useSearchParams();
   const [name, setName] = useState<string | null>(searchParams.get("name"));
@@ -32,14 +34,15 @@ export const NameFilter = () => {
         <Input
           onFocus={() => setFocus(true)}
           onBlur={() => setFocus(false)}
-          placeholder="Nombre"
+          placeholder={PLACEHOLDER}
           className={cn(
             "text-center shadow-sm placeholder:text-gray-600 focus:w-72 transition-[width] max-w-full",
             name?.length && "pr-8",
-            name?.length ? `w-40` : "w-24"
+            name?.length ? `w-40` : "w-auto"
           )}
           onChange={(e) => setName(e.target.value)}
           value={name || ""}
+          size={PLACEHOLDER.length}
         />
 
         {name?.length && !focus ? (

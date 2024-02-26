@@ -10,18 +10,13 @@ export interface SearchParams {
   pairings?: string;
   cellars?: string;
   apellations?: string;
-  sortBy?:
-    | "price_asc"
-    | "price_desc"
-    | "year_asc"
-    | "year_desc"
-    | "created_at_asc"
-    | "created_at_desc";
+  sortBy?: "price_asc" | "price_desc" | "year_asc" | "year_desc";
   name?: string;
   from_price?: string;
   to_price?: string;
   from_year?: string;
   to_year?: string;
+  tags?: string;
 }
 
 async function WinesPage({ searchParams }: { searchParams: SearchParams }) {

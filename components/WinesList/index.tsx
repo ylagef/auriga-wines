@@ -21,6 +21,7 @@ export const WinesList = async ({
     to_price,
     from_year,
     to_year,
+    tags,
   } = searchParams;
 
   await new Promise((resolve) => setTimeout(resolve, 2000));
@@ -29,12 +30,12 @@ export const WinesList = async ({
   const query = supabase
     .from("wines")
     .select(
-      "id, name, description, price, year, photo_url, photo_size, grapes, new, apellation:apellation_id(name), country:country_id(name), region:region_id(name)"
+      "id, name, description, price, year, photo_url, photo_size, grapes, tags, apellation:apellation_id(name), country:country_id(name), region:region_id(name)"
     );
 
   if (countries?.length) query.in("country_id", countries.split(","));
-  // Grapes is an array of numbers, check if included
   if (grapes?.length) query.containedBy("grapes", grapes.split(","));
+  if (tags?.length) query.containedBy("tags", tags.split(","));
   if (regions?.length) query.in("region_id", regions.split(","));
   if (pairings?.length) query.containedBy("pairings", pairings.split(","));
   if (cellars?.length) query.in("cellar_id", cellars.split(","));
@@ -51,13 +52,18 @@ export const WinesList = async ({
     });
   }
 
-  const { data: wines } = await query.returns<
-    (Database["public"]["Tables"]["wines"]["Row"] & {
-      apellation: { name: string };
-      country: { name: string };
-      region: { name: string };
-    })[]
-  >();
+  const tagsQuery = supabase.from("tags").select("id, name, class_name");
+
+  const [{ data: wines }, { data: tagsData }] = await Promise.all([
+    query.returns<
+      (Database["public"]["Tables"]["wines"]["Row"] & {
+        apellation: { name: string };
+        country: { name: string };
+        region: { name: string };
+      })[]
+    >(),
+    tagsQuery,
+  ]);
 
   if (!wines?.length) {
     return (
@@ -80,7 +86,9 @@ export const WinesList = async ({
     <div className="z-0 grid justify-center w-full grid-cols-1 gap-10 px-2 sm:grid-cols-2 md:grid-cols-3 scroll-smooth">
       {wines.map((wine, index) => (
         <WineElement
+          key={wine.id}
           wine={wine}
+          tags={tagsData}
           parsedSearchParams={parsedSearchParams}
           priority={index < 6}
         />

@@ -35,7 +35,7 @@ async function WineDetail({
       />
 
       <div className="flex gap-2">
-        {wine.new && <Badge variant="default">Nuevo</Badge>}
+        {wine.tags?.includes(1) && <Badge variant="default">Nuevo</Badge>}
         <Badge variant="secondary">{wine.year}</Badge>
       </div>
 

@@ -23,9 +23,10 @@ import { columns } from "./columns";
 
 interface DataTableProps {
   data: any[];
+  tags: { id: number; name: string; class_name: string | null }[] | null;
 }
 
-export const WinesTable = ({ data }: DataTableProps) => {
+export const WinesTable = ({ data, tags }: DataTableProps) => {
   const [sorting, setSorting] = useState<SortingState>([
     {
       id: "created_at",
@@ -37,7 +38,7 @@ export const WinesTable = ({ data }: DataTableProps) => {
 
   const table = useReactTable({
     data,
-    columns: columns(setAlertOpen),
+    columns: columns(setAlertOpen, tags),
     getCoreRowModel: getCoreRowModel(),
     onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),

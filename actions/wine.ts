@@ -30,7 +30,7 @@ const handleAddNewElement = async (table: string, name: string) => {
 };
 
 const getWineObject = (formData: FormData): Partial<WineDB> => {
-  console.log("Getting wine object");
+  console.log("Getting wine object", formData);
   const wine: Partial<WineDB> = {
     id: formData.get("id") ? Number(formData.get("id") as string) : undefined,
     name: formData.get("name") as string,
@@ -43,9 +43,10 @@ const getWineObject = (formData: FormData): Partial<WineDB> => {
     apellation_id: Number(formData.get("apellation")),
     cellar_id: Number(formData.get("cellar")),
     active: formData.get("active") === "on",
-    new: formData.get("new") === "on",
+    tags: formData.getAll("tag").map(Number) || [],
   };
 
+  console.log("Wine object", wine);
   return wine;
 };
 

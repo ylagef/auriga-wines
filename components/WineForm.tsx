@@ -92,7 +92,7 @@ export const WineForm = async ({ wine, action }: WineFormProps) => {
         </div>
 
         <div className="flex flex-col gap-2">
-          <Label htmlFor="year">Año</Label>
+          <Label htmlFor="year">Añada</Label>
           <Input
             required
             id="year"
@@ -166,8 +166,22 @@ export const WineForm = async ({ wine, action }: WineFormProps) => {
           Activo
         </label>
         <label className="flex items-center gap-2">
-          <Switch id="new" name="new" defaultChecked={wine?.new} />
+          <Switch
+            id="new"
+            value="1"
+            name="tag"
+            defaultChecked={wine?.tags?.includes(1)}
+          />
           Nuevo
+        </label>
+        <label className="flex items-center gap-2">
+          <Switch
+            id="bestseller"
+            value="bestseller"
+            name="2"
+            defaultChecked={wine?.tags?.includes(2)}
+          />
+          Más vendido
         </label>
       </div>
 

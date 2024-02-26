@@ -1,6 +1,6 @@
 import { toggleActiveWine } from "@/actions/wine";
 import { cn } from "@/utils";
-import { Wine } from "@/utils/supabase/parsedTypes";
+import { TagDB, Wine } from "@/utils/supabase/parsedTypes";
 import { ColumnDef } from "@tanstack/react-table";
 import { ArrowDown, MoreHorizontal } from "lucide-react";
 import Image from "next/image";
@@ -34,18 +34,26 @@ const sortableHeader: (label: string) => ColumnDef<Wine>["header"] =
     );
 
 export const columns: (
-  setAlertOpen: Dispatch<SetStateAction<string | null>>
-) => ColumnDef<Wine>[] = (setAlertOpen) => [
+  setAlertOpen: Dispatch<SetStateAction<string | null>>,
+  tags: { id: number; name: string; class_name: string | null }[] | null
+) => ColumnDef<Wine>[] = (setAlertOpen, tags) => [
   {
-    accessorKey: "new",
-    header: sortableHeader("Tag"),
+    accessorKey: "tags",
+    header: sortableHeader("Tags"),
     cell: ({ row }) => (
-      <div className="flex items-center justify-center w-full">
-        {row.original.new && (
-          <Badge variant="default" className="-rotate-90">
-            Nuevo
-          </Badge>
-        )}
+      <div className="flex flex-col items-center justify-center gap-1 mx-auto w-max">
+        {row.original.tags
+          ?.map((tag) => tags?.find((t) => t.id === tag))
+          .sort((a, z) => (z?.name.length || 0) - (a?.name.length || 0))
+          .map((tag) => (
+            <Badge
+              variant="default"
+              className={cn("w-fit", tag?.class_name)}
+              key={tag?.id}
+            >
+              {tag?.name}
+            </Badge>
+          ))}
       </div>
     ),
   },
@@ -58,7 +66,7 @@ export const columns: (
         height: number;
       };
       return (
-        <div className="w-24 aspect-square">
+        <div className="flex items-center justify-center w-24 aspect-square">
           <Image
             src={`${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/wines/${row.original.photo_url}`}
             alt={row.original.name}
@@ -76,7 +84,7 @@ export const columns: (
   },
   {
     accessorKey: "year",
-    header: sortableHeader("Año"),
+    header: sortableHeader("Añada"),
   },
   {
     accessorKey: "apellation.name",
@@ -91,22 +99,21 @@ export const columns: (
         currency: "EUR",
       }).format(row.price),
   },
-
-  {
-    accessorKey: "created_at",
-    header: sortableHeader("Añadido"),
-    cell: ({ row }) => (
-      <span className="text-center">
-        {new Date(row.original.created_at).toLocaleDateString("es-ES", {
-          year: "numeric",
-          month: "2-digit",
-          day: "2-digit",
-          hour: "numeric",
-          minute: "numeric",
-        })}
-      </span>
-    ),
-  },
+  // {
+  //   accessorKey: "created_at",
+  //   header: sortableHeader("Añadido"),
+  //   cell: ({ row }) => (
+  //     <span className="text-center">
+  //       {new Date(row.original.created_at).toLocaleDateString("es-ES", {
+  //         year: "numeric",
+  //         month: "2-digit",
+  //         day: "2-digit",
+  //         hour: "numeric",
+  //         minute: "numeric",
+  //       })}
+  //     </span>
+  //   ),
+  // },
   {
     header: "Acciones",
     cell: ({ row }) => (

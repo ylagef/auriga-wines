@@ -123,6 +123,27 @@ export type Database = {
         }
         Relationships: []
       }
+      tags: {
+        Row: {
+          class_name: string | null
+          created_at: string
+          id: number
+          name: string
+        }
+        Insert: {
+          class_name?: string | null
+          created_at?: string
+          id?: number
+          name: string
+        }
+        Update: {
+          class_name?: string | null
+          created_at?: string
+          id?: number
+          name?: string
+        }
+        Relationships: []
+      }
       wines: {
         Row: {
           active: boolean
@@ -134,13 +155,11 @@ export type Database = {
           grapes: number[]
           id: number
           name: string
-          new: boolean
-          pairings_id: number[] | null
           photo_size: Json | null
           photo_url: string | null
           price: number
           region_id: number | null
-          tags: string[] | null
+          tags: number[] | null
           updated_at: string
           year: number
         }
@@ -154,13 +173,11 @@ export type Database = {
           grapes: number[]
           id?: number
           name: string
-          new?: boolean
-          pairings_id?: number[] | null
           photo_size?: Json | null
           photo_url?: string | null
           price: number
           region_id?: number | null
-          tags?: string[] | null
+          tags?: number[] | null
           updated_at?: string
           year: number
         }
@@ -174,13 +191,11 @@ export type Database = {
           grapes?: number[]
           id?: number
           name?: string
-          new?: boolean
-          pairings_id?: number[] | null
           photo_size?: Json | null
           photo_url?: string | null
           price?: number
           region_id?: number | null
-          tags?: string[] | null
+          tags?: number[] | null
           updated_at?: string
           year?: number
         }

@@ -9,7 +9,11 @@ import {
   CommandGroup,
   CommandItem,
 } from "@/components/ui/Command";
+import { useClickOutside } from "@/hooks/useClickOutside";
+import { useUpdateSearchParams } from "@/hooks/useUpdateSearchParams";
+import { cn } from "@/utils";
 import { Command as CommandPrimitive } from "cmdk";
+import { useSearchParams as nextUseSearchParams } from "next/navigation";
 import {
   KeyboardEvent,
   useCallback,
@@ -18,10 +22,6 @@ import {
   useRef,
   useState,
 } from "react";
-import { cn } from "@/utils";
-import { useClickOutside } from "@/hooks/useClickOutside";
-import { useSearchParams as nextUseSearchParams } from "next/navigation";
-import { useUpdateSearchParams } from "@/hooks/useUpdateSearchParams";
 
 interface Option {
   value: string;
@@ -93,13 +93,6 @@ export function MultiSelect({
     }
   }, []);
 
-  const inputWidth = useMemo(() => {
-    if (selected.length > 0) return "auto";
-    if (open) return `10rem`;
-
-    return `calc(${placeholder.length + 2}ch + 1rem)`;
-  }, [selected, placeholder, open]);
-
   const dropdownWidth = useMemo(() => {
     const maxLabelLength = Math.max(
       ...options.map((option) => option.label.length)
@@ -134,12 +127,9 @@ export function MultiSelect({
         ref={commandRef}
         onKeyDown={handleKeyDown}
         className={cn(
-          "overflow-visible bg-transparent transition-[width] h-10 animate-fade-in max-w-full",
+          "overflow-visible bg-transparent transition-[width] h-auto animate-fade-in max-w-full w-auto",
           open && "z-10"
         )}
-        style={{
-          width: inputWidth,
-        }}
       >
         <div className="flex items-center justify-center h-10 max-w-full px-2 py-1 text-sm bg-white border rounded-md shadow-sm group border-input ring-offset-background focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2">
           <div className="flex w-full gap-1 overflow-x-auto">
@@ -178,10 +168,8 @@ export function MultiSelect({
               onBlur={() => setOpen(false)}
               onFocus={() => setOpen(true)}
               placeholder={placeholder}
-              className="flex-1 w-full text-center bg-transparent outline-none placeholder:text-gray-600"
-              style={{
-                width: `${placeholder.length + 1}ch`,
-              }}
+              className="text-center bg-transparent outline-none placeholder:text-gray-600"
+              size={placeholder.length}
             />
           </div>
         </div>
