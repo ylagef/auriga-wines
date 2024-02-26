@@ -29,7 +29,7 @@ interface DataTableProps {
 export const WinesTable = ({ data, tags }: DataTableProps) => {
   const [sorting, setSorting] = useState<SortingState>([
     {
-      id: "created_at",
+      id: "name",
       desc: true,
     },
   ]);
