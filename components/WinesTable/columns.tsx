@@ -40,22 +40,29 @@ export const columns: (
   {
     accessorKey: "tags",
     header: sortableHeader("Tags"),
-    cell: ({ row }) => (
-      <div className="flex flex-col items-center justify-center gap-1 mx-auto w-max">
-        {row.original.tags
-          ?.map((tag) => tags?.find((t) => t.id === tag))
-          .sort((a, z) => (z?.name.length || 0) - (a?.name.length || 0))
-          .map((tag) => (
-            <Badge
-              variant="default"
-              className={cn("w-fit", tag?.class_name)}
-              key={tag?.id}
-            >
-              {tag?.name}
-            </Badge>
-          ))}
-      </div>
-    ),
+    cell: ({ row }) => {
+      const rowTags = row.original.tags;
+      return (
+        <div className="flex flex-col items-center justify-center gap-1 mx-auto w-max">
+          {rowTags?.length ? (
+            rowTags
+              ?.map((tag) => tags?.find((t) => t.id === tag))
+              .sort((a, z) => (z?.name.length || 0) - (a?.name.length || 0))
+              .map((tag) => (
+                <Badge
+                  variant="default"
+                  className={cn("w-fit", tag?.class_name)}
+                  key={tag?.id}
+                >
+                  {tag?.name}
+                </Badge>
+              ))
+          ) : (
+            <span className="opacity-75 w-fit">Sin tags</span>
+          )}
+        </div>
+      );
+    },
   },
   {
     accessorKey: "photo_url",
