@@ -12,7 +12,6 @@ export const WinesList = async ({
     countries,
     grapes,
     regions,
-    pairings,
     cellars,
     apellations,
     sortBy,
@@ -34,10 +33,9 @@ export const WinesList = async ({
     );
 
   if (countries?.length) query.in("country_id", countries.split(","));
-  if (grapes?.length) query.containedBy("grapes", grapes.split(","));
-  if (tags?.length) query.containedBy("tags", tags.split(","));
+  if (grapes?.length) query.contains("grapes", grapes.split(","));
+  if (tags?.length) query.contains("tags", tags.split(","));
   if (regions?.length) query.in("region_id", regions.split(","));
-  if (pairings?.length) query.containedBy("pairings", pairings.split(","));
   if (cellars?.length) query.in("cellar_id", cellars.split(","));
   if (apellations?.length) query.in("apellation_id", apellations.split(","));
   if (name?.length) query.ilike("name", `%${name}%`);
