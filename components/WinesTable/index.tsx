@@ -9,7 +9,6 @@ import {
   TableRow,
 } from "@/components/ui/Table";
 import { cn } from "@/utils";
-import { Wine, WineDB } from "@/utils/supabase/parsedTypes";
 import {
   SortingState,
   flexRender,
@@ -20,10 +19,11 @@ import {
 import { useState } from "react";
 import { Dialog } from "./Dialog";
 import { columns } from "./columns";
+import { Json } from "@/utils/supabase/types";
 
 interface DataTableProps {
   data: any[];
-  tags: { id: number; name: string; class_name: string | null }[] | null;
+  tags: { id: number; name: string; style: Json | null }[] | null;
 }
 
 export const WinesTable = ({ data, tags }: DataTableProps) => {

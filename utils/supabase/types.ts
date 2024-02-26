@@ -125,22 +125,22 @@ export type Database = {
       }
       tags: {
         Row: {
-          class_name: string | null
           created_at: string
           id: number
           name: string
+          style: Json | null
         }
         Insert: {
-          class_name?: string | null
           created_at?: string
           id?: number
           name: string
+          style?: Json | null
         }
         Update: {
-          class_name?: string | null
           created_at?: string
           id?: number
           name?: string
+          style?: Json | null
         }
         Relationships: []
       }

@@ -24,7 +24,7 @@ export default async function AdminPage() {
       "id, name, description, price, year, photo_url, photo_size, grapes, tags, apellation:apellation_id(name), country:country_id(name), region:region_id(name), active"
     );
 
-  const tagsQuery = supabase.from("tags").select("id, name, class_name");
+  const tagsQuery = supabase.from("tags").select("id, name, style");
 
   const [{ data: wines }, { data: tagsData }] = await Promise.all([
     query.returns<

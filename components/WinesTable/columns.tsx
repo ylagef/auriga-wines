@@ -14,6 +14,7 @@ import {
 } from "../ui/DropdownMenu";
 import { Dispatch, SetStateAction } from "react";
 import { Badge } from "../ui/Badge";
+import { Json } from "@/utils/supabase/types";
 
 const sortableHeader: (label: string) => ColumnDef<Wine>["header"] =
   (label: string) =>
@@ -35,7 +36,7 @@ const sortableHeader: (label: string) => ColumnDef<Wine>["header"] =
 
 export const columns: (
   setAlertOpen: Dispatch<SetStateAction<string | null>>,
-  tags: { id: number; name: string; class_name: string | null }[] | null
+  tags: { id: number; name: string; style: Json | null }[] | null
 ) => ColumnDef<Wine>[] = (setAlertOpen, tags) => [
   {
     accessorKey: "tags",
@@ -51,7 +52,10 @@ export const columns: (
               .map((tag) => (
                 <Badge
                   variant="default"
-                  className={cn("w-fit", tag?.class_name)}
+                  className="w-fit"
+                  style={{
+                    ...((tag?.style as Record<string, string>) || {}),
+                  }}
                   key={tag?.id}
                 >
                   {tag?.name}

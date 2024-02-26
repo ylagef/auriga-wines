@@ -52,7 +52,7 @@ export const WinesList = async ({
     });
   }
 
-  const tagsQuery = supabase.from("tags").select("id, name, class_name");
+  const tagsQuery = supabase.from("tags").select("id, name, style");
 
   const [{ data: wines }, { data: tagsData }] = await Promise.all([
     query.returns<

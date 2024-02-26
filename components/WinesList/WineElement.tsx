@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Badge } from "../ui/Badge";
 import { TagDB, Wine } from "@/utils/supabase/parsedTypes";
 import { cn } from "@/utils";
+import { Json } from "@/utils/supabase/types";
 
 export const WineElement = ({
   wine,
@@ -17,7 +18,7 @@ export const WineElement = ({
     | {
         id: number;
         name: string;
-        class_name: string;
+        style: Json;
       }[]
     | null;
 }) => {
@@ -37,7 +38,10 @@ export const WineElement = ({
           .map((tag) => (
             <Badge
               variant="default"
-              className={cn("w-fit", tag?.class_name)}
+              className="w-fit"
+              style={{
+                ...((tag?.style as Record<string, string>) || {}),
+              }}
               key={tag?.id}
             >
               {tag?.name}
