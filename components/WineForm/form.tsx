@@ -44,7 +44,6 @@ export const Form = ({
   useEffect(() => {
     setErrors(state.errors);
   }, [state.errors]);
-  console.log("Form state", state);
 
   return (
     <form

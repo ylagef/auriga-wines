@@ -31,7 +31,6 @@ const handleAddNewElement = async (table: string, name: string) => {
 };
 
 const getWineObject = (formData: FormData): Partial<WineDB> => {
-  console.log("Getting wine object", formData);
   const wine: Partial<
     Wine & {
       photo: File;
@@ -60,7 +59,6 @@ const getWineObject = (formData: FormData): Partial<WineDB> => {
     photo: formData.get("photo") as File,
   };
 
-  console.log("Wine object", wine);
   return wine;
 };
 
@@ -71,11 +69,9 @@ const handleNewObjects = async (wine: Partial<Wine>, formData: FormData) => {
   if (newGrapes.length > 0) {
     tasks.push(
       (async () => {
-        console.log("Promise newGrapes running...");
         const newGrapesData = await handleAddNewGrapes(newGrapes);
         const newGrapesIds = newGrapesData?.map((grape) => grape.id) || [];
         wine.grapes = [...(wine.grapes || []), ...newGrapesIds];
-        console.log("Promise newGrapes end", wine.grapes);
       })()
     );
   }
@@ -84,14 +80,12 @@ const handleNewObjects = async (wine: Partial<Wine>, formData: FormData) => {
   if (newCountry) {
     tasks.push(
       (async () => {
-        console.log("Promise newCountry running...");
         const newCountryData = await handleAddNewElement(
           "countries",
           newCountry
         );
         if (!newCountryData) return { errors: ["Error creating new country"] };
         wine.country_id = newCountryData[0].id;
-        console.log("Promise newCountry end", wine.country_id);
       })()
     );
   }
@@ -100,11 +94,9 @@ const handleNewObjects = async (wine: Partial<Wine>, formData: FormData) => {
   if (newRegion) {
     tasks.push(
       (async () => {
-        console.log("Promise newRegion running...");
         const newRegionData = await handleAddNewElement("regions", newRegion);
         if (!newRegionData) return { errors: ["Error creating new region"] };
         wine.region_id = newRegionData[0].id;
-        console.log("Promise newRegion end", wine.region_id);
       })()
     );
   }
@@ -113,7 +105,6 @@ const handleNewObjects = async (wine: Partial<Wine>, formData: FormData) => {
   if (newApellation) {
     tasks.push(
       (async () => {
-        console.log("Promise newApellation running...");
         const newApellationData = await handleAddNewElement(
           "apellations",
           newApellation
@@ -121,7 +112,6 @@ const handleNewObjects = async (wine: Partial<Wine>, formData: FormData) => {
         if (!newApellationData)
           return { errors: ["Error creating new apellation"] };
         wine.apellation_id = newApellationData[0].id;
-        console.log("Promise newApellation end", wine.apellation_id);
       })()
     );
   }
@@ -130,11 +120,9 @@ const handleNewObjects = async (wine: Partial<Wine>, formData: FormData) => {
   if (newCellar) {
     tasks.push(
       (async () => {
-        console.log("Promise newCellar running...");
         const newCellarData = await handleAddNewElement("cellars", newCellar);
         if (!newCellarData) return { errors: ["Error creating new cellar"] };
         wine.cellar_id = newCellarData[0].id;
-        console.log("Promise newCellar end", wine.cellar_id);
       })()
     );
   }
@@ -145,19 +133,16 @@ const handleNewObjects = async (wine: Partial<Wine>, formData: FormData) => {
 const handlePhotoUpload = async (photo: File, wine: WineDB) => {
   const supabase = createClient();
 
-  console.log("Uploading photo", photo, `${wine.id}-${photo.name}`);
   const extension = photo.name.split(".").pop();
   const md5Id = md5.create().update(`${wine.id}`).hex();
 
   const { data: photoData, error: photoError } = await supabase.storage
     .from("wines")
     .upload(`${md5Id}.${extension}`, photo);
-  console.log({ photoData, photoError });
   if (!photoData) return "Error uploading photo";
 
   const buffer = await photo.arrayBuffer();
   const metadata = await sharp(Buffer.from(buffer)).metadata();
-  console.log(`Image dimensions are ${metadata.width}x${metadata.height}`);
 
   const { data: wineData, error: wineError } = await supabase
     .from("wines")
@@ -170,8 +155,6 @@ const handlePhotoUpload = async (photo: File, wine: WineDB) => {
     })
     .eq("id", wine.id)
     .select();
-
-  console.log({ wineData, wineError });
 };
 
 const zodSchema = z
@@ -248,9 +231,7 @@ export const createWine = async (_: any, formData: FormData) => {
   const supabase = createClient();
 
   const wine = getWineObject(formData);
-  console.log({ wine });
   const validatedSchema = validateObject(wine);
-  console.log({ validatedSchema });
   if (validatedSchema?.errors) return validatedSchema;
 
   await handleNewObjects(wine, formData);
@@ -259,7 +240,6 @@ export const createWine = async (_: any, formData: FormData) => {
     .from("wines")
     .insert(wine as WineDB)
     .select();
-  console.log({ data, error });
 
   const insertedWine = data?.[0];
   if (!insertedWine) return { errors: ["Error inserting wine"] };
@@ -270,7 +250,6 @@ export const createWine = async (_: any, formData: FormData) => {
   }
 
   revalidatePaths();
-  console.log({ data, error });
   redirect(`/admin/wines`);
 };
 
@@ -279,8 +258,6 @@ export const updateWine = async (_: any, formData: FormData) => {
   const wine = getWineObject(formData);
 
   await handleNewObjects(wine, formData);
-
-  console.log({ wine });
 
   if (!wine.id) return { errors: ["Wine id is required"] };
 
@@ -291,31 +268,25 @@ export const updateWine = async (_: any, formData: FormData) => {
     .select();
 
   const photo = formData.get("photo") as File;
-  console.log({ photo });
   if (photo.size > 0) {
     await handlePhotoUpload(photo, data?.[0] as WineDB);
   }
 
-  console.log({ data, error, count, status, statusText });
   revalidatePaths();
   redirect(`/admin/wines`);
 };
 
 export const deleteWine = async (wine: Wine) => {
   const supabase = createClient();
-  console.log("Deleting wine", wine);
   const { data, error } = await supabase
     .from("wines")
     .delete()
     .eq("id", wine.id);
-  console.log({ data, error });
 
   if (wine.photo_url) {
-    console.log("Removing photo", wine.photo_url);
     const { data: photoData, error: photoError } = await supabase.storage
       .from("wines")
       .remove([wine.photo_url]);
-    console.log({ photoData, photoError });
   }
 
   revalidatePaths();
@@ -328,6 +299,5 @@ export const toggleActiveWine = async (id: number, value: boolean) => {
     .update({ active: value })
     .eq("id", id)
     .select();
-  console.log({ data, error });
   revalidatePaths();
 };

@@ -34,7 +34,6 @@ export const WinesTable = ({ data, tags }: DataTableProps) => {
     },
   ]);
   const [alertOpen, setAlertOpen] = useState<string | null>(null);
-  console.log(sorting);
 
   const table = useReactTable({
     data,
