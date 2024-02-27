@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useRef } from "react";
 
-const MAX_IDLE_TIME = 10; // 1 minute
+const MAX_IDLE_TIME = 60; // 1 minute
 
 export const IdleHandler = () => {
   const idleTime = useRef(0);
