@@ -1,13 +1,9 @@
 "use client";
 import { useUpdateSearchParams } from "@/hooks/useUpdateSearchParams";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "./ui/Select";
-import { useState } from "react";
+import { cn } from "@/utils";
+
+import { useEffect, useRef, useState } from "react";
+import Select from "react-select";
 
 export const OrderBySelect = () => {
   const { updateSearchParams } = useUpdateSearchParams();
@@ -20,21 +16,29 @@ export const OrderBySelect = () => {
       )}
 
       <Select
-        onOpenChange={(o) => setOpen(o)}
-        onValueChange={(v) => {
-          updateSearchParams("sortBy", v);
+        className={cn(open && "z-10")}
+        classNames={{
+          container: () => "w-56",
         }}
-      >
-        <SelectTrigger className="w-full text-left text-gray-600 shadow-sm sm:w-48 animate-fade-in">
-          <SelectValue placeholder="Ordenar por..." />
-        </SelectTrigger>
-        <SelectContent className="bg-white shadow-sm">
-          <SelectItem value="price_asc">Precio ascendente</SelectItem>
-          <SelectItem value="price_desc">Precio descendente</SelectItem>
-          <SelectItem value="year_asc">Añada ascendente</SelectItem>
-          <SelectItem value="year_desc">Añada descendente</SelectItem>
-        </SelectContent>
-      </Select>
+        placeholder="Ordenar por..."
+        onChange={(option) => {
+          updateSearchParams("sortBy", option!.value);
+        }}
+        onMenuOpen={() => {
+          console.log("onMenuOpen");
+          setOpen(true);
+        }}
+        onMenuClose={() => {
+          console.log("onMenuClose");
+          setOpen(false);
+        }}
+        options={[
+          { value: "price_asc", label: "Precio ascendente" },
+          { value: "price_desc", label: "Precio descendente" },
+          { value: "year_asc", label: "Añada ascendente" },
+          { value: "year_desc", label: "Añada descendente" },
+        ]}
+      />
     </>
   );
 };

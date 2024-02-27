@@ -20,11 +20,7 @@ export interface SearchParams {
 
 async function WinesPage({ searchParams }: { searchParams: SearchParams }) {
   return (
-    <>
-      <div className="z-10 flex">
-        <FilterBar />
-      </div>
-
+    <div className="flex flex-col-reverse">
       <div className="mt-8 overflow-y-auto">
         <Suspense
           fallback={<WineListSkeleton />}
@@ -33,7 +29,11 @@ async function WinesPage({ searchParams }: { searchParams: SearchParams }) {
           <WinesList searchParams={searchParams} />
         </Suspense>
       </div>
-    </>
+
+      <div className="z-10 flex">
+        <FilterBar />
+      </div>
+    </div>
   );
 }
 
