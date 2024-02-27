@@ -17,6 +17,7 @@ export default function Login({
           name="email"
           id="email"
           placeholder="a@b.com"
+          autoComplete="email"
           required
         />
         <label className="text-md" htmlFor="password">
@@ -29,6 +30,7 @@ export default function Login({
           id="password"
           placeholder="••••••••"
           required
+          autoComplete="current-password"
         />
         <SubmitButton
           formAction={signIn}
