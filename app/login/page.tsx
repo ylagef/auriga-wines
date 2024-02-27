@@ -3,6 +3,7 @@ import { headers } from "next/headers";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import { SubmitButton } from "./submit-button";
+import { revalidatePath } from "next/cache";
 
 export default function Login({
   searchParams,
@@ -11,10 +12,10 @@ export default function Login({
 }) {
   const signIn = async (formData: FormData) => {
     "use server";
+    const supabase = createClient();
 
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
-    const supabase = createClient();
 
     const { error } = await supabase.auth.signInWithPassword({
       email,
@@ -24,7 +25,7 @@ export default function Login({
     if (error) {
       return redirect("/login?message=Could not authenticate user");
     }
-
+    revalidatePath("/", "layout");
     return redirect("/admin");
   };
 
@@ -60,6 +61,7 @@ export default function Login({
         <input
           className="px-4 py-2 mb-6 border rounded-md bg-inherit"
           name="email"
+          id="email"
           placeholder="a@b.com"
           required
         />
@@ -70,6 +72,7 @@ export default function Login({
           className="px-4 py-2 mb-6 border rounded-md bg-inherit"
           type="password"
           name="password"
+          id="password"
           placeholder="••••••••"
           required
         />
