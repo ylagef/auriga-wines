@@ -1,29 +1,22 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef } from "react";
 
-const MAX_IDLE_TIME = 60; // 1 minute
+const MAX_IDLE_TIME = 10; // 1 minute
 
 export const IdleHandler = () => {
-  const [idleTime, setIdleTime] = useState(0);
+  const idleTime = useRef(0);
   const router = useRouter();
 
   const restart = () => {
-    setIdleTime(0);
+    idleTime.current = 0;
   };
 
   useEffect(() => {
-    // Increment idle time every second. Reset it when the user interacts with the page.
     const interval = setInterval(() => {
-      setIdleTime((prev) => {
-        console.log("idleTime", prev);
-        if (prev >= MAX_IDLE_TIME) {
-          router.push("/idle");
-        }
-
-        return prev + 1;
-      });
+      if (idleTime.current >= MAX_IDLE_TIME) return router.push("/idle");
+      idleTime.current += 1;
     }, 1000);
 
     window.addEventListener("mousemove", () => restart());

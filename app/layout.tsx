@@ -23,17 +23,6 @@ export default function RootLayout({
   return (
     <html lang="en" className={GeistSans.className}>
       <body className="flex flex-col h-screen antialiased">
-        <header className="sticky top-0 z-10 flex items-center justify-center px-2 py-3 bg-white/30 backdrop-blur">
-          <Image
-            src="/images/auriga-logo.svg"
-            alt="Auriga"
-            width={200}
-            height={37.5}
-            className="w-auto h-6"
-            priority
-          />
-        </header>
-
         <main className="flex flex-col items-center py-2 grow">{children}</main>
         <SpeedInsights />
         <Analytics />

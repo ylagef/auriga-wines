@@ -25,7 +25,10 @@ export default async function AuthButton() {
       </form>
     </div>
   ) : (
-    <Link href="/login" className="flex px-3 py-2 no-underline rounded-md">
+    <Link
+      href="/admin/login"
+      className="flex px-3 py-2 no-underline rounded-md"
+    >
       Login
     </Link>
   );

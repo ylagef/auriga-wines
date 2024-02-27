@@ -15,7 +15,7 @@ export default async function AdminPage() {
   } = await supabase.auth.getUser();
 
   if (!user) {
-    return redirect("/login");
+    return redirect("/admin/login");
   }
 
   const query = supabase
@@ -43,11 +43,10 @@ export default async function AdminPage() {
     <div className="flex flex-col items-center flex-1 w-full max-w-6xl gap-4 px-4">
       {/* <AuthButton /> */}
 
-      <div className="flex justify-between w-full gap-2">
+      <div className="flex w-full gap-2">
         <Link href="/admin/wines/new" className="flex items-center gap-2">
           <Button>Añadir nuevo</Button>
         </Link>
-        <SignOutButton />
       </div>
 
       <WinesTable data={wines} tags={tagsData} />
