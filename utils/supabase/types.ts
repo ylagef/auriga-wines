@@ -147,54 +147,54 @@ export type Database = {
       wines: {
         Row: {
           active: boolean
-          apellation_id: number | null
-          cellar_id: number | null
-          country_id: number | null
+          apellation_id: number
+          cellar_id: number
+          country_id: number
           created_at: string
-          description: string | null
-          grapes: number[]
+          description: string
+          grapes: number[] | null
           id: number
           name: string
           photo_size: Json | null
           photo_url: string | null
           price: number
-          region_id: number | null
+          region_id: number
           tags: number[] | null
           updated_at: string
           year: number
         }
         Insert: {
           active?: boolean
-          apellation_id?: number | null
-          cellar_id?: number | null
-          country_id?: number | null
+          apellation_id: number
+          cellar_id: number
+          country_id: number
           created_at?: string
-          description?: string | null
-          grapes: number[]
+          description: string
+          grapes?: number[] | null
           id?: number
           name: string
           photo_size?: Json | null
           photo_url?: string | null
           price: number
-          region_id?: number | null
+          region_id: number
           tags?: number[] | null
           updated_at?: string
           year: number
         }
         Update: {
           active?: boolean
-          apellation_id?: number | null
-          cellar_id?: number | null
-          country_id?: number | null
+          apellation_id?: number
+          cellar_id?: number
+          country_id?: number
           created_at?: string
-          description?: string | null
-          grapes?: number[]
+          description?: string
+          grapes?: number[] | null
           id?: number
           name?: string
           photo_size?: Json | null
           photo_url?: string | null
           price?: number
-          region_id?: number | null
+          region_id?: number
           tags?: number[] | null
           updated_at?: string
           year?: number
