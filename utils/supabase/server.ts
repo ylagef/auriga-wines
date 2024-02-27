@@ -32,6 +32,9 @@ export const createClient = () => {
           }
         },
       },
+      auth: {
+        persistSession: false,
+      },
     }
   );
 };

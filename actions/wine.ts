@@ -300,6 +300,8 @@ export const deleteWine = async (wine: Wine) => {
       .from("wines")
       .remove([wine.photo_url]);
   }
+
+  revalidatePath(`/admin/wines`);
 };
 
 export const toggleActiveWine = async (id: number, value: boolean) => {
@@ -309,4 +311,5 @@ export const toggleActiveWine = async (id: number, value: boolean) => {
     .update({ active: value })
     .eq("id", id)
     .select();
+  revalidatePath(`/admin/wines`);
 };
