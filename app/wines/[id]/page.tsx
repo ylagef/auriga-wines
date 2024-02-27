@@ -73,7 +73,9 @@ async function WineDetail({
       </div>
 
       <h2 className="text-2xl font-bold text-center">{wine.name}</h2>
-      <p className="text-center text-gray-600">{wine.description}</p>
+      <p className="text-center text-gray-600 whitespace-break-spaces">
+        {wine.description}
+      </p>
 
       <div className="flex flex-col items-center justify-center">
         <div className="flex gap-2">
