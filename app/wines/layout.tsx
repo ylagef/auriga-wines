@@ -1,8 +1,10 @@
+import { IdleHandler } from "@/components/IdleHandler";
 import { ReactNode } from "react";
 
 function WinesLayout({ children }: { children: ReactNode }) {
   return (
     <>
+      <IdleHandler />
       <div className="w-full max-w-4xl px-4 py-2 grow">
         <main>{children}</main>
       </div>
