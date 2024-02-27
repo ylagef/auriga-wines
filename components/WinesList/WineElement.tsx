@@ -58,11 +58,11 @@ export const WineElement = ({
         alt={wine.name}
         width={size.width || 100}
         height={size.height || 100}
-        className="object-contain h-60"
+        className="object-contain h-56"
         priority={priority}
       />
 
-      <div className="flex flex-wrap items-center justify-center gap-1">
+      <div className="flex flex-wrap items-center justify-center gap-1 mt-2">
         {wine.country && <Badge variant="outline">{wine.country.name}</Badge>}
 
         {wine.apellation && (

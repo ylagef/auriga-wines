@@ -8,10 +8,9 @@ import { redirect } from "next/navigation";
 import sharp from "sharp";
 import { z } from "zod";
 
-const revalidatePaths = () => {
-  revalidatePath("/admin/wines");
-  revalidatePath("/wines");
-};
+//   revalidatePath("/admin/wines");
+//   revalidatePath("/wines");
+// };
 
 const handleAddNewGrapes = async (newGrapes: string[]) => {
   const supabase = createClient();
@@ -56,7 +55,6 @@ const getWineObject = (formData: FormData): Partial<WineDB> => {
       : undefined,
     active: formData.get("active") === "on",
     tags: formData.getAll("tag").map(Number) || [],
-    photo: formData.get("photo") as File,
   };
 
   return wine;
@@ -136,10 +134,14 @@ const handlePhotoUpload = async (photo: File, wine: WineDB) => {
   const extension = photo.name.split(".").pop();
   const md5Id = md5.create().update(`${wine.id}`).hex();
 
+  console.log("md5Id", md5Id, extension);
   const { data: photoData, error: photoError } = await supabase.storage
     .from("wines")
-    .upload(`${md5Id}.${extension}`, photo);
+    .upload(`${md5Id}.${extension}`, photo, { upsert: true });
+  console.log("photoData", photoData, photoError);
   if (!photoData) return "Error uploading photo";
+
+  console.log("photoData", photoData);
 
   const buffer = await photo.arrayBuffer();
   const metadata = await sharp(Buffer.from(buffer)).metadata();
@@ -189,16 +191,16 @@ const zodSchema = z
         message: "Año no válido",
       }),
     grapes: z.array(z.number()),
-    country: z.number({
+    country_id: z.number({
       required_error: "Campo requerido",
     }),
-    region: z.number({
+    region_id: z.number({
       required_error: "Campo requerido",
     }),
-    apellation: z.number({
+    apellation_id: z.number({
       required_error: "Campo requerido",
     }),
-    cellar: z.number({
+    cellar_id: z.number({
       required_error: "Campo requerido",
     }),
     active: z.boolean(),
@@ -209,7 +211,8 @@ const zodSchema = z
     ),
     photo: z.any(),
   })
-  .required();
+  .required()
+  .merge(z.object({ id: z.number() }).partial());
 
 const validateObject = (
   obj: Partial<
@@ -231,7 +234,10 @@ export const createWine = async (_: any, formData: FormData) => {
   const supabase = createClient();
 
   const wine = getWineObject(formData);
+  console.log("wine", wine);
   const validatedSchema = validateObject(wine);
+  console.log("validatedSchema", validatedSchema);
+
   if (validatedSchema?.errors) return validatedSchema;
 
   await handleNewObjects(wine, formData);
@@ -241,6 +247,10 @@ export const createWine = async (_: any, formData: FormData) => {
     .insert(wine as WineDB)
     .select();
 
+  if (error?.code === "23505")
+    return { errors: { name: ["Ya existe un vino con este nombre."] } };
+  console.log("data", data, error);
+
   const insertedWine = data?.[0];
   if (!insertedWine) return { errors: ["Error inserting wine"] };
 
@@ -249,7 +259,6 @@ export const createWine = async (_: any, formData: FormData) => {
     await handlePhotoUpload(photo, insertedWine);
   }
 
-  revalidatePaths();
   redirect(`/admin/wines`);
 };
 
@@ -268,11 +277,14 @@ export const updateWine = async (_: any, formData: FormData) => {
     .select();
 
   const photo = formData.get("photo") as File;
+  console.log("photo", photo);
   if (photo.size > 0) {
     await handlePhotoUpload(photo, data?.[0] as WineDB);
   }
 
-  revalidatePaths();
+  revalidatePath(`/wines/${wine.id}`);
+  revalidatePath(`/admin/wines`);
+  revalidatePath(`/wines`);
   redirect(`/admin/wines`);
 };
 
@@ -288,8 +300,6 @@ export const deleteWine = async (wine: Wine) => {
       .from("wines")
       .remove([wine.photo_url]);
   }
-
-  revalidatePaths();
 };
 
 export const toggleActiveWine = async (id: number, value: boolean) => {
@@ -299,5 +309,4 @@ export const toggleActiveWine = async (id: number, value: boolean) => {
     .update({ active: value })
     .eq("id", id)
     .select();
-  revalidatePaths();
 };

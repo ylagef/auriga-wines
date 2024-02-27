@@ -63,7 +63,6 @@ export const Form = ({
       <div className="flex flex-col w-full gap-2">
         <Label htmlFor="name">Nombre</Label>
         <Input
-          required
           id="name"
           name="name"
           placeholder="Nombre del vino"

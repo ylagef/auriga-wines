@@ -1,5 +1,6 @@
 import { Badge } from "@/components/ui/Badge";
 import { createClient } from "@/utils/supabase/server";
+import { Database, Json } from "@/utils/supabase/types";
 import Image from "next/image";
 
 async function WineDetail({
@@ -12,16 +13,33 @@ async function WineDetail({
   const supabase = createClient();
   const { data: wine } = await supabase
     .from("wines")
-    .select()
+    .select(
+      "*, apellation:apellation_id(name), country:country_id(name), region:region_id(name),cellar:cellar_id(name)"
+    )
     .eq("id", params.id)
+    .returns<
+      (Database["public"]["Tables"]["wines"]["Row"] & {
+        apellation: { name: string };
+        country: { name: string };
+        region: { name: string };
+        cellar: { name: string };
+      })[]
+    >()
     .single();
 
   if (!wine) return <div>Wine not found</div>;
 
-  const { data: grapesData, error: errorGrapes } = await supabase
-    .from("grapes")
-    .select("id, name")
-    .in("id", wine.grapes);
+  let tagsData:
+    | [{ id: number; name: string; status: string; style: Json }]
+    | null = null;
+  if (wine.tags) {
+    const tagsResponse = await supabase
+      .from("tags")
+      .select("id, name, style")
+      .in("id", wine.tags);
+    tagsData = tagsResponse.data as typeof tagsData;
+    console.log(wine.tags, tagsData);
+  }
 
   const size = wine.photo_size as { width: number; height: number };
   return (
@@ -31,27 +49,51 @@ async function WineDetail({
         alt={wine.name}
         width={size.width || 100}
         height={size.height || 100}
-        className="object-contain w-3/4 aspect-square"
+        className="object-contain w-2/3 mb-10 aspect-square"
       />
 
-      <div className="flex gap-2">
-        {wine.tags?.includes(1) && <Badge variant="default">Nuevo</Badge>}
-        <Badge variant="secondary">{wine.year}</Badge>
-      </div>
+      <Badge variant="secondary">{wine.year}</Badge>
 
       <div className="flex flex-wrap items-center justify-center gap-1">
-        {grapesData
-          ?.filter((grape) => wine.grapes.includes(grape.id))
-          .map((grape) => (
-            <Badge key={grape.id} variant="outline">
-              {grape.name}
+        {wine.tags
+          ?.map((tag) => tagsData?.find((t) => t.id === tag))
+          .sort((a, z) => (z?.name.length || 0) - (a?.name.length || 0))
+          .map((tag) => (
+            <Badge
+              variant="default"
+              className="w-fit"
+              style={{
+                ...((tag?.style as Record<string, string>) || {}),
+              }}
+              key={tag?.id}
+            >
+              {tag?.name}
             </Badge>
           ))}
       </div>
 
-      <h3 className="font-bold text-center">{wine.name}</h3>
+      <h2 className="text-2xl font-bold text-center">{wine.name}</h2>
+      <p className="text-center text-gray-600">{wine.description}</p>
 
-      <p className="text-sm text-center text-gray-600">{wine.description}</p>
+      <div className="flex flex-col items-center justify-center">
+        <div className="flex gap-2">
+          <label className="font-semibold text-center">País:</label>
+          <h3 className="text-center">{wine.country.name}</h3>
+          <label className="font-semibold text-center">Región:</label>
+          <h3 className="text-center">{wine.region.name}</h3>
+        </div>
+
+        <div className="flex gap-2">
+          <label className="font-semibold text-center">
+            Denominación de origen:
+          </label>
+          <h3 className="text-center">{wine.apellation.name}</h3>
+        </div>
+        <div className="flex gap-2">
+          <label className="font-semibold text-center">Bodega:</label>
+          <h3 className="text-center">{wine.cellar.name}</h3>
+        </div>
+      </div>
 
       <span>
         {Intl.NumberFormat("es-ES", {
