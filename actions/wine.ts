@@ -191,18 +191,7 @@ const zodSchema = z
         message: "Año no válido",
       }),
     grapes: z.array(z.number()),
-    country_id: z.number({
-      required_error: "Campo requerido",
-    }),
-    region_id: z.number({
-      required_error: "Campo requerido",
-    }),
-    apellation_id: z.number({
-      required_error: "Campo requerido",
-    }),
-    cellar_id: z.number({
-      required_error: "Campo requerido",
-    }),
+
     active: z.boolean(),
     tags: z.array(
       z.number({
@@ -212,7 +201,17 @@ const zodSchema = z
     photo: z.any(),
   })
   .required()
-  .merge(z.object({ id: z.number() }).partial());
+  .merge(
+    z
+      .object({
+        id: z.number(),
+        country_id: z.number(),
+        region_id: z.number(),
+        apellation_id: z.number(),
+        cellar_id: z.number(),
+      })
+      .partial()
+  );
 
 const validateObject = (
   obj: Partial<
