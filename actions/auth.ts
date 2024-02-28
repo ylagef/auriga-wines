@@ -18,13 +18,13 @@ export const signIn = async (formData: FormData) => {
 
     console.log({ data });
     if (error) {
-      return redirect(
+      redirect(
         "/admin/login?message=Could not authenticate user",
         RedirectType.replace
       );
     }
 
-    return redirect("/admin/wines", RedirectType.replace);
+    redirect("/admin", RedirectType.replace);
   } catch (e) {
     console.error("error signing in", e);
   }
