@@ -1,11 +1,21 @@
 import { signIn } from "@/actions/auth";
 import { SubmitButton } from "./submit-button";
+import { createClient } from "@/utils/supabase/server";
+import { redirect } from "next/navigation";
 
-export default function Login({
+export default async function Login({
   searchParams,
 }: {
   searchParams: { message: string };
 }) {
+  const supabase = createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (user) return redirect("/admin/wines");
+
   return (
     <div className="flex flex-col justify-center flex-1 w-full gap-2 px-8 sm:max-w-md">
       <form className="flex flex-col justify-center flex-1 w-full gap-2 animate-in text-foreground">

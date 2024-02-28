@@ -5,8 +5,9 @@ import React from "react";
 
 async function AdminLayout({ children }: { children: React.ReactNode }) {
   const supabase = createClient();
-
-  const user = await supabase.auth.getUser();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
   return (
     <div className="flex flex-col w-full h-full max-w-5xl mx-auto">
@@ -21,7 +22,7 @@ async function AdminLayout({ children }: { children: React.ReactNode }) {
             priority
           />
 
-          {user.data.user && <SignOutButton />}
+          {user && <SignOutButton />}
         </div>
       </header>
       <main className="flex items-center justify-center w-full grow">

@@ -1,10 +1,12 @@
 "use server";
 
 import { createClient } from "@/utils/supabase/server";
+import { AuthError } from "@supabase/supabase-js";
 import { headers } from "next/headers";
 import { RedirectType, redirect } from "next/navigation";
 
 export const signIn = async (formData: FormData) => {
+  let signInError: AuthError | null = null;
   try {
     const supabase = createClient();
 
@@ -15,18 +17,15 @@ export const signIn = async (formData: FormData) => {
       email,
       password,
     });
+    signInError = error;
 
     console.log({ data });
-    if (error) {
-      redirect(
-        "/admin/login?message=Could not authenticate user",
-        RedirectType.replace
-      );
-    }
-
-    redirect("/admin", RedirectType.replace);
   } catch (e) {
     console.error("error signing in", e);
+  }
+
+  if (signInError) {
+    return redirect("/admin/login?message=Could not authenticate user");
   }
 };
 
