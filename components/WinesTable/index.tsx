@@ -86,8 +86,8 @@ export const WinesTable = ({ data, tags }: DataTableProps) => {
             ))
           ) : (
             <TableRow>
-              <TableCell colSpan={columns.length} className="h-24 text-center">
-                No hay resultados
+              <TableCell colSpan={7} className="h-24 text-center">
+                Aún no hay resultados
               </TableCell>
             </TableRow>
           )}
