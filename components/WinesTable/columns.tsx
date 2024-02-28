@@ -98,8 +98,8 @@ export const columns: (
     header: sortableHeader("Añada"),
   },
   {
-    accessorKey: "apellation.name",
-    header: sortableHeader("D.O."),
+    accessorKey: "zone.name",
+    header: sortableHeader("Zona"),
   },
   {
     accessorKey: "price",

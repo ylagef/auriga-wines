@@ -17,22 +17,19 @@ export const WineForm = async ({ wine, action }: WineFormProps) => {
 
   const countriesQuery = supabase.from("countries").select("id, name");
   const grapesQuery = supabase.from("grapes").select("id, name");
-  const regionsQuery = supabase.from("regions").select("id, name");
+  const zonesQuery = supabase.from("zones").select("id, name");
   const cellarsQuery = supabase.from("cellars").select("id, name");
-  const apellationsQuery = supabase.from("apellations").select("id, name");
 
   const [
     { data: countries },
     { data: grapes },
-    { data: regions },
+    { data: zones },
     { data: cellars },
-    { data: apellations },
   ] = await Promise.all([
     countriesQuery,
     grapesQuery,
-    regionsQuery,
+    zonesQuery,
     cellarsQuery,
-    apellationsQuery,
   ]);
 
   return (
@@ -41,9 +38,8 @@ export const WineForm = async ({ wine, action }: WineFormProps) => {
       action={action}
       countries={countries}
       grapes={grapes}
-      regions={regions}
+      zones={zones}
       cellars={cellars}
-      apellations={apellations}
     />
   );
 };

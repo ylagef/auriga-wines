@@ -3,13 +3,7 @@
 import { useState } from "react";
 import { Checkbox } from "./ui/Checkbox";
 import { Input } from "./ui/Input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "./ui/Select";
+import Select, { GroupBase, OptionsOrGroups } from "react-select";
 import { Switch } from "./ui/Switch";
 import { cn } from "@/utils";
 
@@ -24,14 +18,16 @@ interface SelectOrInputProps {
     | null;
   selected?: number | null;
   className?: string;
+  text: string;
 }
 
 export const SelectOrInput = ({
   id,
-  options,
+  options = [],
   placeholder,
   selected,
   className,
+  text,
 }: SelectOrInputProps) => {
   const [showNew, setShowNew] = useState(false);
 
@@ -50,9 +46,31 @@ export const SelectOrInput = ({
         <Select
           name={id}
           required
-          defaultValue={selected ? String(selected) : undefined}
+          defaultValue={
+            selected
+              ? {
+                  label: options?.find((option) => option.id === selected)
+                    ?.name,
+                  value: String(selected),
+                }
+              : undefined
+          }
+          classNames={{
+            container: () => "w-full",
+          }}
+          styles={{
+            control: (base) => ({
+              ...base,
+              borderColor: "#e2e9f0",
+            }),
+          }}
+          placeholder={placeholder}
+          options={options?.map((option) => ({
+            value: String(option.id),
+            label: option.name,
+          }))}
         >
-          <SelectTrigger
+          {/* <SelectTrigger
             className={cn(
               "w-full text-left shadow-sm animate-fade-in",
               className
@@ -68,7 +86,7 @@ export const SelectOrInput = ({
                   {country.name}
                 </SelectItem>
               ))}
-          </SelectContent>
+          </SelectContent> */}
         </Select>
       )}
 
@@ -77,7 +95,7 @@ export const SelectOrInput = ({
           checked={showNew}
           onCheckedChange={() => setShowNew((prev) => !prev)}
         />
-        Otro/a
+        {text}
       </label>
     </>
   );

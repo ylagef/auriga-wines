@@ -24,9 +24,8 @@ interface WineFormProps {
   }>;
   countries: { id: number; name: string }[] | null;
   grapes: { id: number; name: string }[] | null;
-  regions: { id: number; name: string }[] | null;
+  zones: { id: number; name: string }[] | null;
   cellars: { id: number; name: string }[] | null;
-  apellations: { id: number; name: string }[] | null;
 }
 
 export const Form = ({
@@ -34,9 +33,8 @@ export const Form = ({
   action,
   countries,
   grapes,
-  regions,
+  zones,
   cellars,
-  apellations,
 }: WineFormProps) => {
   const [state, formAction] = useFormState(action, { errors: {} });
   const [errors, setErrors] = useState(state.errors);
@@ -152,48 +150,12 @@ export const Form = ({
               "transition-all",
               errors?.country && "border-red-500 border-2 bg-red-500/10"
             )}
+            text="Nuevo país"
           />
           {errors?.country && (
             <span className="text-xs text-red-500">{errors.country}</span>
           )}
         </div>
-
-        <div className="flex flex-col w-full gap-2">
-          <Label htmlFor="region">Región</Label>
-          <SelectOrInput
-            id="region"
-            options={regions}
-            placeholder="Nombre de la región"
-            selected={wine?.region_id}
-            className={cn(
-              "transition-all",
-              errors?.region && "border-red-500 border-2 bg-red-500/10"
-            )}
-          />
-          {errors?.region && (
-            <span className="text-xs text-red-500">{errors.region}</span>
-          )}
-        </div>
-      </div>
-
-      <div className="grid grid-cols-1 gap-6 sm:gap-2 sm:grid-cols-2">
-        <div className="flex flex-col w-full gap-2">
-          <Label htmlFor="apellation">Denominación de origen</Label>
-          <SelectOrInput
-            id="apellation"
-            options={apellations}
-            placeholder="Nombre de la D.O."
-            selected={wine?.apellation_id}
-            className={cn(
-              "transition-all",
-              errors?.apellation && "border-red-500 border-2 bg-red-500/10"
-            )}
-          />
-          {errors?.apellation && (
-            <span className="text-xs text-red-500">{errors.apellation}</span>
-          )}
-        </div>
-
         <div className="flex flex-col w-full gap-2">
           <Label htmlFor="cellar">Bodega</Label>
           <SelectOrInput
@@ -205,11 +167,38 @@ export const Form = ({
               "transition-all",
               errors?.cellar && "border-red-500 border-2 bg-red-500/10"
             )}
+            text="Nueva bodega"
           />
           {errors?.cellar && (
             <span className="text-xs text-red-500">{errors.cellar}</span>
           )}
         </div>
+      </div>
+
+      <div className="flex flex-col w-full gap-2">
+        <Label htmlFor="zone">Zona</Label>
+        <SelectOrInput
+          id="zone"
+          options={zones}
+          placeholder="Nombre de la zona"
+          selected={wine?.zone_id}
+          className={cn(
+            "transition-all",
+            errors?.zone && "border-red-500 border-2 bg-red-500/10"
+          )}
+          text="Nueva zona"
+        />
+        {errors?.zone && (
+          <span className="text-xs text-red-500">{errors.zone}</span>
+        )}
+
+        <span className="text-xs opacity-60">
+          Ej: D.O. Ribeira Sacra, Vinos de Madrid, D.O.Ca Rioja, V.T. de
+          Mallorca, Alsace...
+        </span>
+        <span className="text-xs opacity-60">
+          <b>IMPORTANTE:</b> Escribir todos con el mismo formato.
+        </span>
       </div>
 
       <div className="flex flex-col w-full gap-2">

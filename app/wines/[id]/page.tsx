@@ -1,4 +1,5 @@
 import { Badge } from "@/components/ui/Badge";
+import { Wine } from "@/utils/supabase/parsedTypes";
 import { createClient } from "@/utils/supabase/server";
 import { Database, Json } from "@/utils/supabase/types";
 import Image from "next/image";
@@ -14,14 +15,11 @@ async function WineDetail({
   const { data: wine } = await supabase
     .from("wines")
     .select(
-      "*, apellation:apellation_id(name), country:country_id(name), region:region_id(name),cellar:cellar_id(name)"
+      "*, country:country_id(name), zone:zone_id(name),cellar:cellar_id(name)"
     )
     .eq("id", params.id)
     .returns<
-      (Database["public"]["Tables"]["wines"]["Row"] & {
-        apellation: { name: string };
-        country: { name: string };
-        region: { name: string };
+      (Wine & {
         cellar: { name: string };
       })[]
     >()
@@ -81,19 +79,16 @@ async function WineDetail({
         <div className="flex gap-1">
           <label className="font-semibold text-center">País:</label>
           <h3 className="text-center">{wine.country.name}</h3>
-          <label className="ml-4 font-semibold text-center">Región:</label>
-          <h3 className="text-center">{wine.region.name}</h3>
         </div>
 
         <div className="flex gap-1">
-          <label className="font-semibold text-center">
-            Denominación de origen:
-          </label>
-          <h3 className="text-center">{wine.apellation.name}</h3>
-        </div>
-        <div className="flex gap-1">
           <label className="font-semibold text-center">Bodega:</label>
           <h3 className="text-center">{wine.cellar.name}</h3>
+        </div>
+
+        <div className="flex gap-1">
+          <label className="ml-4 font-semibold text-center">Zona:</label>
+          <h3 className="text-center">{wine.zone.name}</h3>
         </div>
       </div>
 

@@ -4,247 +4,213 @@ export type Json =
   | boolean
   | null
   | { [key: string]: Json | undefined }
-  | Json[]
+  | Json[];
 
 export type Database = {
   public: {
     Tables: {
-      apellations: {
-        Row: {
-          created_at: string
-          description: string | null
-          id: number
-          name: string
-          updated_at: string | null
-        }
-        Insert: {
-          created_at?: string
-          description?: string | null
-          id?: number
-          name: string
-          updated_at?: string | null
-        }
-        Update: {
-          created_at?: string
-          description?: string | null
-          id?: number
-          name?: string
-          updated_at?: string | null
-        }
-        Relationships: []
-      }
       cellars: {
         Row: {
-          created_at: string
-          description: string | null
-          id: number
-          name: string
-          updated_at: string | null
-        }
+          created_at: string;
+          description: string | null;
+          id: number;
+          name: string;
+          updated_at: string | null;
+        };
         Insert: {
-          created_at?: string
-          description?: string | null
-          id?: number
-          name: string
-          updated_at?: string | null
-        }
+          created_at?: string;
+          description?: string | null;
+          id?: number;
+          name: string;
+          updated_at?: string | null;
+        };
         Update: {
-          created_at?: string
-          description?: string | null
-          id?: number
-          name?: string
-          updated_at?: string | null
-        }
-        Relationships: []
-      }
+          created_at?: string;
+          description?: string | null;
+          id?: number;
+          name?: string;
+          updated_at?: string | null;
+        };
+        Relationships: [];
+      };
       countries: {
         Row: {
-          created_at: string
-          id: number
-          name: string
-          updated_at: string
-        }
+          created_at: string;
+          id: number;
+          name: string;
+          updated_at: string;
+        };
         Insert: {
-          created_at?: string
-          id?: number
-          name: string
-          updated_at?: string
-        }
+          created_at?: string;
+          id?: number;
+          name: string;
+          updated_at?: string;
+        };
         Update: {
-          created_at?: string
-          id?: number
-          name?: string
-          updated_at?: string
-        }
-        Relationships: []
-      }
+          created_at?: string;
+          id?: number;
+          name?: string;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
       grapes: {
         Row: {
-          created_at: string
-          description: string | null
-          id: number
-          name: string
-          updated_at: string
-        }
+          created_at: string;
+          description: string | null;
+          id: number;
+          name: string;
+          updated_at: string;
+        };
         Insert: {
-          created_at?: string
-          description?: string | null
-          id?: number
-          name: string
-          updated_at?: string
-        }
+          created_at?: string;
+          description?: string | null;
+          id?: number;
+          name: string;
+          updated_at?: string;
+        };
         Update: {
-          created_at?: string
-          description?: string | null
-          id?: number
-          name?: string
-          updated_at?: string
-        }
-        Relationships: []
-      }
-      regions: {
-        Row: {
-          created_at: string
-          id: number
-          name: string
-          updated_at: string
-        }
-        Insert: {
-          created_at?: string
-          id?: number
-          name: string
-          updated_at?: string
-        }
-        Update: {
-          created_at?: string
-          id?: number
-          name?: string
-          updated_at?: string
-        }
-        Relationships: []
-      }
+          created_at?: string;
+          description?: string | null;
+          id?: number;
+          name?: string;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
       tags: {
         Row: {
-          created_at: string
-          id: number
-          name: string
-          style: Json | null
-        }
+          created_at: string;
+          id: number;
+          name: string;
+          style: Json | null;
+        };
         Insert: {
-          created_at?: string
-          id?: number
-          name: string
-          style?: Json | null
-        }
+          created_at?: string;
+          id?: number;
+          name: string;
+          style?: Json | null;
+        };
         Update: {
-          created_at?: string
-          id?: number
-          name?: string
-          style?: Json | null
-        }
-        Relationships: []
-      }
+          created_at?: string;
+          id?: number;
+          name?: string;
+          style?: Json | null;
+        };
+        Relationships: [];
+      };
       wines: {
         Row: {
-          active: boolean
-          apellation_id: number
-          cellar_id: number
-          country_id: number
-          created_at: string
-          description: string
-          grapes: number[] | null
-          id: number
-          name: string
-          photo_size: Json | null
-          photo_url: string | null
-          price: number
-          region_id: number
-          tags: number[] | null
-          updated_at: string
-          year: number
-        }
+          active: boolean;
+          cellar_id: number;
+          country_id: number;
+          created_at: string;
+          description: string;
+          grapes: number[] | null;
+          id: number;
+          name: string;
+          photo_size: Json | null;
+          photo_url: string | null;
+          price: number;
+          tags: number[] | null;
+          updated_at: string;
+          year: number;
+          zone_id: number;
+        };
         Insert: {
-          active?: boolean
-          apellation_id: number
-          cellar_id: number
-          country_id: number
-          created_at?: string
-          description: string
-          grapes?: number[] | null
-          id?: number
-          name: string
-          photo_size?: Json | null
-          photo_url?: string | null
-          price: number
-          region_id: number
-          tags?: number[] | null
-          updated_at?: string
-          year: number
-        }
+          active?: boolean;
+          cellar_id: number;
+          country_id: number;
+          created_at?: string;
+          description: string;
+          grapes?: number[] | null;
+          id?: number;
+          name: string;
+          photo_size?: Json | null;
+          photo_url?: string | null;
+          price: number;
+          tags?: number[] | null;
+          updated_at?: string;
+          year: number;
+          zone_id: number;
+        };
         Update: {
-          active?: boolean
-          apellation_id?: number
-          cellar_id?: number
-          country_id?: number
-          created_at?: string
-          description?: string
-          grapes?: number[] | null
-          id?: number
-          name?: string
-          photo_size?: Json | null
-          photo_url?: string | null
-          price?: number
-          region_id?: number
-          tags?: number[] | null
-          updated_at?: string
-          year?: number
-        }
+          active?: boolean;
+          cellar_id?: number;
+          country_id?: number;
+          created_at?: string;
+          description?: string;
+          grapes?: number[] | null;
+          id?: number;
+          name?: string;
+          photo_size?: Json | null;
+          photo_url?: string | null;
+          price?: number;
+          tags?: number[] | null;
+          updated_at?: string;
+          year?: number;
+          zone_id?: number;
+        };
         Relationships: [
           {
-            foreignKeyName: "public_wines_apellation_id_fkey"
-            columns: ["apellation_id"]
-            isOneToOne: false
-            referencedRelation: "apellations"
-            referencedColumns: ["id"]
+            foreignKeyName: "public_wines_cellar_id_fkey";
+            columns: ["cellar_id"];
+            isOneToOne: false;
+            referencedRelation: "cellars";
+            referencedColumns: ["id"];
           },
           {
-            foreignKeyName: "public_wines_cellar_id_fkey"
-            columns: ["cellar_id"]
-            isOneToOne: false
-            referencedRelation: "cellars"
-            referencedColumns: ["id"]
+            foreignKeyName: "public_wines_country_id_fkey";
+            columns: ["country_id"];
+            isOneToOne: false;
+            referencedRelation: "countries";
+            referencedColumns: ["id"];
           },
           {
-            foreignKeyName: "public_wines_country_id_fkey"
-            columns: ["country_id"]
-            isOneToOne: false
-            referencedRelation: "countries"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "public_wines_region_id_fkey"
-            columns: ["region_id"]
-            isOneToOne: false
-            referencedRelation: "regions"
-            referencedColumns: ["id"]
+            foreignKeyName: "public_wines_zone_id_fkey";
+            columns: ["zone_id"];
+            isOneToOne: false;
+            referencedRelation: "zones";
+            referencedColumns: ["id"];
           }
-        ]
-      }
-    }
+        ];
+      };
+      zones: {
+        Row: {
+          created_at: string;
+          id: number;
+          name: string;
+          updated_at: string;
+        };
+        Insert: {
+          created_at?: string;
+          id?: number;
+          name: string;
+          updated_at?: string;
+        };
+        Update: {
+          created_at?: string;
+          id?: number;
+          name?: string;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
+    };
     Views: {
-      [_ in never]: never
-    }
+      [_ in never]: never;
+    };
     Functions: {
-      [_ in never]: never
-    }
+      [_ in never]: never;
+    };
     Enums: {
-      [_ in never]: never
-    }
+      [_ in never]: never;
+    };
     CompositeTypes: {
-      [_ in never]: never
-    }
-  }
-}
+      [_ in never]: never;
+    };
+  };
+};
 
 export type Tables<
   PublicTableNameOrOptions extends
@@ -257,7 +223,7 @@ export type Tables<
 > = PublicTableNameOrOptions extends { schema: keyof Database }
   ? (Database[PublicTableNameOrOptions["schema"]]["Tables"] &
       Database[PublicTableNameOrOptions["schema"]]["Views"])[TableName] extends {
-      Row: infer R
+      Row: infer R;
     }
     ? R
     : never
@@ -265,11 +231,11 @@ export type Tables<
       Database["public"]["Views"])
   ? (Database["public"]["Tables"] &
       Database["public"]["Views"])[PublicTableNameOrOptions] extends {
-      Row: infer R
+      Row: infer R;
     }
     ? R
     : never
-  : never
+  : never;
 
 export type TablesInsert<
   PublicTableNameOrOptions extends
@@ -280,17 +246,17 @@ export type TablesInsert<
     : never = never
 > = PublicTableNameOrOptions extends { schema: keyof Database }
   ? Database[PublicTableNameOrOptions["schema"]]["Tables"][TableName] extends {
-      Insert: infer I
+      Insert: infer I;
     }
     ? I
     : never
   : PublicTableNameOrOptions extends keyof Database["public"]["Tables"]
   ? Database["public"]["Tables"][PublicTableNameOrOptions] extends {
-      Insert: infer I
+      Insert: infer I;
     }
     ? I
     : never
-  : never
+  : never;
 
 export type TablesUpdate<
   PublicTableNameOrOptions extends
@@ -301,17 +267,17 @@ export type TablesUpdate<
     : never = never
 > = PublicTableNameOrOptions extends { schema: keyof Database }
   ? Database[PublicTableNameOrOptions["schema"]]["Tables"][TableName] extends {
-      Update: infer U
+      Update: infer U;
     }
     ? U
     : never
   : PublicTableNameOrOptions extends keyof Database["public"]["Tables"]
   ? Database["public"]["Tables"][PublicTableNameOrOptions] extends {
-      Update: infer U
+      Update: infer U;
     }
     ? U
     : never
-  : never
+  : never;
 
 export type Enums<
   PublicEnumNameOrOptions extends
@@ -324,4 +290,4 @@ export type Enums<
   ? Database[PublicEnumNameOrOptions["schema"]]["Enums"][EnumName]
   : PublicEnumNameOrOptions extends keyof Database["public"]["Enums"]
   ? Database["public"]["Enums"][PublicEnumNameOrOptions]
-  : never
+  : never;

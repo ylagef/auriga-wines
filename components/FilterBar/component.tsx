@@ -22,19 +22,13 @@ interface FilterBarComponentProps {
         name: string;
       }[]
     | null;
-  regions:
+  zones:
     | {
         id: number;
         name: string;
       }[]
     | null;
   cellars:
-    | {
-        id: number;
-        name: string;
-      }[]
-    | null;
-  apellations:
     | {
         id: number;
         name: string;
@@ -61,9 +55,8 @@ interface FilterBarComponentProps {
 function FilterBarComponent({
   countries,
   grapes,
-  regions,
+  zones,
   cellars,
-  apellations,
   maxWinePrice,
   maxYears,
   tags,
@@ -80,17 +73,9 @@ function FilterBarComponent({
           }))}
         />
         <MultiSelect
-          id="regions"
-          placeholder="Regiones"
-          options={regions?.map((country) => ({
-            value: String(country.id),
-            label: country.name,
-          }))}
-        />
-        <MultiSelect
-          id="grapes"
-          placeholder="Uva predominante"
-          options={grapes?.map((country) => ({
+          id="zones"
+          placeholder="Zonas"
+          options={zones?.map((country) => ({
             value: String(country.id),
             label: country.name,
           }))}
@@ -104,9 +89,9 @@ function FilterBarComponent({
           }))}
         />
         <MultiSelect
-          id="apellations"
-          placeholder="D.O."
-          options={apellations?.map((country) => ({
+          id="grapes"
+          placeholder="Uva predominante"
+          options={grapes?.map((country) => ({
             value: String(country.id),
             label: country.name,
           }))}

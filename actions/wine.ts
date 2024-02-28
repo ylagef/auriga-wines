@@ -44,12 +44,7 @@ const getWineObject = (formData: FormData): Partial<WineDB> => {
     country_id: formData.get("country")
       ? Number(formData.get("country"))
       : undefined,
-    region_id: formData.get("region")
-      ? Number(formData.get("region"))
-      : undefined,
-    apellation_id: formData.get("apellation")
-      ? Number(formData.get("apellation"))
-      : undefined,
+    zone_id: formData.get("zone") ? Number(formData.get("zone")) : undefined,
     cellar_id: formData.get("cellar")
       ? Number(formData.get("cellar"))
       : undefined,
@@ -88,28 +83,13 @@ const handleNewObjects = async (wine: Partial<Wine>, formData: FormData) => {
     );
   }
 
-  const newRegion = formData.get("new-region") as string;
-  if (newRegion) {
+  const newZone = formData.get("new-zone") as string;
+  if (newZone) {
     tasks.push(
       (async () => {
-        const newRegionData = await handleAddNewElement("regions", newRegion);
-        if (!newRegionData) return { errors: ["Error creating new region"] };
-        wine.region_id = newRegionData[0].id;
-      })()
-    );
-  }
-
-  const newApellation = formData.get("new-apellation") as string;
-  if (newApellation) {
-    tasks.push(
-      (async () => {
-        const newApellationData = await handleAddNewElement(
-          "apellations",
-          newApellation
-        );
-        if (!newApellationData)
-          return { errors: ["Error creating new apellation"] };
-        wine.apellation_id = newApellationData[0].id;
+        const newZoneData = await handleAddNewElement("zones", newZone);
+        if (!newZoneData) return { errors: ["Error creating new zone"] };
+        wine.zone_id = newZoneData[0].id;
       })()
     );
   }
@@ -206,8 +186,7 @@ const zodSchema = z
       .object({
         id: z.number(),
         country_id: z.number(),
-        region_id: z.number(),
-        apellation_id: z.number(),
+        zone_id: z.number(),
         cellar_id: z.number(),
       })
       .partial()

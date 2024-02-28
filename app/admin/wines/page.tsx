@@ -1,6 +1,7 @@
 import { SignOutButton } from "@/components/SignOutButton";
 import { WinesTable } from "@/components/WinesTable";
 import { Button } from "@/components/ui/Button";
+import { Wine } from "@/utils/supabase/parsedTypes";
 
 import { createClient } from "@/utils/supabase/server";
 import { Database } from "@/utils/supabase/types";
@@ -21,19 +22,13 @@ export default async function AdminPage() {
   const query = supabase
     .from("wines")
     .select(
-      "id, name, description, price, year, photo_url, photo_size, grapes, tags, apellation:apellation_id(name), country:country_id(name), region:region_id(name), active"
+      "id, name, description, price, year, photo_url, photo_size, grapes, tags, country:country_id(name), zone:zone_id(name), active"
     );
 
   const tagsQuery = supabase.from("tags").select("id, name, style");
 
   const [{ data: wines }, { data: tagsData }] = await Promise.all([
-    query.returns<
-      (Database["public"]["Tables"]["wines"]["Row"] & {
-        apellation: { name: string };
-        country: { name: string };
-        region: { name: string };
-      })[]
-    >(),
+    query.returns<Wine[]>(),
     tagsQuery,
   ]);
 

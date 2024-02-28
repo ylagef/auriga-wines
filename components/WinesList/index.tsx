@@ -2,6 +2,7 @@ import { SearchParams } from "@/app/wines/page";
 import { createClient } from "@/utils/supabase/server";
 import { Database } from "@/utils/supabase/types";
 import { WineElement } from "./WineElement";
+import { Wine } from "@/utils/supabase/parsedTypes";
 
 export const WinesList = async ({
   searchParams,
@@ -11,9 +12,8 @@ export const WinesList = async ({
   const {
     countries,
     grapes,
-    regions,
+    zones,
     cellars,
-    apellations,
     sortBy,
     name,
     from_price,
@@ -29,15 +29,14 @@ export const WinesList = async ({
   const query = supabase
     .from("wines")
     .select(
-      "id, name, description, price, year, photo_url, photo_size, grapes, tags, apellation:apellation_id(name), country:country_id(name), region:region_id(name)"
+      "id, name, description, price, year, photo_url, photo_size, grapes, tags, country:country_id(name), zone:zone_id(name)"
     );
 
   if (countries?.length) query.in("country_id", countries.split(","));
   if (grapes?.length) query.contains("grapes", grapes.split(","));
   if (tags?.length) query.contains("tags", tags.split(","));
-  if (regions?.length) query.in("region_id", regions.split(","));
+  if (zones?.length) query.in("zone_id", zones.split(","));
   if (cellars?.length) query.in("cellar_id", cellars.split(","));
-  if (apellations?.length) query.in("apellation_id", apellations.split(","));
   if (name?.length) query.ilike("name", `%${name}%`);
   if (from_price?.length) query.gte("price", from_price);
   if (to_price?.length) query.lte("price", to_price);
@@ -53,13 +52,7 @@ export const WinesList = async ({
   const tagsQuery = supabase.from("tags").select("id, name, style");
 
   const [{ data: wines }, { data: tagsData }] = await Promise.all([
-    query.returns<
-      (Database["public"]["Tables"]["wines"]["Row"] & {
-        apellation: { name: string };
-        country: { name: string };
-        region: { name: string };
-      })[]
-    >(),
+    query.returns<Wine[]>(),
     tagsQuery,
   ]);
 
