@@ -1,10 +1,8 @@
-import { SignOutButton } from "@/components/SignOutButton";
 import { WinesTable } from "@/components/WinesTable";
 import { Button } from "@/components/ui/Button";
 import { Wine } from "@/utils/supabase/parsedTypes";
 
 import { createClient } from "@/utils/supabase/server";
-import { Database } from "@/utils/supabase/types";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
