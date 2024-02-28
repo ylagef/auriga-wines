@@ -63,6 +63,7 @@ export const Form = ({
       <div className="flex flex-col w-full gap-2">
         <Label htmlFor="name">Nombre</Label>
         <Input
+          required
           id="name"
           name="name"
           placeholder="Nombre del vino"
@@ -80,6 +81,7 @@ export const Form = ({
       <div className="flex flex-col w-full gap-2">
         <Label htmlFor="description">Descripción</Label>
         <Textarea
+          required
           id="description"
           name="description"
           placeholder="Descripción del vino"
@@ -124,7 +126,7 @@ export const Form = ({
             name="year"
             type="number"
             placeholder="2020"
-            // min={1700}
+            min={1700}
             max={new Date().getFullYear()}
             defaultValue={wine?.year}
             className={cn(

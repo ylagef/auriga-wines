@@ -8,10 +8,10 @@ function AdminLayout({ children }: { children: React.ReactNode }) {
       <header className="sticky top-0 z-50 flex items-center justify-center w-full px-2 py-3 bg-white/30 backdrop-blur">
         <div className="relative grid w-full h-full place-items-center">
           <Image
-            src="/images/auriga-logo.svg"
+            src="/images/auriga-logo-wide.svg"
             alt="Auriga"
-            width={200}
-            height={37.5}
+            width={17}
+            height={17}
             className="w-auto h-6"
             priority
           />
