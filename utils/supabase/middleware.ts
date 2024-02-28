@@ -57,7 +57,7 @@ export const updateSession = async (request: NextRequest) => {
             });
           },
         },
-      },
+      }
     );
 
     // This will refresh session if expired - required for Server Components
@@ -69,10 +69,12 @@ export const updateSession = async (request: NextRequest) => {
     // If you are here, a Supabase client could not be created!
     // This is likely because you have not set up environment variables.
     // Check out http://localhost:3000 for Next Steps.
+    console.error("THIS IS THE MIDDLEWARE ERROR", e);
     return NextResponse.next({
       request: {
         headers: request.headers,
       },
+      statusText: "Supabase client could not be created" + JSON.stringify(e),
     });
   }
 };
