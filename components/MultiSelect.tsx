@@ -189,24 +189,26 @@ export function MultiSelect({
               </CommandEmpty>
 
               <CommandGroup className="h-full overflow-auto">
-                {selectables.map((option) => {
-                  return (
-                    <CommandItem
-                      key={option.value}
-                      onMouseDown={(e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                      }}
-                      onSelect={() => {
-                        setInputValue("");
-                        setSelected((prev) => [...prev, option]);
-                      }}
-                      className={"cursor-pointer"}
-                    >
-                      {option.label}
-                    </CommandItem>
-                  );
-                })}
+                {selectables
+                  .sort((a, z) => a.label.localeCompare(z.label))
+                  .map((option) => {
+                    return (
+                      <CommandItem
+                        key={option.value}
+                        onMouseDown={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                        }}
+                        onSelect={() => {
+                          setInputValue("");
+                          setSelected((prev) => [...prev, option]);
+                        }}
+                        className={"cursor-pointer"}
+                      >
+                        {option.label}
+                      </CommandItem>
+                    );
+                  })}
               </CommandGroup>
             </div>
           </div>

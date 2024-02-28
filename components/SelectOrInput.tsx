@@ -65,10 +65,12 @@ export const SelectOrInput = ({
             }),
           }}
           placeholder={placeholder}
-          options={options?.map((option) => ({
-            value: String(option.id),
-            label: option.name,
-          }))}
+          options={options
+            ?.sort((a, z) => a.name.localeCompare(z.name))
+            .map((option) => ({
+              value: String(option.id),
+              label: option.name,
+            }))}
         >
           {/* <SelectTrigger
             className={cn(
