@@ -11,16 +11,17 @@ export const signIn = async (formData: FormData) => {
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
 
-    const { error } = await supabase.auth.signInWithPassword({
+    const { error, data } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
 
+    console.log({ data });
     if (error) {
       return redirect("/admin/login?message=Could not authenticate user");
     }
 
-    return redirect("/admin");
+    return redirect("/admin/wines");
   } catch (e) {
     console.error("error signing in", e);
   }
