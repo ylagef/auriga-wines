@@ -9,13 +9,6 @@ import { redirect } from "next/navigation";
 export default async function AdminPage() {
   const supabase = createClient();
 
-  // const {
-  //   data: { user },
-  // } = await supabase.auth.getUser();
-  // console.log({ user });
-
-  // if (!user) return redirect("/admin/login");
-
   const query = supabase
     .from("wines")
     .select(
