@@ -56,13 +56,16 @@ export const SelectOrInput = ({
               : undefined
           }
           classNames={{
-            container: () => "w-full",
+            container: () => "w-full h-10",
+            control: () => "shadow-sm h-10",
           }}
           styles={{
             control: (base) => ({
               ...base,
-              borderColor: "#e2e9f0",
+              borderColor: "#e2e9f0!important",
               borderRadius: "0.375rem",
+              fontSize: "0.875rem",
+              boxShadow: "none",
             }),
           }}
           placeholder={placeholder}

@@ -32,13 +32,15 @@ export const OrderBySelect = () => {
         className={cn(open && "z-10")}
         classNames={{
           container: () => "w-2/3 sm:w-56",
-          control: () => "shadow-sm",
+          control: () => "shadow-sm h-10",
         }}
         styles={{
           control: (base) => ({
             ...base,
-            borderColor: "#e2e9f0",
+            borderColor: "#e2e9f0!important",
             borderRadius: "0.375rem",
+            fontSize: "0.875rem",
+            boxShadow: "none",
           }),
         }}
         placeholder="Ordenar por..."
