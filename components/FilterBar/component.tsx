@@ -108,29 +108,36 @@ function FilterBarComponent({
       </div>
 
       <div className="flex flex-wrap justify-between gap-6">
-        <RangeSelect
-          id="year"
-          min={maxYears?.[0]?.year || 1800}
-          max={new Date().getFullYear()}
-          step={1}
-          labelFormatter={(value) => String(value)}
-        />
-        <RangeSelect
-          id="price"
-          min={0}
-          max={maxWinePrice?.[0]?.price || 100}
-          step={5}
-          labelFormatter={(value) =>
-            Intl.NumberFormat("es-ES", {
-              style: "currency",
-              currency: "EUR",
-              maximumFractionDigits: 0,
-            }).format(Number(value))
-          }
-        />
-        <OrderBySelect />
+        <div className="flex items-center gap-6 grow min-w-80">
+          <RangeSelect
+            id="year"
+            min={maxYears?.[0]?.year || 1800}
+            max={new Date().getFullYear()}
+            step={1}
+            labelFormatter={(value) => String(value)}
+          />
+          <RangeSelect
+            id="price"
+            min={0}
+            max={maxWinePrice?.[0]?.price || 100}
+            step={5}
+            labelFormatter={(value) =>
+              Intl.NumberFormat("es-ES", {
+                style: "currency",
+                currency: "EUR",
+                maximumFractionDigits: 0,
+              }).format(Number(value))
+            }
+          />
+        </div>
+        <div className="flex items-center justify-between w-full gap-2 sm:w-auto">
+          <OrderBySelect />
+          <Link href="/wines" className="text-sm text-gray-600 sm:hidden">
+            Limpiar filtros
+          </Link>
+        </div>
       </div>
-      <div className="flex justify-end">
+      <div className="justify-end hidden sm:flex">
         <Link href="/wines" className="text-sm text-gray-600">
           Limpiar filtros
         </Link>

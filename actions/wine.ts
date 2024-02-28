@@ -114,14 +114,10 @@ const handlePhotoUpload = async (photo: File, wine: WineDB) => {
   const extension = photo.name.split(".").pop();
   const md5Id = md5.create().update(`${wine.id}`).hex();
 
-  console.log("md5Id", md5Id, extension);
   const { data: photoData, error: photoError } = await supabase.storage
     .from("wines")
     .upload(`${md5Id}.${extension}`, photo, { upsert: true });
-  console.log("photoData", photoData, photoError);
   if (!photoData) return "Error uploading photo";
-
-  console.log("photoData", photoData);
 
   const buffer = await photo.arrayBuffer();
   const metadata = await sharp(Buffer.from(buffer)).metadata();
@@ -212,9 +208,7 @@ export const createWine = async (_: any, formData: FormData) => {
   const supabase = createClient();
 
   const wine = getWineObject(formData);
-  console.log("wine", wine);
   const validatedSchema = validateObject(wine);
-  console.log("validatedSchema", validatedSchema);
 
   if (validatedSchema?.errors) return validatedSchema;
 
@@ -227,7 +221,6 @@ export const createWine = async (_: any, formData: FormData) => {
 
   if (error?.code === "23505")
     return { errors: { name: ["Ya existe un vino con este nombre."] } };
-  console.log("data", data, error);
 
   const insertedWine = data?.[0];
   if (!insertedWine) return { errors: ["Error inserting wine"] };
@@ -255,7 +248,6 @@ export const updateWine = async (_: any, formData: FormData) => {
     .select();
 
   const photo = formData.get("photo") as File;
-  console.log("photo", photo);
   if (photo.size > 0) {
     await handlePhotoUpload(photo, data?.[0] as WineDB);
   }

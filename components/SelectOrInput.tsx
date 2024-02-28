@@ -71,25 +71,7 @@ export const SelectOrInput = ({
               value: String(option.id),
               label: option.name,
             }))}
-        >
-          {/* <SelectTrigger
-            className={cn(
-              "w-full text-left shadow-sm animate-fade-in",
-              className
-            )}
-          >
-            <SelectValue placeholder="Seleccionar..." />
-          </SelectTrigger>
-          <SelectContent className="w-full bg-white shadow-sm">
-            {options
-              ?.sort((a, z) => a.name.localeCompare(z.name))
-              ?.map((country) => (
-                <SelectItem key={country.id} value={String(country.id)}>
-                  {country.name}
-                </SelectItem>
-              ))}
-          </SelectContent> */}
-        </Select>
+        />
       )}
 
       <label className="flex items-center gap-2">

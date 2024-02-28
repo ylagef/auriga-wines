@@ -19,14 +19,16 @@ function IdlePage() {
       />
 
       <div className="flex flex-col items-center gap-4">
-        <h1 className="text-2xl font-bold">Bienvenidx a nuestra Cava</h1>
+        <h1 className="text-2xl font-bold text-center">
+          Bienvenidx a nuestra Cava
+        </h1>
         <h2 className="text-center">
           Descubre nuestra selección de vinos y disfruta de una experiencia
           inolvidable.
         </h2>
       </div>
 
-      <span className="animate-pulse">Toca para empezar</span>
+      <span className="text-center animate-pulse">Toca para empezar</span>
     </Link>
   );
 }

@@ -36,7 +36,6 @@ async function WineDetail({
       .select("id, name, style")
       .in("id", wine.tags);
     tagsData = tagsResponse.data as typeof tagsData;
-    console.log(wine.tags, tagsData);
   }
 
   const size = wine.photo_size as { width: number; height: number };

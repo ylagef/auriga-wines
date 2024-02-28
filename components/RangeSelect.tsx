@@ -38,8 +38,6 @@ const ThumbLabel = ({
   );
 };
 
-const STEP = 5;
-
 interface RangeSelectProps {
   id: string;
   min: number;
@@ -89,7 +87,7 @@ export const RangeSelect = ({
   }, [searchParams]);
 
   return (
-    <div className="flex flex-wrap items-center justify-center w-1/2 h-10 px-3 grow sm:w-auto">
+    <div className="flex flex-wrap items-center justify-center w-1/2 h-10 px-3 grow">
       <Range
         ref={rangeRef}
         values={values}
