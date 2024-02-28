@@ -36,11 +36,12 @@ export default async function AdminPage() {
 
   return (
     <div className="flex flex-col items-center flex-1 w-full max-w-6xl gap-4 px-4">
-      {/* <AuthButton /> */}
-
-      <div className="flex w-full gap-2">
-        <Link href="/admin/wines/new" className="flex items-center gap-2">
-          <Button>Añadir nuevo</Button>
+      <div className="flex w-full gap-2 mt-2">
+        <Link
+          href="/admin/wines/new"
+          className="flex items-center w-full gap-2 sm:w-auto"
+        >
+          <Button className="w-full">Añadir nuevo</Button>
         </Link>
       </div>
 

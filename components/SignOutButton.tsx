@@ -18,7 +18,7 @@ export const SignOutButton = () => {
           router.push("/wines");
         }
       }}
-      className="absolute right-0 transform -translate-x-1/2 -translate-y-1/2 top-1/2"
+      className="absolute right-0 transform -translate-y-1/2 top-1/2"
     >
       Cerrar sesión
     </Button>
