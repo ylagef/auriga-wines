@@ -5,21 +5,25 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
 export const signIn = async (formData: FormData) => {
-  const supabase = createClient();
+  try {
+    const supabase = createClient();
 
-  const email = formData.get("email") as string;
-  const password = formData.get("password") as string;
+    const email = formData.get("email") as string;
+    const password = formData.get("password") as string;
 
-  const { error } = await supabase.auth.signInWithPassword({
-    email,
-    password,
-  });
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
 
-  if (error) {
-    return redirect("/admin/login?message=Could not authenticate user");
+    if (error) {
+      return redirect("/admin/login?message=Could not authenticate user");
+    }
+
+    return redirect("/admin");
+  } catch (e) {
+    console.error("error signing in", e);
   }
-
-  return redirect("/admin");
 };
 
 const signUp = async (formData: FormData) => {
