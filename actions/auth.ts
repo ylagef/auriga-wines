@@ -2,7 +2,7 @@
 
 import { createClient } from "@/utils/supabase/server";
 import { headers } from "next/headers";
-import { redirect } from "next/navigation";
+import { RedirectType, redirect } from "next/navigation";
 
 export const signIn = async (formData: FormData) => {
   try {
@@ -18,10 +18,13 @@ export const signIn = async (formData: FormData) => {
 
     console.log({ data });
     if (error) {
-      return redirect("/admin/login?message=Could not authenticate user");
+      return redirect(
+        "/admin/login?message=Could not authenticate user",
+        RedirectType.replace
+      );
     }
 
-    return redirect("/admin/wines");
+    return redirect("/admin/wines", RedirectType.replace);
   } catch (e) {
     console.error("error signing in", e);
   }
