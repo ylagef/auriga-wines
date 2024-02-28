@@ -4,7 +4,7 @@ import React from "react";
 
 function AdminLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex flex-col w-full max-w-5xl mx-auto">
+    <div className="flex flex-col w-full h-full max-w-5xl mx-auto">
       <header className="sticky top-0 z-50 flex items-center justify-center w-full px-2 py-3 bg-white/30 backdrop-blur">
         <div className="relative flex items-center justify-start w-full h-full px-4 sm:justify-center">
           <Image
