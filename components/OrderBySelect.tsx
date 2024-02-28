@@ -1,14 +1,27 @@
 "use client";
 import { useUpdateSearchParams } from "@/hooks/useUpdateSearchParams";
 import { cn } from "@/utils";
+import { useSearchParams } from "next/navigation";
 
 import { useEffect, useRef, useState } from "react";
 import Select from "react-select";
 
+const OPTIONS: {
+  value: string;
+  label: string;
+}[] = [
+  { value: "price_asc", label: "Precio ascendente" },
+  { value: "price_desc", label: "Precio descendente" },
+  { value: "year_asc", label: "Añada ascendente" },
+  { value: "year_desc", label: "Añada descendente" },
+];
+
 export const OrderBySelect = () => {
   const { updateSearchParams } = useUpdateSearchParams();
+  const searchParams = useSearchParams();
   const [open, setOpen] = useState(false);
 
+  const currentValue = searchParams.get("sortBy");
   return (
     <>
       {open && (
@@ -28,15 +41,19 @@ export const OrderBySelect = () => {
           }),
         }}
         placeholder="Ordenar por..."
+        defaultValue={
+          currentValue
+            ? {
+                value: currentValue,
+                label: OPTIONS.find((option) => option.value === currentValue)!
+                  .label,
+              }
+            : undefined
+        }
         onChange={(option) => updateSearchParams("sortBy", option!.value)}
         onMenuOpen={() => setOpen(true)}
         onMenuClose={() => setOpen(false)}
-        options={[
-          { value: "price_asc", label: "Precio ascendente" },
-          { value: "price_desc", label: "Precio descendente" },
-          { value: "year_asc", label: "Añada ascendente" },
-          { value: "year_desc", label: "Añada descendente" },
-        ]}
+        options={OPTIONS}
       />
     </>
   );
