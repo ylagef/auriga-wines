@@ -21,9 +21,9 @@ function WinesLayout({ children }: { children: ReactNode }) {
         <main>{children}</main>
       </div>
       <footer className="flex items-center justify-center w-full p-4 mt-2">
-        <p className="text-xs text-center opacity-50">
+        <p className="text-xs font-bold text-center">
           Todas nuestras botellas pueden ser compradas para consumir fuera del
-          local con un 30% de descuento.
+          local con un 25% de descuento.
         </p>
       </footer>
     </>
