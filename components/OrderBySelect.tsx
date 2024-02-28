@@ -38,6 +38,7 @@ export const OrderBySelect = () => {
           control: (base) => ({
             ...base,
             borderColor: "#e2e9f0",
+            borderRadius: "0.375rem",
           }),
         }}
         placeholder="Ordenar por..."
