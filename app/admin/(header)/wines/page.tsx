@@ -25,7 +25,7 @@ export default async function AdminPage() {
 
   return (
     <div className="flex flex-col items-center flex-1 w-full h-full max-w-6xl gap-4 px-4">
-      <div className="flex items-end justify-between w-full gap-2 mt-2">
+      <div className="flex flex-wrap items-center justify-between w-full gap-2 mt-2">
         <Link
           href="/admin/wines/new"
           className="flex items-center w-full gap-2 sm:w-auto"
@@ -33,7 +33,7 @@ export default async function AdminPage() {
           <Button className="w-full">Añadir nuevo</Button>
         </Link>
 
-        <span>
+        <span className="inline-block whitespace-nowrap">
           <strong>Total:</strong> {wines.length} vinos
         </span>
       </div>
