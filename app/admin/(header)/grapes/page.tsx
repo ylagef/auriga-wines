@@ -11,6 +11,9 @@ async function GrapesPage() {
   return (
     <div className="flex flex-col items-center w-full gap-2 p-4">
       <h1 className="mb-4 text-xl font-bold">Uvas</h1>
+      {!grapes?.length && (
+        <p className="text-gray-500">Aún no hay uvas registradas</p>
+      )}
       {grapes
         ?.sort((a, z) => a.name.localeCompare(z.name))
         .map((grape) => (

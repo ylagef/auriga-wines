@@ -13,6 +13,9 @@ async function CountriesPage() {
   return (
     <div className="flex flex-col items-center w-full gap-2 p-4">
       <h1 className="mb-4 text-xl font-bold">Países</h1>
+      {!countries?.length && (
+        <p className="text-gray-500">Aún no hay países registradas</p>
+      )}
       {countries
         ?.sort((a, z) => a.name.localeCompare(z.name))
         .map((country) => (
