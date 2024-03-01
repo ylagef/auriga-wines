@@ -24,14 +24,14 @@ const LinkCard = ({
 
 async function AdminPage() {
   return (
-    <div className="flex flex-col self-start gap-2 mt-10">
+    <div className="flex flex-col self-start gap-2 px-4 mt-10">
       <LinkCard
         href="/admin/wines"
         className="py-4 font-semibold text-white bg-black"
       >
         Vinos
       </LinkCard>
-      <div className="flex flex-wrap gap-2">
+      <div className="flex flex-wrap items-center justify-center gap-2">
         <LinkCard href="/admin/countries">Países</LinkCard>
         <LinkCard href="/admin/cellars">Bodegas</LinkCard>
         <LinkCard href="/admin/zones">Zonas</LinkCard>
