@@ -1,6 +1,7 @@
 import { createClient } from "@/utils/supabase/server";
 import React from "react";
-import CellarRow from "./CellarRow";
+import NameUpdateRow from "./NameUpdateRow";
+import { updateCellar } from "@/actions/cellar";
 
 async function CellarsPage() {
   const supabase = createClient();
@@ -13,7 +14,11 @@ async function CellarsPage() {
       {cellars
         ?.sort((a, z) => a.name.localeCompare(z.name))
         .map((cellar) => (
-          <CellarRow key={cellar.id} cellar={cellar} />
+          <NameUpdateRow
+            key={cellar.id}
+            element={cellar}
+            action={updateCellar}
+          />
         ))}
     </div>
   );

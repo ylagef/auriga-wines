@@ -7,15 +7,23 @@ import { updateCellar } from "@/actions/cellar";
 import { Check } from "lucide-react";
 import { cn } from "@/utils";
 
-function CellarRow({
-  cellar,
+function NameUpdateRow({
+  element,
+  action,
 }: {
-  cellar: {
+  element: {
     id: number;
     name: string;
   };
+  action: (
+    _: any,
+    formData: FormData
+  ) => Promise<{
+    success?: boolean;
+    errors?: Record<string, any>;
+  }>;
 }) {
-  const [state, formAction] = useFormState(updateCellar, {
+  const [state, formAction] = useFormState(action, {
     success: false,
   });
   const [errors, setErrors] = useState<Record<string, any> | undefined>(
@@ -29,17 +37,16 @@ function CellarRow({
   return (
     <div className="flex flex-col items-center w-full gap-1">
       <form
-        id={`cellar-form-${cellar.id}`}
         className="flex items-center justify-between w-full"
         action={formAction}
         onFocus={() => setErrors({})}
       >
-        <input type="hidden" name="id" value={cellar.id} />
+        <input type="hidden" name="id" value={element.id} />
         <input
           className="px-4 py-2 border-t border-b border-l border-black grow rounded-l-md"
           type="text"
           name="name"
-          defaultValue={cellar.name}
+          defaultValue={element.name}
         />
 
         <SubmitButton
@@ -70,4 +77,4 @@ function CellarRow({
   );
 }
 
-export default CellarRow;
+export default NameUpdateRow;
