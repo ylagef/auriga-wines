@@ -15,6 +15,7 @@ export interface SearchParams {
   from_year?: string;
   to_year?: string;
   tags?: string;
+  types?: string;
 }
 
 async function WinesPage({ searchParams }: { searchParams: SearchParams }) {

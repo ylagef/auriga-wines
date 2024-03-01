@@ -258,6 +258,11 @@ export const Form = ({
       </div>
 
       <SubmitButton>{wine ? "Actualizar" : "Crear"}</SubmitButton>
+      {errors?.general && (
+        <span className="w-full text-xs text-center text-red-500">
+          {errors.general}
+        </span>
+      )}
     </form>
   );
 };

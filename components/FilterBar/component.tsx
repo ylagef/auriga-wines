@@ -50,6 +50,12 @@ interface FilterBarComponentProps {
         name: string;
       }[]
     | null;
+  types:
+    | {
+        id: number;
+        name: string;
+      }[]
+    | null;
 }
 
 function FilterBarComponent({
@@ -60,6 +66,7 @@ function FilterBarComponent({
   maxWinePrice,
   maxYears,
   tags,
+  types,
 }: FilterBarComponentProps) {
   return (
     <div className="flex flex-col w-full gap-2">
@@ -100,6 +107,14 @@ function FilterBarComponent({
           id="tags"
           placeholder="Tags"
           options={tags?.map((tag) => ({
+            value: String(tag.id),
+            label: tag.name,
+          }))}
+        />
+        <MultiSelect
+          id="types"
+          placeholder="Tipos"
+          options={types?.map((tag) => ({
             value: String(tag.id),
             label: tag.name,
           }))}

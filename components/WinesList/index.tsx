@@ -21,6 +21,7 @@ export const WinesList = async ({
     from_year,
     to_year,
     tags,
+    types,
   } = searchParams;
 
   await new Promise((resolve) => setTimeout(resolve, 2000));
@@ -42,6 +43,7 @@ export const WinesList = async ({
   if (to_price?.length) query.lte("price", to_price);
   if (from_year?.length) query.gte("year", from_year);
   if (to_year?.length) query.lte("year", to_year);
+  if (types?.length) query.in("type_id", types.split(","));
 
   if (sortBy?.length) {
     query.order(sortBy.split(/_(asc|desc)/)[0], {

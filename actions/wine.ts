@@ -8,10 +8,6 @@ import { redirect } from "next/navigation";
 import sharp from "sharp";
 import { z } from "zod";
 
-//   revalidatePath("/admin/wines");
-//   revalidatePath("/wines");
-// };
-
 const handleAddNewGrapes = async (newGrapes: string[]) => {
   const supabase = createClient();
   const newGrapesArray = newGrapes.map((name) => ({ name }));
@@ -77,7 +73,8 @@ const handleNewObjects = async (wine: Partial<Wine>, formData: FormData) => {
           "countries",
           newCountry
         );
-        if (!newCountryData) return { errors: ["Error creating new country"] };
+        if (!newCountryData)
+          return { errors: { general: ["Error creating new country"] } };
         wine.country_id = newCountryData[0].id;
       })()
     );
@@ -88,7 +85,8 @@ const handleNewObjects = async (wine: Partial<Wine>, formData: FormData) => {
     tasks.push(
       (async () => {
         const newZoneData = await handleAddNewElement("zones", newZone);
-        if (!newZoneData) return { errors: ["Error creating new zone"] };
+        if (!newZoneData)
+          return { errors: { general: ["Error creating new zone"] } };
         wine.zone_id = newZoneData[0].id;
       })()
     );
@@ -99,8 +97,21 @@ const handleNewObjects = async (wine: Partial<Wine>, formData: FormData) => {
     tasks.push(
       (async () => {
         const newCellarData = await handleAddNewElement("cellars", newCellar);
-        if (!newCellarData) return { errors: ["Error creating new cellar"] };
+        if (!newCellarData)
+          return { errors: { general: ["Error creating new cellar"] } };
         wine.cellar_id = newCellarData[0].id;
+      })()
+    );
+  }
+
+  const newType = formData.get("new-type") as string;
+  if (newType) {
+    tasks.push(
+      (async () => {
+        const newTypeData = await handleAddNewElement("types", newType);
+        if (!newTypeData)
+          return { errors: { general: ["Error creating new type"] } };
+        wine.type_id = newTypeData[0].id;
       })()
     );
   }
@@ -218,11 +229,18 @@ export const createWine = async (_: any, formData: FormData) => {
     .insert(wine as WineDB)
     .select();
 
-  if (error?.code === "23505")
-    return { errors: { name: ["Ya existe un vino con este nombre."] } };
+  if (error) {
+    console.error("Error inserting wine", error);
+    if (error.code === "23505")
+      return { errors: { name: ["Ya existe un vino con este nombre."] } };
+
+    return {
+      errors: { general: [`Error inserting wine => ${error.message}`] },
+    };
+  }
 
   const insertedWine = data?.[0];
-  if (!insertedWine) return { errors: ["Error inserting wine"] };
+  if (!insertedWine) return { errors: { general: ["Error inserting wine"] } };
 
   const photo = formData.get("photo") as File;
   if (photo.size > 0) {
@@ -238,7 +256,7 @@ export const updateWine = async (_: any, formData: FormData) => {
 
   await handleNewObjects(wine, formData);
 
-  if (!wine.id) return { errors: ["Wine id is required"] };
+  if (!wine.id) return { errors: { general: ["Wine id is required"] } };
 
   const { data, error, count, status, statusText } = await supabase
     .from("wines")

@@ -51,28 +51,6 @@ export const GrapesInput = ({ grapes, selected }: GrapesInputProps) => {
 
   return (
     <>
-      {/* <div className="flex flex-wrap gap-4">
-        {allGrapes
-          ?.sort((a, z) => a.name.localeCompare(z.name))
-          ?.map((grape) => (
-            <label
-              className="flex items-center gap-2"
-              key={grape.id || grape.name}
-            >
-              {grape.id ? (
-                <Checkbox
-                  id={String(grape.id)}
-                  name="grape"
-                  value={grape.id}
-                  defaultChecked={selected?.includes(grape.id)}
-                />
-              ) : (
-                <Checkbox id={grape.name} name="new-grape" value={grape.name} />
-              )}
-              {grape.name}
-            </label>
-          ))}
-      </div> */}
       <div className="hidden">
         {selectedGrapes?.map((grape) => {
           if (grape.value !== grape.label) {
@@ -81,7 +59,7 @@ export const GrapesInput = ({ grapes, selected }: GrapesInputProps) => {
                 key={grape.value}
                 type=""
                 name="grape"
-                value={grape.value}
+                defaultValue={grape.value}
               />
             );
           }
@@ -90,7 +68,7 @@ export const GrapesInput = ({ grapes, selected }: GrapesInputProps) => {
               key={grape.label}
               type=""
               name="new-grape"
-              value={grape.label}
+              defaultValue={grape.label}
             />
           );
         })}
