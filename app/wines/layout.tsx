@@ -1,3 +1,4 @@
+import DiscountButton from "@/components/DiscountButton";
 import { IdleHandler } from "@/components/IdleHandler";
 import Image from "next/image";
 import { ReactNode } from "react";
@@ -17,14 +18,12 @@ function WinesLayout({ children }: { children: ReactNode }) {
         />
       </header>
 
-      <div className="w-full max-w-4xl px-4 py-2 grow">
+      <div className="w-full max-w-4xl px-4 py-2 pb-20 overflow-y-auto grow">
         <main>{children}</main>
       </div>
-      <footer className="flex items-center justify-center w-full p-4 mt-2">
-        <p className="text-xs font-bold text-center">
-          Todas nuestras botellas pueden ser compradas para consumir fuera del
-          local con un 25% de descuento.
-        </p>
+
+      <footer className="fixed bottom-0 flex items-center justify-center w-full p-4">
+        <DiscountButton />
       </footer>
     </>
   );
