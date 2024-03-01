@@ -30,7 +30,7 @@ function CellarRow({
     <div className="flex flex-col items-center w-full gap-1">
       <form
         id={`cellar-form-${cellar.id}`}
-        className="flex items-center justify-between w-full px-4 py-2"
+        className="flex items-center justify-between w-full"
         action={formAction}
         onFocus={() => setErrors({})}
       >

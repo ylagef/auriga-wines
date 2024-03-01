@@ -9,7 +9,7 @@ async function CellarsPage() {
 
   return (
     <div className="flex flex-col items-center w-full gap-2 p-4">
-      <h1 className="text-xl font-bold">Bodegas</h1>
+      <h1 className="mb-4 text-xl font-bold">Bodegas</h1>
       {cellars
         ?.sort((a, z) => a.name.localeCompare(z.name))
         .map((cellar) => (
