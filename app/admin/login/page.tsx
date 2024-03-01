@@ -2,6 +2,7 @@ import { signIn } from "@/actions/auth";
 import { SubmitButton } from "./submit-button";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
+import Image from "next/image";
 
 export default async function Login({
   searchParams,
@@ -14,11 +15,19 @@ export default async function Login({
     data: { user },
   } = await supabase.auth.getUser();
 
-  if (user) return redirect("/admin/wines");
+  if (user) return redirect("/admin");
 
   return (
     <div className="flex flex-col justify-center flex-1 w-full gap-2 px-8 sm:max-w-md">
       <form className="flex flex-col justify-center flex-1 w-full gap-2 animate-in text-foreground">
+        <Image
+          src="/images/auriga-logo-small.svg"
+          alt="Auriga"
+          width={17}
+          height={17}
+          className="w-auto h-6 mb-10 sm:h-8"
+          priority
+        />
         <label className="text-md" htmlFor="email">
           Email
         </label>
