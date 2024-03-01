@@ -31,8 +31,8 @@ export const WinesList = async ({
     .from("wines")
     .select(
       "id, name, description, price, year, photo_url, photo_size, grapes, tags, country:country_id(name), zone:zone_id(name)"
-    );
-  // .eq("active", true);
+    )
+    .eq("active", true);
 
   if (countries?.length) query.in("country_id", countries.split(","));
   if (grapes?.length) query.contains("grapes", grapes.split(","));
