@@ -30,9 +30,7 @@ async function AdminLayout({ children }: { children: React.ReactNode }) {
           <SignOutButton />
         </div>
       </header>
-      <main className="flex items-center justify-center w-full grow">
-        {children}
-      </main>
+      <main className="flex justify-center w-full grow">{children}</main>
     </div>
   );
 }

@@ -235,7 +235,7 @@ export const createWine = async (_: any, formData: FormData) => {
       return { errors: { name: ["Ya existe un vino con este nombre."] } };
 
     return {
-      errors: { general: [`Error inserting wine => ${error.message}`] },
+      errors: { general: [`Error creando vino => ${error.message}`] },
     };
   }
 
