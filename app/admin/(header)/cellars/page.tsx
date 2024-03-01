@@ -1,6 +1,6 @@
 import { createClient } from "@/utils/supabase/server";
 import React from "react";
-import NameUpdateRow from "./NameUpdateRow";
+import NameUpdateRow from "@/components/NameUpdateRow";
 import { updateCellar } from "@/actions/cellar";
 
 async function CellarsPage() {

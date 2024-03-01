@@ -1,11 +1,10 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { SubmitButton } from "../../login/submit-button";
-import { useFormState } from "react-dom";
-import { updateCellar } from "@/actions/cellar";
-import { Check } from "lucide-react";
 import { cn } from "@/utils";
+import { Check } from "lucide-react";
+import { useEffect, useState } from "react";
+import { useFormState } from "react-dom";
+import { SubmitButton } from "../app/admin/login/submit-button";
 
 function NameUpdateRow({
   element,
@@ -23,23 +22,22 @@ function NameUpdateRow({
     errors?: Record<string, any>;
   }>;
 }) {
-  const [state, formAction] = useFormState(action, {
-    success: false,
-  });
-  const [errors, setErrors] = useState<Record<string, any> | undefined>(
-    state.errors
+  const [formState, formAction] = useFormState(action, {});
+  const [state, setState] = useState<Record<string, any> | undefined>(
+    formState
   );
 
   useEffect(() => {
-    setErrors(state.errors);
-  }, [state.errors]);
+    setState(formState);
+  }, [formState]);
 
+  const { success, errors } = state || {};
   return (
     <div className="flex flex-col items-center w-full gap-1">
       <form
         className="flex items-center justify-between w-full"
         action={formAction}
-        onFocus={() => setErrors({})}
+        onFocus={() => setState({})}
       >
         <input type="hidden" name="id" value={element.id} />
         <input
@@ -53,18 +51,12 @@ function NameUpdateRow({
           pendingText="Actualizando..."
           className={cn(
             "h-full px-4 py-2 text-white rounded-r-md transition-all w-auto border",
-            state.success
-              ? "bg-green-500 border-green-700"
-              : "bg-black border-black"
+            success ? "bg-green-500 border-green-700" : "bg-black border-black"
           )}
-          disabled={state.success}
+          disabled={success}
           formAction={formAction}
         >
-          {state.success ? (
-            <Check className="w-6 h-6 text-white" />
-          ) : (
-            <span>Actualizar</span>
-          )}
+          {success ? <Check className="w-6 h-6 text-white" /> : "Actualizar"}
         </SubmitButton>
       </form>
       {errors?.name && (
