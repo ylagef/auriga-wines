@@ -46,6 +46,7 @@ const getWineObject = (formData: FormData): Partial<WineDB> => {
       : undefined,
     active: formData.get("active") === "on",
     tags: formData.getAll("tag").map(Number) || [],
+    type_id: formData.get("type") ? Number(formData.get("type")) : undefined,
   };
 
   return wine;
@@ -219,6 +220,7 @@ export const createWine = async (_: any, formData: FormData) => {
   const supabase = createClient();
 
   const wine = getWineObject(formData);
+  console.log("Wine", wine);
   const validatedSchema = validateObject(wine);
 
   if (validatedSchema?.errors) return validatedSchema;
