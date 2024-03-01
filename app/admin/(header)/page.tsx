@@ -13,7 +13,10 @@ const LinkCard = ({
 }) => (
   <Link
     href={href}
-    className={cn("p-4 text-center  rounded-md border border-black", className)}
+    className={cn(
+      "px-4 py-2 text-center  rounded-md border border-black shadow-sm",
+      className
+    )}
   >
     {children}
   </Link>
@@ -21,10 +24,10 @@ const LinkCard = ({
 
 async function AdminPage() {
   return (
-    <div className="flex flex-col self-start gap-4 mt-10">
+    <div className="flex flex-col self-start gap-2 mt-10">
       <LinkCard
         href="/admin/wines"
-        className="font-semibold text-white bg-black"
+        className="py-4 font-semibold text-white bg-black"
       >
         Vinos
       </LinkCard>
