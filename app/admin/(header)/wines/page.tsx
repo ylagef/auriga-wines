@@ -4,7 +4,6 @@ import { Wine } from "@/utils/supabase/parsedTypes";
 
 import { createClient } from "@/utils/supabase/server";
 import Link from "next/link";
-import { redirect } from "next/navigation";
 
 export default async function AdminPage() {
   const supabase = createClient();
@@ -22,17 +21,21 @@ export default async function AdminPage() {
     tagsQuery,
   ]);
 
-  if (!wines) return <div>Wines not found</div>;
+  if (!wines) return <div>Vinos no encontrados</div>;
 
   return (
     <div className="flex flex-col items-center flex-1 w-full h-full max-w-6xl gap-4 px-4">
-      <div className="flex w-full gap-2 mt-2">
+      <div className="flex items-end justify-between w-full gap-2 mt-2">
         <Link
           href="/admin/wines/new"
           className="flex items-center w-full gap-2 sm:w-auto"
         >
           <Button className="w-full">Añadir nuevo</Button>
         </Link>
+
+        <span>
+          <strong>Total:</strong> {wines.length} vinos
+        </span>
       </div>
 
       <WinesTable data={wines} tags={tagsData} />
