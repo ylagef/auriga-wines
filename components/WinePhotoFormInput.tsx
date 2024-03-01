@@ -49,7 +49,7 @@ export const WinePhotoFormInput = ({ wine }: WinePhotoFormInputProps) => {
         />
       </div>
 
-      <div className="flex">
+      <div className="flex shadow-sm">
         <Input
           required={!wine?.photo_url}
           id="photo"

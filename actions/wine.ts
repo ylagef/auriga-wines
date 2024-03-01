@@ -211,7 +211,6 @@ export const createWine = async (_: any, formData: FormData) => {
   const validatedSchema = validateObject(wine);
 
   if (validatedSchema?.errors) return validatedSchema;
-
   await handleNewObjects(wine, formData);
 
   const { data, error } = await supabase

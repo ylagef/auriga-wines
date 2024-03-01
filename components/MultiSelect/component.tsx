@@ -10,10 +10,8 @@ import {
   CommandItem,
 } from "@/components/ui/Command";
 import { useClickOutside } from "@/hooks/useClickOutside";
-import { useUpdateSearchParams } from "@/hooks/useUpdateSearchParams";
 import { cn } from "@/utils";
 import { Command as CommandPrimitive } from "cmdk";
-import { useSearchParams as nextUseSearchParams } from "next/navigation";
 import {
   KeyboardEvent,
   useCallback,
@@ -31,37 +29,23 @@ interface Option {
 interface MultiSelectProps {
   options?: Option[];
   placeholder: string;
-  id: string;
+  selected: Option[];
+  setSelected: React.Dispatch<React.SetStateAction<Option[]>>;
+  wrapValues?: boolean;
 }
 
-export function MultiSelect({
+export function MultiSelectComponent({
   options = [],
   placeholder,
-  id,
+  selected,
+  setSelected,
+  wrapValues,
 }: MultiSelectProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const commandRef = useRef<HTMLDivElement>(null);
-  const searchParams = nextUseSearchParams();
 
-  const searchParamValue = searchParams.get(id);
   const [open, setOpen] = useState(false);
-  const [selected, setSelected] = useState<Option[]>(() => {
-    const selectedValues = searchParamValue?.split(",");
-    const selectedOptions = options.filter((option) =>
-      selectedValues?.includes(option.value)
-    );
-    return selectedOptions || [];
-  });
   const [inputValue, setInputValue] = useState("");
-  const { updateSearchParams } = useUpdateSearchParams();
-
-  useEffect(() => {
-    const selectedValues = searchParamValue?.split(",");
-    const selectedOptions = options.filter((option) =>
-      selectedValues?.includes(option.value)
-    );
-    setSelected(selectedOptions);
-  }, [searchParamValue]);
 
   useClickOutside({
     containerRefs: [commandRef],
@@ -106,13 +90,6 @@ export function MultiSelect({
     }
   }, [open]);
 
-  useEffect(() => {
-    updateSearchParams(
-      id,
-      selected.map((s) => s.value)
-    );
-  }, [selected]);
-
   const selectables = options.filter(
     (option) => !selected.find((s) => s.value === option.value)
   );
@@ -131,8 +108,18 @@ export function MultiSelect({
           open && "z-10"
         )}
       >
-        <div className="flex items-center justify-center h-10 max-w-full px-2 py-1 text-sm bg-white border rounded-md shadow-sm group border-input ring-offset-background focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2">
-          <div className="flex w-full gap-1 overflow-x-auto">
+        <div
+          className={cn(
+            "flex items-center justify-center h-10 max-w-full px-2 py-1 text-sm bg-white border rounded-md shadow-sm group border-input ring-offset-background focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2",
+            wrapValues && "h-auto min-h-10"
+          )}
+        >
+          <div
+            className={cn(
+              "flex w-full gap-1 overflow-x-auto",
+              wrapValues && "flex-wrap"
+            )}
+          >
             {selected.map((option) => {
               return (
                 <Badge

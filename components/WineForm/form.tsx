@@ -26,6 +26,7 @@ interface WineFormProps {
   grapes: { id: number; name: string }[] | null;
   zones: { id: number; name: string }[] | null;
   cellars: { id: number; name: string }[] | null;
+  types: { id: number; name: string }[] | null;
 }
 
 export const Form = ({
@@ -35,6 +36,7 @@ export const Form = ({
   grapes,
   zones,
   cellars,
+  types,
 }: WineFormProps) => {
   const [state, formAction] = useFormState(action, { errors: {} });
   const [errors, setErrors] = useState(state.errors);
@@ -58,22 +60,41 @@ export const Form = ({
         <WinePhotoFormInput wine={wine} />
       </div>
 
-      <div className="flex flex-col w-full gap-2">
-        <Label htmlFor="name">Nombre</Label>
-        <Input
-          required
-          id="name"
-          name="name"
-          placeholder="Nombre del vino"
-          defaultValue={wine?.name}
-          className={cn(
-            "transition-all",
-            errors?.name && "border-red-500 border-2 bg-red-500/10"
+      <div className="grid grid-cols-1 gap-6 sm:gap-2 sm:grid-cols-3">
+        <div className="flex flex-col w-full gap-2 sm:col-span-2">
+          <Label htmlFor="name">Nombre</Label>
+          <Input
+            required
+            id="name"
+            name="name"
+            placeholder="Nombre del vino"
+            defaultValue={wine?.name}
+            className={cn(
+              "transition-all shadow-sm",
+              errors?.name && "border-red-500 border-2 bg-red-500/10"
+            )}
+          />
+          {errors?.name && (
+            <span className="text-xs text-red-500">{errors.name}</span>
           )}
-        />
-        {errors?.name && (
-          <span className="text-xs text-red-500">{errors.name}</span>
-        )}
+        </div>
+        <div className="flex flex-col w-full gap-2">
+          <Label htmlFor="country">Tipo</Label>
+          <SelectOrInput
+            id="type"
+            options={types}
+            placeholder="Tipo de vino"
+            selected={wine?.type_id}
+            className={cn(
+              "transition-all",
+              errors?.type && "border-red-500 border-2 bg-red-500/10"
+            )}
+            text="Nuevo tipo"
+          />
+          {errors?.type && (
+            <span className="text-xs text-red-500">{errors.type}</span>
+          )}
+        </div>
       </div>
 
       <div className="flex flex-col w-full gap-2">
@@ -85,7 +106,7 @@ export const Form = ({
           placeholder="Descripción del vino"
           defaultValue={wine?.description || ""}
           className={cn(
-            "transition-all",
+            "transition-all shadow-sm",
             errors?.description && "border-red-500 border-2 bg-red-500/10"
           )}
         />
@@ -107,7 +128,7 @@ export const Form = ({
             step={0.01}
             defaultValue={wine?.price}
             className={cn(
-              "transition-all",
+              "transition-all shadow-sm",
               errors?.price && "border-red-500 border-2 bg-red-500/10"
             )}
           />
@@ -128,7 +149,7 @@ export const Form = ({
             max={new Date().getFullYear()}
             defaultValue={wine?.year}
             className={cn(
-              "transition-all",
+              "transition-all shadow-sm",
               errors?.year && "border-red-500 border-2 bg-red-500/10"
             )}
           />
@@ -203,12 +224,12 @@ export const Form = ({
 
       <div className="flex flex-col w-full gap-2">
         <Label htmlFor="grape" className="self-start">
-          Uvas
+          Uvas predominantes
         </Label>
         <GrapesInput grapes={grapes} selected={wine?.grapes} />
       </div>
 
-      <div className="flex flex-col w-full gap-2">
+      <div className="flex flex-col items-start w-full gap-2">
         <Label htmlFor="active" className="self-start">
           Otros
         </Label>

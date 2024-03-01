@@ -18,8 +18,6 @@ export const signIn = async (formData: FormData) => {
       password,
     });
     signInError = error;
-
-    console.log({ data });
   } catch (e) {
     console.error("error signing in", e);
   }

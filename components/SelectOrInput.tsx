@@ -39,7 +39,7 @@ export const SelectOrInput = ({
           name={`new-${id}`}
           type="text"
           placeholder={placeholder}
-          className={cn("animate-fade-in", className)}
+          className={cn("animate-fade-in shadow-sm", className)}
           required
         />
       ) : (
@@ -56,7 +56,7 @@ export const SelectOrInput = ({
               : undefined
           }
           classNames={{
-            container: () => "w-full h-10",
+            container: () => "w-full h-10 animate-fade-in z-10",
             control: () => "shadow-sm h-10",
           }}
           styles={{
@@ -65,7 +65,6 @@ export const SelectOrInput = ({
               borderColor: "#e2e9f0!important",
               borderRadius: "0.375rem",
               fontSize: "0.875rem",
-              boxShadow: "none",
             }),
           }}
           placeholder={placeholder}

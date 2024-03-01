@@ -14,6 +14,9 @@ export const IdleHandler = () => {
   };
 
   useEffect(() => {
+    // If localhost, don't start the idle handler
+    if (window.location.hostname === "localhost") return;
+
     const interval = setInterval(() => {
       if (idleTime.current >= MAX_IDLE_TIME) return router.push("/idle");
       idleTime.current += 1;
