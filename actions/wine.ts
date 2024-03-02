@@ -270,7 +270,7 @@ export const updateWine = async (_: any, formData: FormData) => {
     await handlePhotoUpload(photo, data?.[0] as WineDB);
   }
 
-  revalidatePath(`/wines/${wine.id}`);
+  revalidatePath(`/wines/[id]`, "page");
   revalidatePath(`/admin/wines`);
   revalidatePath(`/wines`);
   redirect(`/admin/wines`);
