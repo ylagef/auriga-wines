@@ -50,6 +50,10 @@ export const WinesList = async ({
     query.order(sortBy.split(/_(asc|desc)/)[0], {
       ascending: sortBy.includes("asc"),
     });
+  } else {
+    query.order("name", {
+      ascending: true,
+    });
   }
 
   const tagsQuery = supabase.from("tags").select("id, name, style");
