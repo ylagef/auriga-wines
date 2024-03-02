@@ -27,9 +27,7 @@ async function WineDetail({
 
   if (!wine) return <div>Wine not found</div>;
 
-  let tagsData:
-    | [{ id: number; name: string; status: string; style: Json }]
-    | null = null;
+  let tagsData: [{ id: number; name: string; style: Json }] | null = null;
   if (wine.tags) {
     const tagsResponse = await supabase
       .from("tags")
@@ -38,6 +36,15 @@ async function WineDetail({
     tagsData = tagsResponse.data as typeof tagsData;
   }
 
+  let grapesData: [{ id: number; name: string }] | null = null;
+  if (wine.grapes) {
+    const grapesResponse = await supabase
+      .from("grapes")
+      .select("id, name")
+      .in("id", wine.grapes);
+    grapesData = grapesResponse.data as typeof grapesData;
+  }
+  console.log(grapesData);
   const size = wine.photo_size as { width: number; height: number };
   return (
     <div className="flex flex-col items-center w-full gap-4 animate-fade-in">
@@ -73,6 +80,17 @@ async function WineDetail({
       <p className="text-center text-gray-600 whitespace-break-spaces">
         {wine.description}
       </p>
+
+      <div className="flex flex-wrap items-center justify-center gap-1">
+        {wine.grapes
+          ?.map((grape) => grapesData?.find((t) => t.id === grape))
+          .sort((a, z) => (z?.name.length || 0) - (a?.name.length || 0))
+          .map((grape) => (
+            <Badge variant="outline" className="w-fit" key={grape?.id}>
+              {grape?.name}
+            </Badge>
+          ))}
+      </div>
 
       <div className="flex flex-col items-center justify-center">
         <div className="flex gap-1">
