@@ -196,30 +196,34 @@ export const Form = ({
         </div>
       </div>
 
-      <div className="flex flex-col w-full gap-2">
-        <Label htmlFor="zone">Zona</Label>
-        <SelectOrInput
-          id="zone"
-          options={zones}
-          placeholder="Nombre de la zona"
-          selected={wine?.zone_id}
-          className={cn(
-            "transition-all",
-            errors?.zone && "border-red-500 border-2 bg-red-500/10"
+      <div className="grid items-center grid-cols-1 gap-6 sm:gap-2 sm:grid-cols-2">
+        <div className="flex flex-col w-full gap-2">
+          <Label htmlFor="zone">Zona</Label>
+          <SelectOrInput
+            id="zone"
+            options={zones}
+            placeholder="Nombre de la zona"
+            selected={wine?.zone_id}
+            className={cn(
+              "transition-all",
+              errors?.zone && "border-red-500 border-2 bg-red-500/10"
+            )}
+            text="Nueva zona"
+          />
+          {errors?.zone && (
+            <span className="text-xs text-red-500">{errors.zone}</span>
           )}
-          text="Nueva zona"
-        />
-        {errors?.zone && (
-          <span className="text-xs text-red-500">{errors.zone}</span>
-        )}
+        </div>
 
-        <span className="text-xs opacity-60">
-          Ej: D.O. Ribeira Sacra, Vinos de Madrid, D.O.Ca Rioja, V.T. de
-          Mallorca, Alsace...
-        </span>
-        <span className="text-xs opacity-60">
-          <b>IMPORTANTE:</b> Escribir todos con el mismo formato.
-        </span>
+        <div className="flex flex-col w-full gap-2">
+          <span className="text-xs opacity-60">
+            Ej: D.O. Ribeira Sacra, Vinos de Madrid, D.O.Ca Rioja, V.T. de
+            Mallorca, Alsace...
+          </span>
+          <span className="text-xs opacity-60">
+            <b>IMPORTANTE:</b> Escribir todos con el mismo formato.
+          </span>
+        </div>
       </div>
 
       <div className="flex flex-col w-full gap-2">
