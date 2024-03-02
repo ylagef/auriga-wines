@@ -123,7 +123,7 @@ const handleNewObjects = async (wine: Partial<Wine>, formData: FormData) => {
 const handlePhotoUpload = async (photo: File, wine: WineDB) => {
   const supabase = createClient();
 
-  const extension = photo.name.split(".").pop();
+  const extension = photo.name.split(".").pop()?.toLowerCase();
   const md5Id = md5.create().update(`${wine.id}`).hex();
 
   const { data: photoData, error: photoError } = await supabase.storage
