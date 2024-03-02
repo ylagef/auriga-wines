@@ -153,7 +153,6 @@ const zodSchema = z
       .string({
         required_error: "Campo requerido",
       })
-      .min(3, { message: "Mínimo 3 caracteres" })
       .max(50, {
         message: "Máximo 50 caracteres",
       }),
