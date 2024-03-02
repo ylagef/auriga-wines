@@ -18,9 +18,9 @@ function WinesLayout({ children }: { children: ReactNode }) {
         />
       </header>
 
-      <div className="w-full max-w-4xl px-4 py-2 pb-20 overflow-y-auto grow">
-        <main>{children}</main>
-      </div>
+      <main className="w-full max-w-4xl px-4 py-2 pb-20 overflow-y-auto grow">
+        {children}
+      </main>
 
       <footer className="fixed bottom-0 flex items-center justify-center w-full p-4">
         <DiscountButton />

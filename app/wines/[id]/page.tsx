@@ -47,34 +47,40 @@ async function WineDetail({
   console.log(grapesData);
   const size = wine.photo_size as { width: number; height: number };
   return (
-    <div className="flex flex-col items-center w-full gap-4 animate-fade-in">
-      <Image
-        src={`${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/wines/${wine.photo_url}`}
-        alt={wine.name}
-        width={size.width || 100}
-        height={size.height || 100}
-        className="object-contain w-2/3 mb-10 aspect-square"
-      />
-
-      <Badge variant="secondary">{wine.year}</Badge>
-
-      <div className="flex flex-wrap items-center justify-center gap-1">
-        {wine.tags
-          ?.map((tag) => tagsData?.find((t) => t.id === tag))
-          .sort((a, z) => (z?.name.length || 0) - (a?.name.length || 0))
-          .map((tag) => (
-            <Badge
-              variant="default"
-              className="w-fit"
-              style={{
-                ...((tag?.style as Record<string, string>) || {}),
-              }}
-              key={tag?.id}
-            >
-              {tag?.name}
-            </Badge>
-          ))}
+    <div className="flex flex-col items-center w-full h-full gap-4 animate-fade-in grow">
+      <div className="grow">
+        <Image
+          src={`${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/wines/${wine.photo_url}`}
+          alt={wine.name}
+          width={size.width || 100}
+          height={size.height || 100}
+          className="object-contain h-full aspect-square"
+        />
       </div>
+
+      <Badge variant="secondary" className="mt-6">
+        {wine.year}
+      </Badge>
+
+      {!!wine.tags?.length && (
+        <div className="flex flex-wrap items-center justify-center gap-1">
+          {wine.tags
+            ?.map((tag) => tagsData?.find((t) => t.id === tag))
+            .sort((a, z) => (z?.name.length || 0) - (a?.name.length || 0))
+            .map((tag) => (
+              <Badge
+                variant="default"
+                className="w-fit"
+                style={{
+                  ...((tag?.style as Record<string, string>) || {}),
+                }}
+                key={tag?.id}
+              >
+                {tag?.name}
+              </Badge>
+            ))}
+        </div>
+      )}
 
       <h2 className="text-2xl font-bold text-center">{wine.name}</h2>
       <p className="text-center text-gray-600 whitespace-break-spaces">
