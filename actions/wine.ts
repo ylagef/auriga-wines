@@ -142,6 +142,7 @@ const handlePhotoUpload = async (photo: File, wine: WineDB) => {
         width: metadata.width || 0,
         height: metadata.height || 0,
       },
+      updated_at: new Date().toISOString(),
     })
     .eq("id", wine.id)
     .select();
@@ -261,7 +262,7 @@ export const updateWine = async (_: any, formData: FormData) => {
 
   const { data, error, count, status, statusText } = await supabase
     .from("wines")
-    .update(wine)
+    .update({ ...wine, updated_at: new Date().toISOString() })
     .eq("id", wine.id)
     .select();
 
