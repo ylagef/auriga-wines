@@ -1,6 +1,6 @@
 import { WinesTable } from "@/components/WinesTable";
 import { Button } from "@/components/ui/Button";
-import { Wine } from "@/utils/supabase/parsedTypes";
+import { Wine, WineWithForeign } from "@/utils/supabase/parsedTypes";
 
 import { createClient } from "@/utils/supabase/server";
 import Link from "next/link";
@@ -8,18 +8,12 @@ import Link from "next/link";
 export default async function AdminPage() {
   const supabase = createClient();
 
-  const query = supabase
+  const { data: wines } = await supabase
     .from("wines")
     .select(
-      "id, name, description, price, year, photo_url, photo_size, grapes, tags, country:country_id(name), zone:zone_id(name), active"
-    );
-
-  const tagsQuery = supabase.from("tags").select("id, name, style");
-
-  const [{ data: wines }, { data: tagsData }] = await Promise.all([
-    query.returns<Wine[]>(),
-    tagsQuery,
-  ]);
+      "id, name, description, price, year, photo_url, photo_size, country:country_id(name), zone:zone_id(name), active, tags:wines_tags(wine_id, tag_id, tag:tag_id(id, name, style))"
+    )
+    .returns<WineWithForeign[]>();
 
   if (!wines) return <div>Vinos no encontrados</div>;
 
@@ -38,7 +32,7 @@ export default async function AdminPage() {
         </span>
       </div>
 
-      <WinesTable data={wines} tags={tagsData} />
+      <WinesTable data={wines} />
     </div>
   );
 }

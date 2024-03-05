@@ -1,10 +1,12 @@
 import { toggleActiveWine } from "@/actions/wine";
 import { cn } from "@/utils";
-import { TagDB, Wine } from "@/utils/supabase/parsedTypes";
+import { WineWithForeign } from "@/utils/supabase/parsedTypes";
 import { ColumnDef } from "@tanstack/react-table";
 import { ArrowDown, MoreHorizontal } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { Dispatch, SetStateAction } from "react";
+import { Badge } from "../ui/Badge";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,11 +14,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../ui/DropdownMenu";
-import { Dispatch, SetStateAction } from "react";
-import { Badge } from "../ui/Badge";
-import { Json } from "@/utils/supabase/types";
 
-const sortableHeader: (label: string) => ColumnDef<Wine>["header"] =
+const sortableHeader: (label: string) => ColumnDef<WineWithForeign>["header"] =
   (label: string) =>
   ({ column }) =>
     (
@@ -35,9 +34,8 @@ const sortableHeader: (label: string) => ColumnDef<Wine>["header"] =
     );
 
 export const columns: (
-  setAlertOpen: Dispatch<SetStateAction<string | null>>,
-  tags: { id: number; name: string; style: Json | null }[] | null
-) => ColumnDef<Wine>[] = (setAlertOpen, tags) => [
+  setAlertOpen: Dispatch<SetStateAction<string | null>>
+) => ColumnDef<WineWithForeign>[] = (setAlertOpen) => [
   {
     accessorKey: "tags",
     header: sortableHeader("Tags"),
@@ -47,9 +45,10 @@ export const columns: (
         <div className="flex flex-col items-center justify-center gap-1 mx-auto w-max">
           {rowTags?.length ? (
             rowTags
-              ?.map((tag) => tags?.find((t) => t.id === tag))
-              .sort((a, z) => (z?.name.length || 0) - (a?.name.length || 0))
-              .map((tag) => (
+              .sort(
+                (a, z) => (z?.tag.name.length || 0) - (a?.tag.name.length || 0)
+              )
+              .map(({ tag }) => (
                 <Badge
                   variant="default"
                   className="w-fit"

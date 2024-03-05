@@ -29,14 +29,13 @@ export const WinesList = async ({
   let queryString =
     "*, cellar:cellar_id(id, name), type:type_id(id, name), country:country_id(id, name), zone:zone_id(id, name)";
 
-  if (grapes?.length) {
-    queryString +=
-      ", grapes:wines_grapes!inner(wine_id, grape_id, grape:grape_id(id, name))";
-  }
-  if (tags?.length) {
-    queryString +=
-      ", tags:wines_tags!inner(wine_id, tag_id, tag:tag_id(id, name, style))";
-  }
+  queryString += grapes?.length
+    ? ", grapes:wines_grapes!inner(wine_id, grape_id, grape:grape_id(id, name))"
+    : ", grapes:wines_grapes(wine_id, grape_id, grape:grape_id(id, name))";
+
+  queryString += tags?.length
+    ? ", tags:wines_tags!inner(wine_id, tag_id, tag:tag_id(id, name, style))"
+    : ", tags:wines_tags(wine_id, tag_id, tag:tag_id(id, name, style))";
 
   const query = supabase.from("wines").select(queryString).eq("active", true);
 

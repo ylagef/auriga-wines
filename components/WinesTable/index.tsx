@@ -9,6 +9,7 @@ import {
   TableRow,
 } from "@/components/ui/Table";
 import { cn } from "@/utils";
+import { WineWithForeign } from "@/utils/supabase/parsedTypes";
 import {
   SortingState,
   flexRender,
@@ -19,14 +20,12 @@ import {
 import { useState } from "react";
 import { Dialog } from "./Dialog";
 import { columns } from "./columns";
-import { Json } from "@/utils/supabase/types";
 
 interface DataTableProps {
-  data: any[];
-  tags: { id: number; name: string; style: Json | null }[] | null;
+  data: WineWithForeign[];
 }
 
-export const WinesTable = ({ data, tags }: DataTableProps) => {
+export const WinesTable = ({ data }: DataTableProps) => {
   const [sorting, setSorting] = useState<SortingState>([
     {
       id: "name",
@@ -37,7 +36,7 @@ export const WinesTable = ({ data, tags }: DataTableProps) => {
 
   const table = useReactTable({
     data,
-    columns: columns(setAlertOpen, tags),
+    columns: columns(setAlertOpen),
     getCoreRowModel: getCoreRowModel(),
     onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
