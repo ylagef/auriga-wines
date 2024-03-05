@@ -14,19 +14,19 @@ export type Database = {
           created_at: string
           id: number
           name: string
-          updated_at: string | null
+          updated_at: string
         }
         Insert: {
           created_at?: string
           id?: number
           name: string
-          updated_at?: string | null
+          updated_at?: string
         }
         Update: {
           created_at?: string
           id?: number
           name?: string
-          updated_at?: string | null
+          updated_at?: string
         }
         Relationships: []
       }
@@ -121,13 +121,11 @@ export type Database = {
           country_id: number
           created_at: string
           description: string
-          grapes: number[] | null
           id: number
           name: string
           photo_size: Json | null
           photo_url: string | null
           price: number
-          tags: number[] | null
           type_id: number
           updated_at: string
           year: number
@@ -139,13 +137,11 @@ export type Database = {
           country_id: number
           created_at?: string
           description: string
-          grapes?: number[] | null
           id?: number
           name: string
           photo_size?: Json | null
           photo_url?: string | null
           price: number
-          tags?: number[] | null
           type_id: number
           updated_at?: string
           year: number
@@ -157,13 +153,11 @@ export type Database = {
           country_id?: number
           created_at?: string
           description?: string
-          grapes?: number[] | null
           id?: number
           name?: string
           photo_size?: Json | null
           photo_url?: string | null
           price?: number
-          tags?: number[] | null
           type_id?: number
           updated_at?: string
           year?: number

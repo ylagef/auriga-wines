@@ -1,9 +1,9 @@
-import { WineDB } from "@/utils/supabase/parsedTypes";
+import { Wine, WineWithForeign } from "@/utils/supabase/parsedTypes";
 import { createClient } from "@/utils/supabase/server";
 import { Form } from "./form";
 
 interface WineFormProps {
-  wine?: WineDB;
+  wine?: WineWithForeign;
   action: (
     _: any,
     formData: FormData
@@ -15,11 +15,11 @@ interface WineFormProps {
 export const WineForm = async ({ wine, action }: WineFormProps) => {
   const supabase = createClient();
 
-  const countriesQuery = supabase.from("countries").select("id, name");
-  const grapesQuery = supabase.from("grapes").select("id, name");
-  const zonesQuery = supabase.from("zones").select("id, name");
-  const cellarsQuery = supabase.from("cellars").select("id, name");
-  const typesQuery = supabase.from("types").select("id, name");
+  const countriesQuery = supabase.from("countries").select("*");
+  const grapesQuery = supabase.from("grapes").select("*");
+  const zonesQuery = supabase.from("zones").select("*");
+  const cellarsQuery = supabase.from("cellars").select("*");
+  const typesQuery = supabase.from("types").select("*");
 
   const [
     { data: countries },

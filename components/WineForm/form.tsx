@@ -2,31 +2,38 @@
 
 import { GrapesInput } from "@/components/GrapesInput";
 import { SelectOrInput } from "@/components/SelectOrInput";
-import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Label } from "@/components/ui/Label";
 import { Textarea } from "@/components/ui/Textarea";
-import { WineDB } from "@/utils/supabase/parsedTypes";
+import { cn } from "@/utils";
+import {
+  CellarDB,
+  CountryDB,
+  GrapeDB,
+  TAGS,
+  TypeDB,
+  WineWithForeign,
+  ZoneDB,
+} from "@/utils/supabase/parsedTypes";
+import { useEffect, useState } from "react";
 import { useFormState } from "react-dom";
 import { WinePhotoFormInput } from "../WinePhotoFormInput";
 import { Switch } from "../ui/Switch";
 import { SubmitButton } from "./button";
-import { cn } from "@/utils";
-import { useEffect, useState } from "react";
 
 interface WineFormProps {
-  wine?: WineDB;
+  wine?: WineWithForeign;
   action: (
     _: any,
     formData: FormData
   ) => Promise<{
     errors: any;
   }>;
-  countries: { id: number; name: string }[] | null;
-  grapes: { id: number; name: string }[] | null;
-  zones: { id: number; name: string }[] | null;
-  cellars: { id: number; name: string }[] | null;
-  types: { id: number; name: string }[] | null;
+  grapes: GrapeDB[] | null;
+  countries: CountryDB[] | null;
+  zones: ZoneDB[] | null;
+  cellars: CellarDB[] | null;
+  types: TypeDB[] | null;
 }
 
 export const Form = ({
@@ -230,7 +237,7 @@ export const Form = ({
         <Label htmlFor="grape" className="self-start">
           Uvas predominantes
         </Label>
-        <GrapesInput grapes={grapes} selected={wine?.grapes} />
+        <GrapesInput grapes={grapes || []} selected={wine?.grapes} />
       </div>
 
       <div className="flex flex-col items-start w-full gap-2">
@@ -246,7 +253,7 @@ export const Form = ({
             id="new"
             value="1"
             name="tag"
-            defaultChecked={wine?.tags?.includes(1)}
+            defaultChecked={!!wine?.tags?.find((t) => t.tag_id === TAGS.NEW)}
           />
           Nuevo
         </label>
@@ -255,7 +262,9 @@ export const Form = ({
             id="bestseller"
             value="2"
             name="tag"
-            defaultChecked={wine?.tags?.includes(2)}
+            defaultChecked={
+              !!wine?.tags?.find((t) => t.tag_id === TAGS.BEST_SELLER)
+            }
           />
           Más vendido
         </label>

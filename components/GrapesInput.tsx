@@ -1,12 +1,11 @@
 "use client";
 
-import React, { useState } from "react";
-import { Label } from "./ui/Label";
-import { Checkbox } from "./ui/Checkbox";
-import { Input } from "./ui/Input";
-import { Button } from "./ui/Button";
 import { PlusIcon } from "lucide-react";
+import { useState } from "react";
 import { MultiSelectComponent } from "./MultiSelect/component";
+import { Button } from "./ui/Button";
+import { Input } from "./ui/Input";
+import { GrapeDB, WineWithForeign } from "@/utils/supabase/parsedTypes";
 
 interface Option {
   value: string;
@@ -14,13 +13,8 @@ interface Option {
 }
 
 interface GrapesInputProps {
-  grapes:
-    | {
-        id: number;
-        name: string;
-      }[]
-    | null;
-  selected?: number[] | null;
+  grapes: GrapeDB[];
+  selected?: WineWithForeign["grapes"];
 }
 
 export const GrapesInput = ({ grapes, selected }: GrapesInputProps) => {
@@ -34,7 +28,9 @@ export const GrapesInput = ({ grapes, selected }: GrapesInputProps) => {
   const [selectedGrapes, setSelectedGrapes] = useState<Option[]>(() => {
     if (selected) {
       return allGrapes
-        .filter((grape) => grape.id && selected.includes(grape.id))
+        .filter(
+          (grape) => grape.id && selected.find((g) => g.grape_id === grape.id)
+        )
         .map((grape) => ({ value: String(grape.id), label: grape.name }));
     }
     return [];

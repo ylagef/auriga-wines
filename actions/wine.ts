@@ -169,6 +169,44 @@ const handleForeignObjects = async (wineId: number, formData: FormData) => {
   return Promise.all(tasks);
 };
 
+const handleRemoveNonSelectedForeignObjects = async (
+  wineId: number,
+  formData: FormData
+) => {
+  const supabase = createClient();
+  const tasks = [];
+
+  const grapes = formData.getAll("grape").map(Number) as number[];
+  if (grapes.length > 0) {
+    tasks.push(
+      (async () => {
+        const { data: grapesData, error: grapesError } = await supabase
+          .from("wines_grapes")
+          .delete()
+          .eq("wine_id", wineId)
+          .not("grape_id", "in", `(${grapes.join(", ")})`)
+          .select();
+      })()
+    );
+  }
+
+  const tags = formData.getAll("tag").map(Number) as number[];
+  if (tags.length > 0) {
+    tasks.push(
+      (async () => {
+        const { data: tagsData, error: tagsError } = await supabase
+          .from("wines_tags")
+          .delete()
+          .eq("wine_id", wineId)
+          .not("tag_id", "in", `(${tags.join(", ")})`)
+          .select();
+      })()
+    );
+  }
+
+  return Promise.all(tasks);
+};
+
 const handlePhotoUpload = async (photo: File, wine: WineDB) => {
   const supabase = createClient();
 
@@ -265,8 +303,7 @@ export const createWine = async (_: any, formData: FormData) => {
   const validatedSchema = validateObject(wine);
 
   if (validatedSchema?.errors) return validatedSchema;
-
-  await handleNewObjects(wine, formData);
+  -(await handleNewObjects(wine, formData));
 
   const { data, error } = await supabase
     .from("wines")
@@ -309,6 +346,9 @@ export const updateWine = async (_: any, formData: FormData) => {
     .update({ ...wine, updated_at: new Date().toISOString() })
     .eq("id", wine.id)
     .select();
+
+  await handleRemoveNonSelectedForeignObjects(wine.id, formData);
+  await handleForeignObjects(wine.id, formData);
 
   const photo = formData.get("photo") as File;
   if (photo.size > 0) {

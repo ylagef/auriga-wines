@@ -1,5 +1,5 @@
 import { Badge } from "@/components/ui/Badge";
-import { Wine } from "@/utils/supabase/parsedTypes";
+import { Wine, WineWithForeign } from "@/utils/supabase/parsedTypes";
 import { createClient } from "@/utils/supabase/server";
 import { Database, Json } from "@/utils/supabase/types";
 import Image from "next/image";
@@ -15,36 +15,14 @@ async function WineDetail({
   const { data: wine } = await supabase
     .from("wines")
     .select(
-      "*, country:country_id(name), zone:zone_id(name),cellar:cellar_id(name)"
+      "*, country:country_id(name), zone:zone_id(name), cellar:cellar_id(name), grapes:wines_grapes(wine_id, grape_id, grape:grape_id(id, name)),tags:wines_tags(wine_id, tag_id, tag:tag_id(id, name, style))"
     )
     .eq("id", params.id)
-    .returns<
-      (Wine & {
-        cellar: { name: string };
-      })[]
-    >()
+    .returns<WineWithForeign[]>()
     .single();
 
   if (!wine) return <div>Wine not found</div>;
 
-  let tagsData: [{ id: number; name: string; style: Json }] | null = null;
-  if (wine.tags) {
-    const tagsResponse = await supabase
-      .from("tags")
-      .select("id, name, style")
-      .in("id", wine.tags);
-    tagsData = tagsResponse.data as typeof tagsData;
-  }
-
-  let grapesData: [{ id: number; name: string }] | null = null;
-  if (wine.grapes) {
-    const grapesResponse = await supabase
-      .from("grapes")
-      .select("id, name")
-      .in("id", wine.grapes);
-    grapesData = grapesResponse.data as typeof grapesData;
-  }
-  console.log(grapesData);
   const size = wine.photo_size as { width: number; height: number };
   return (
     <div className="flex flex-col items-center w-full h-full gap-4 animate-fade-in grow">
@@ -65,9 +43,10 @@ async function WineDetail({
       {!!wine.tags?.length && (
         <div className="flex flex-wrap items-center justify-center gap-1">
           {wine.tags
-            ?.map((tag) => tagsData?.find((t) => t.id === tag))
-            .sort((a, z) => (z?.name.length || 0) - (a?.name.length || 0))
-            .map((tag) => (
+            .sort(
+              (a, z) => (z?.tag.name.length || 0) - (a?.tag.name.length || 0)
+            )
+            .map(({ tag }) => (
               <Badge
                 variant="default"
                 className="w-fit"
@@ -89,11 +68,12 @@ async function WineDetail({
 
       <div className="flex flex-wrap items-center justify-center gap-1">
         {wine.grapes
-          ?.map((grape) => grapesData?.find((t) => t.id === grape))
-          .sort((a, z) => (z?.name.length || 0) - (a?.name.length || 0))
+          .sort(
+            (a, z) => (z?.grape.name.length || 0) - (a?.grape.name.length || 0)
+          )
           .map((grape) => (
-            <Badge variant="outline" className="w-fit" key={grape?.id}>
-              {grape?.name}
+            <Badge variant="outline" className="w-fit" key={grape?.grape_id}>
+              {grape?.grape.name}
             </Badge>
           ))}
       </div>

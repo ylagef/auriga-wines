@@ -1,26 +1,16 @@
+import { WineWithForeign } from "@/utils/supabase/parsedTypes";
 import Image from "next/image";
 import Link from "next/link";
 import { Badge } from "../ui/Badge";
-import { TagDB, Wine } from "@/utils/supabase/parsedTypes";
-import { cn } from "@/utils";
-import { Json } from "@/utils/supabase/types";
 
 export const WineElement = ({
   wine,
   parsedSearchParams,
   priority,
-  tags,
 }: {
-  wine: Wine;
+  wine: WineWithForeign;
   parsedSearchParams: string;
   priority: boolean;
-  tags:
-    | {
-        id: number;
-        name: string;
-        style: Json;
-      }[]
-    | null;
 }) => {
   const size = wine.photo_size as { width: number; height: number };
   return (
@@ -33,9 +23,8 @@ export const WineElement = ({
     >
       <div className="absolute top-0 left-0 flex flex-col gap-2">
         {wine.tags
-          ?.map((tag) => tags?.find((t) => t.id === tag))
-          .sort((a, z) => (z?.name.length || 0) - (a?.name.length || 0))
-          .map((tag) => (
+          .sort((a, z) => (z?.tag.name.length || 0) - (a?.tag.name.length || 0))
+          .map(({ tag }) => (
             <Badge
               variant="default"
               className="w-fit"
