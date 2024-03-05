@@ -13,7 +13,7 @@ export const updateCellar = async (_: any, formData: FormData) => {
 
   const { data, error, count, status, statusText } = await supabase
     .from("cellars")
-    .update({ name: cellar.name })
+    .update({ name: cellar.name, updated_at: new Date().toISOString() })
     .eq("id", cellar.id)
     .select();
 

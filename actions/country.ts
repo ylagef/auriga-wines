@@ -13,7 +13,7 @@ export const updateCountry = async (_: any, formData: FormData) => {
 
   const { data, error, count, status, statusText } = await supabase
     .from("countries")
-    .update({ name: country.name })
+    .update({ name: country.name, updated_at: new Date().toISOString() })
     .eq("id", country.id)
     .select();
 
