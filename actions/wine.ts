@@ -36,7 +36,6 @@ const getWineObject = (formData: FormData): Partial<WineDB> => {
     description: formData.get("description") as string,
     price: formData.get("price") ? Number(formData.get("price")) : undefined,
     year: formData.get("year") ? Number(formData.get("year")) : undefined,
-    // grapes: formData.getAll("grape").map(Number) || [],
     country_id: formData.get("country")
       ? Number(formData.get("country"))
       : undefined,
@@ -45,7 +44,6 @@ const getWineObject = (formData: FormData): Partial<WineDB> => {
       ? Number(formData.get("cellar"))
       : undefined,
     active: formData.get("active") === "on",
-    // tags: formData.getAll("tag").map(Number) || [],
     type_id: formData.get("type") ? Number(formData.get("type")) : undefined,
   };
 
@@ -177,32 +175,29 @@ const handleRemoveNonSelectedForeignObjects = async (
   const tasks = [];
 
   const grapes = formData.getAll("grape").map(Number) as number[];
-  if (grapes.length > 0) {
-    tasks.push(
-      (async () => {
-        const { data: grapesData, error: grapesError } = await supabase
-          .from("wines_grapes")
-          .delete()
-          .eq("wine_id", wineId)
-          .not("grape_id", "in", `(${grapes.join(", ")})`)
-          .select();
-      })()
-    );
-  }
+  tasks.push(
+    (async () => {
+      const { data: grapesData, error: grapesError } = await supabase
+        .from("wines_grapes")
+        .delete()
+        .eq("wine_id", wineId)
+        .not("grape_id", "in", `(${grapes.join(", ")})`)
+        .select();
+    })()
+  );
 
   const tags = formData.getAll("tag").map(Number) as number[];
-  if (tags.length > 0) {
-    tasks.push(
-      (async () => {
-        const { data: tagsData, error: tagsError } = await supabase
-          .from("wines_tags")
-          .delete()
-          .eq("wine_id", wineId)
-          .not("tag_id", "in", `(${tags.join(", ")})`)
-          .select();
-      })()
-    );
-  }
+  console.log("tags", tags);
+  tasks.push(
+    (async () => {
+      const { data: tagsData, error: tagsError } = await supabase
+        .from("wines_tags")
+        .delete()
+        .eq("wine_id", wineId)
+        .not("tag_id", "in", `(${tags.join(", ")})`)
+        .select();
+    })()
+  );
 
   return Promise.all(tasks);
 };
@@ -355,9 +350,9 @@ export const updateWine = async (_: any, formData: FormData) => {
     await handlePhotoUpload(photo, data?.[0] as WineDB);
   }
 
-  revalidatePath(`/wines/[id]`, "page");
+  // revalidatePath(`/wines/[id]`, "page");
   revalidatePath(`/admin/wines`);
-  revalidatePath(`/wines`);
+  // revalidatePath(`/wines`);
   redirect(`/admin/wines`);
 };
 
