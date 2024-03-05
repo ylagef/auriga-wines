@@ -36,7 +36,7 @@ const getWineObject = (formData: FormData): Partial<WineDB> => {
     description: formData.get("description") as string,
     price: formData.get("price") ? Number(formData.get("price")) : undefined,
     year: formData.get("year") ? Number(formData.get("year")) : undefined,
-    grapes: formData.getAll("grape").map(Number) || [],
+    // grapes: formData.getAll("grape").map(Number) || [],
     country_id: formData.get("country")
       ? Number(formData.get("country"))
       : undefined,
@@ -45,26 +45,15 @@ const getWineObject = (formData: FormData): Partial<WineDB> => {
       ? Number(formData.get("cellar"))
       : undefined,
     active: formData.get("active") === "on",
-    tags: formData.getAll("tag").map(Number) || [],
+    // tags: formData.getAll("tag").map(Number) || [],
     type_id: formData.get("type") ? Number(formData.get("type")) : undefined,
   };
 
   return wine;
 };
 
-const handleNewObjects = async (wine: Partial<Wine>, formData: FormData) => {
+const handleNewObjects = async (wine: Partial<WineDB>, formData: FormData) => {
   const tasks = [];
-
-  const newGrapes = formData.getAll("new-grape") as string[];
-  if (newGrapes.length > 0) {
-    tasks.push(
-      (async () => {
-        const newGrapesData = await handleAddNewGrapes(newGrapes);
-        const newGrapesIds = newGrapesData?.map((grape) => grape.id) || [];
-        wine.grapes = [...(wine.grapes || []), ...newGrapesIds];
-      })()
-    );
-  }
 
   const newCountry = formData.get("new-country") as string;
   if (newCountry) {
@@ -113,6 +102,66 @@ const handleNewObjects = async (wine: Partial<Wine>, formData: FormData) => {
         if (!newTypeData)
           return { errors: { general: ["Error creating new type"] } };
         wine.type_id = newTypeData[0].id;
+      })()
+    );
+  }
+
+  return Promise.all(tasks);
+};
+
+const handleForeignObjects = async (wineId: number, formData: FormData) => {
+  const tasks = [];
+
+  const newGrapes = formData.getAll("new-grape") as string[];
+  if (newGrapes.length > 0) {
+    // For each new grape, it should be added to the grapes table and then with the created id to the wines_grapes table
+    tasks.push(
+      (async () => {
+        const newGrapesData = await handleAddNewGrapes(newGrapes);
+        if (!newGrapesData)
+          return { errors: { general: ["Error creating new grapes"] } };
+        const newWinesGrapes = newGrapesData.map((grape) => ({
+          wine_id: wineId,
+          grape_id: grape.id,
+        }));
+        const { data, error } = await createClient()
+          .from("wines_grapes")
+          .insert(newWinesGrapes)
+          .select();
+      })()
+    );
+  }
+
+  const foreignGrapes = formData.getAll("grape") as string[];
+  if (foreignGrapes.length > 0) {
+    // For each grape, it should be added to the wines_grapes table
+    tasks.push(
+      (async () => {
+        const foreignWinesGrapes = foreignGrapes.map((grape) => ({
+          wine_id: wineId,
+          grape_id: Number(grape),
+        }));
+        const { data, error } = await createClient()
+          .from("wines_grapes")
+          .insert(foreignWinesGrapes)
+          .select();
+      })()
+    );
+  }
+
+  const foreignTags = formData.getAll("tag") as string[];
+  if (foreignTags.length > 0) {
+    // For each tag, it should be added to the wines_tags table
+    tasks.push(
+      (async () => {
+        const foreignWinesTags = foreignTags.map((tag) => ({
+          wine_id: wineId,
+          tag_id: Number(tag),
+        }));
+        const { data, error } = await createClient()
+          .from("wines_tags")
+          .insert(foreignWinesTags)
+          .select();
       })()
     );
   }
@@ -178,14 +227,7 @@ const zodSchema = z
       .max(new Date().getFullYear(), {
         message: "Año no válido",
       }),
-    grapes: z.array(z.number()),
-
     active: z.boolean(),
-    tags: z.array(
-      z.number({
-        required_error: "Campo requerido",
-      })
-    ),
     photo: z.any(),
   })
   .required()
@@ -220,10 +262,10 @@ export const createWine = async (_: any, formData: FormData) => {
   const supabase = createClient();
 
   const wine = getWineObject(formData);
-  console.log("Wine", wine);
   const validatedSchema = validateObject(wine);
 
   if (validatedSchema?.errors) return validatedSchema;
+
   await handleNewObjects(wine, formData);
 
   const { data, error } = await supabase
@@ -243,6 +285,8 @@ export const createWine = async (_: any, formData: FormData) => {
 
   const insertedWine = data?.[0];
   if (!insertedWine) return { errors: { general: ["Error inserting wine"] } };
+
+  await handleForeignObjects(insertedWine.id, formData);
 
   const photo = formData.get("photo") as File;
   if (photo.size > 0) {

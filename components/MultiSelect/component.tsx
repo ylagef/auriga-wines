@@ -155,7 +155,7 @@ export function MultiSelectComponent({
               onBlur={() => setOpen(false)}
               onFocus={() => setOpen(true)}
               placeholder={placeholder}
-              className="text-center bg-transparent outline-none placeholder:text-gray-600"
+              className="text-center bg-transparent outline-none placeholder:text-gray-600 grow"
               size={placeholder.length}
             />
           </div>

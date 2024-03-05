@@ -98,16 +98,19 @@ export type Database = {
           created_at: string
           id: number
           name: string
+          updated_at: string
         }
         Insert: {
           created_at?: string
           id?: number
           name: string
+          updated_at?: string
         }
         Update: {
           created_at?: string
           id?: number
           name?: string
+          updated_at?: string
         }
         Relationships: []
       }
@@ -193,6 +196,72 @@ export type Database = {
             columns: ["type_id"]
             isOneToOne: false
             referencedRelation: "types"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      wines_grapes: {
+        Row: {
+          created_at: string
+          grape_id: number
+          wine_id: number
+        }
+        Insert: {
+          created_at?: string
+          grape_id: number
+          wine_id: number
+        }
+        Update: {
+          created_at?: string
+          grape_id?: number
+          wine_id?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "public_wines_grapes_grape_id_fkey"
+            columns: ["grape_id"]
+            isOneToOne: false
+            referencedRelation: "grapes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "public_wines_grapes_wine_id_fkey"
+            columns: ["wine_id"]
+            isOneToOne: false
+            referencedRelation: "wines"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      wines_tags: {
+        Row: {
+          created_at: string
+          tag_id: number
+          wine_id: number
+        }
+        Insert: {
+          created_at?: string
+          tag_id: number
+          wine_id: number
+        }
+        Update: {
+          created_at?: string
+          tag_id?: number
+          wine_id?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "public_wines_tags_tag_id_fkey"
+            columns: ["tag_id"]
+            isOneToOne: false
+            referencedRelation: "tags"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "public_wines_tags_wine_id_fkey"
+            columns: ["wine_id"]
+            isOneToOne: false
+            referencedRelation: "wines"
             referencedColumns: ["id"]
           }
         ]
