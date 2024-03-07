@@ -6,29 +6,20 @@ function IdlePage() {
   return (
     <Link
       href="/wines"
-      className="flex flex-col items-center justify-center w-full gap-10 p-10 grow focus-visible:outline-none"
+      className="relative w-full h-screen focus-visible:outline-none"
       replace
     >
       <Image
-        src="/images/auriga-logo-small.svg"
+        src="/images/cover-content.svg"
         alt="Auriga"
         width={60}
         height={60}
-        className="w-auto h-12"
+        className="object-cover w-auto h-full"
         priority
       />
-
-      <div className="flex flex-col items-center gap-4">
-        <h1 className="text-2xl font-bold text-center">
-          Bienvenidx a nuestra Cava
-        </h1>
-        <h2 className="text-center">
-          Descubre nuestra selección de vinos y disfruta de una experiencia
-          inolvidable.
-        </h2>
-      </div>
-
-      <span className="text-center animate-pulse">Toca para empezar</span>
+      <span className="absolute w-full text-lg font-semibold text-center transform -translate-x-1/2 sm:text-xl bottom-10 left-1/2 animate-pulse">
+        Toca para comenzar
+      </span>
     </Link>
   );
 }

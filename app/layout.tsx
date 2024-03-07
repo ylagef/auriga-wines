@@ -23,7 +23,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={GeistSans.className}>
       <body className="flex flex-col h-screen antialiased">
-        <main className="flex flex-col items-center py-2 grow">{children}</main>
+        <main className="flex flex-col items-center grow">{children}</main>
         <SpeedInsights />
         <Analytics />
       </body>

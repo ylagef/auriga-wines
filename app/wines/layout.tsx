@@ -7,7 +7,7 @@ function WinesLayout({ children }: { children: ReactNode }) {
   return (
     <>
       <IdleHandler />
-      <header className="sticky top-0 z-50 flex items-center justify-center w-full px-2 py-3 bg-white/30 backdrop-blur">
+      <header className="sticky top-0 z-50 flex items-center justify-center w-full px-2 py-4 bg-white/30 backdrop-blur">
         <Image
           src="/images/auriga-logo-wide.svg"
           alt="Auriga"
@@ -18,7 +18,7 @@ function WinesLayout({ children }: { children: ReactNode }) {
         />
       </header>
 
-      <main className="w-full max-w-4xl px-4 py-2 pb-20 overflow-y-auto grow">
+      <main className="w-full max-w-4xl px-4 py-1 pb-20 overflow-y-auto grow">
         {children}
       </main>
 
