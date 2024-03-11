@@ -14,7 +14,7 @@ function IdlePage() {
         alt="Auriga"
         width={60}
         height={60}
-        className="object-cover w-auto h-full"
+        className="object-cover w-auto h-full mx-auto"
         priority
       />
       <span className="absolute w-full text-lg font-semibold text-center transform -translate-x-1/2 sm:text-xl bottom-10 left-1/2 animate-pulse">
