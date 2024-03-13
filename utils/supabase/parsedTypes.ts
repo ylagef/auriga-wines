@@ -1,7 +1,7 @@
 import { Database } from "./types";
 
 export type CountryDB = Database["public"]["Tables"]["countries"]["Row"];
-export type ZoneDB = Database["public"]["Tables"]["zones"]["Row"];
+export type AppellationDB = Database["public"]["Tables"]["appellations"]["Row"];
 export type CellarDB = Database["public"]["Tables"]["cellars"]["Row"];
 export type TypeDB = Database["public"]["Tables"]["types"]["Row"];
 export type TagDB = Database["public"]["Tables"]["tags"]["Row"];
@@ -13,7 +13,7 @@ export type WineDB = Database["public"]["Tables"]["wines"]["Row"];
 
 export type Wine = WineDB & {
   country: CountryDB;
-  zone: ZoneDB;
+  appellation: AppellationDB;
   cellar: CellarDB;
   type: TypeDB;
 };
