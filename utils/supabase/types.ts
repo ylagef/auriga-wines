@@ -9,6 +9,27 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      appellations: {
+        Row: {
+          created_at: string
+          id: number
+          name: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          name: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          name?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       cellars: {
         Row: {
           created_at: string
@@ -117,6 +138,7 @@ export type Database = {
       wines: {
         Row: {
           active: boolean
+          appellation_id: number
           cellar_id: number
           country_id: number
           created_at: string
@@ -129,10 +151,10 @@ export type Database = {
           type_id: number
           updated_at: string
           year: number
-          zone_id: number
         }
         Insert: {
           active?: boolean
+          appellation_id: number
           cellar_id: number
           country_id: number
           created_at?: string
@@ -145,10 +167,10 @@ export type Database = {
           type_id: number
           updated_at?: string
           year: number
-          zone_id: number
         }
         Update: {
           active?: boolean
+          appellation_id?: number
           cellar_id?: number
           country_id?: number
           created_at?: string
@@ -161,9 +183,15 @@ export type Database = {
           type_id?: number
           updated_at?: string
           year?: number
-          zone_id?: number
         }
         Relationships: [
+          {
+            foreignKeyName: "public_wines_appellation_id_fkey"
+            columns: ["appellation_id"]
+            isOneToOne: false
+            referencedRelation: "appellations"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "public_wines_cellar_id_fkey"
             columns: ["cellar_id"]
@@ -176,13 +204,6 @@ export type Database = {
             columns: ["country_id"]
             isOneToOne: false
             referencedRelation: "countries"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "public_wines_region_id_fkey"
-            columns: ["zone_id"]
-            isOneToOne: false
-            referencedRelation: "zones"
             referencedColumns: ["id"]
           },
           {
@@ -259,27 +280,6 @@ export type Database = {
             referencedColumns: ["id"]
           }
         ]
-      }
-      zones: {
-        Row: {
-          created_at: string
-          id: number
-          name: string
-          updated_at: string
-        }
-        Insert: {
-          created_at?: string
-          id?: number
-          name: string
-          updated_at?: string
-        }
-        Update: {
-          created_at?: string
-          id?: number
-          name?: string
-          updated_at?: string
-        }
-        Relationships: []
       }
     }
     Views: {
