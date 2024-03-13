@@ -6,7 +6,7 @@ import { Suspense } from "react";
 export interface SearchParams {
   countries?: string;
   grapes?: string;
-  zones?: string;
+  appellations?: string;
   cellars?: string;
   sortBy?: "price_asc" | "price_desc" | "year_asc" | "year_desc";
   name?: string;

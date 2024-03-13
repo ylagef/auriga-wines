@@ -8,7 +8,7 @@ async function FilterBar() {
 
   const countriesQuery = supabase.from("countries").select("id, name");
   const grapesQuery = supabase.from("grapes").select("id, name");
-  const zonesQuery = supabase.from("zones").select("id, name");
+  const appellationsQuery = supabase.from("appellations").select("id, name");
   const cellarsQuery = supabase.from("cellars").select("id, name");
   const typesQuery = supabase.from("types").select("id, name");
   const maxWinePriceQuery = supabase
@@ -28,7 +28,7 @@ async function FilterBar() {
   const [
     { data: countries },
     { data: grapes },
-    { data: zones },
+    { data: appellations },
     { data: cellars },
     { data: maxWinePrice },
     { data: maxYears },
@@ -37,7 +37,7 @@ async function FilterBar() {
   ] = await Promise.all([
     countriesQuery,
     grapesQuery,
-    zonesQuery,
+    appellationsQuery,
     cellarsQuery,
     maxWinePriceQuery,
     maxYearsQuery,
@@ -49,7 +49,7 @@ async function FilterBar() {
     <FilterBarComponent
       countries={countries}
       grapes={grapes}
-      zones={zones}
+      appellations={appellations}
       cellars={cellars}
       maxWinePrice={maxWinePrice}
       maxYears={maxYears}

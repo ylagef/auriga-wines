@@ -54,7 +54,9 @@ export const WineElement = ({
       <div className="flex flex-wrap items-center justify-center gap-1 mt-2">
         {wine.country && <Badge variant="outline">{wine.country.name}</Badge>}
 
-        {wine.zone && <Badge variant="outline">{wine.zone.name}</Badge>}
+        {wine.appellation && (
+          <Badge variant="outline">{wine.appellation.name}</Badge>
+        )}
       </div>
 
       <h3 className="font-bold text-center">{wine.name}</h3>

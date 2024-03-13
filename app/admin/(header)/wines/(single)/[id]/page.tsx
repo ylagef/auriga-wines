@@ -15,7 +15,7 @@ async function EditPage({
   const { data: wine } = await supabase
     .from("wines")
     .select(
-      "*, grapes:wines_grapes(wine_id, grape_id, grape:grape_id(id, name)), tags:wines_tags(wine_id, tag_id, tag:tag_id(id, name, style)),cellar:cellar_id(id, name),type:type_id(id, name),country:country_id(id, name),zone:zone_id(id, name)"
+      "*, grapes:wines_grapes(wine_id, grape_id, grape:grape_id(id, name)), tags:wines_tags(wine_id, tag_id, tag:tag_id(id, name, style)),cellar:cellar_id(id, name),type:type_id(id, name),country:country_id(id, name),appellation:appellation_id(id, name)"
     )
     .eq("id", params.id)
     .returns<WineWithForeign[]>()

@@ -22,7 +22,7 @@ interface FilterBarComponentProps {
         name: string;
       }[]
     | null;
-  zones:
+  appellations:
     | {
         id: number;
         name: string;
@@ -61,7 +61,7 @@ interface FilterBarComponentProps {
 function FilterBarComponent({
   countries,
   grapes,
-  zones,
+  appellations,
   cellars,
   maxWinePrice,
   maxYears,
@@ -80,9 +80,9 @@ function FilterBarComponent({
           }))}
         />
         <MultiSelect
-          id="zones"
+          id="appellations"
           placeholder="Zonas"
-          options={zones?.map((country) => ({
+          options={appellations?.map((country) => ({
             value: String(country.id),
             label: country.name,
           }))}

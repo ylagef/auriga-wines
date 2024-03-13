@@ -97,7 +97,7 @@ export const columns: (
     header: sortableHeader("Añada"),
   },
   {
-    accessorKey: "zone.name",
+    accessorKey: "appellation.name",
     header: sortableHeader("Zona"),
   },
   {

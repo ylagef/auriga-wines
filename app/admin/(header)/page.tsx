@@ -34,7 +34,7 @@ async function AdminPage() {
       <div className="flex flex-wrap items-center justify-center gap-2">
         <LinkCard href="/admin/countries">Países</LinkCard>
         <LinkCard href="/admin/cellars">Bodegas</LinkCard>
-        <LinkCard href="/admin/zones">Zonas</LinkCard>
+        <LinkCard href="/admin/appellations">Zonas</LinkCard>
         <LinkCard href="/admin/types">Tipos</LinkCard>
         <LinkCard href="/admin/grapes">Uvas</LinkCard>
       </div>

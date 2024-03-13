@@ -11,7 +11,7 @@ export const WinesList = async ({
   const {
     countries,
     grapes,
-    zones,
+    appellations,
     cellars,
     sortBy,
     name,
@@ -27,7 +27,7 @@ export const WinesList = async ({
   const supabase = createClient();
 
   let queryString =
-    "*, cellar:cellar_id(id, name), type:type_id(id, name), country:country_id(id, name), zone:zone_id(id, name)";
+    "*, cellar:cellar_id(id, name), type:type_id(id, name), country:country_id(id, name), appellation:appellation_id(id, name)";
 
   queryString += grapes?.length
     ? ", grapes:wines_grapes!inner(wine_id, grape_id, grape:grape_id(id, name))"
@@ -41,7 +41,7 @@ export const WinesList = async ({
 
   console.log(grapes);
   if (countries?.length) query.in("country_id", countries.split(","));
-  if (zones?.length) query.in("zone_id", zones.split(","));
+  if (appellations?.length) query.in("appellation_id", appellations.split(","));
   if (cellars?.length) query.in("cellar_id", cellars.split(","));
   if (name?.length) query.ilike("name", `%${name}%`);
   if (from_price?.length) query.gte("price", from_price);

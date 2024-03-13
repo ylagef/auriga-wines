@@ -15,7 +15,7 @@ async function WineDetail({
   const { data: wine } = await supabase
     .from("wines")
     .select(
-      "*, country:country_id(name), zone:zone_id(name), cellar:cellar_id(name), grapes:wines_grapes(wine_id, grape_id, grape:grape_id(id, name)),tags:wines_tags(wine_id, tag_id, tag:tag_id(id, name, style))"
+      "*, country:country_id(name), appellation:appellation_id(name), cellar:cellar_id(name), grapes:wines_grapes(wine_id, grape_id, grape:grape_id(id, name)),tags:wines_tags(wine_id, tag_id, tag:tag_id(id, name, style))"
     )
     .eq("id", params.id)
     .returns<WineWithForeign[]>()
@@ -91,7 +91,7 @@ async function WineDetail({
 
         <div className="flex gap-1">
           <label className="ml-4 font-semibold text-center">Zona:</label>
-          <h3 className="text-center">{wine.zone.name}</h3>
+          <h3 className="text-center">{wine.appellation.name}</h3>
         </div>
       </div>
 

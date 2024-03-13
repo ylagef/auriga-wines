@@ -11,7 +11,7 @@ export default async function AdminPage() {
   const { data: wines } = await supabase
     .from("wines")
     .select(
-      "id, name, description, price, year, photo_url, photo_size, country:country_id(name), zone:zone_id(name), active, tags:wines_tags(wine_id, tag_id, tag:tag_id(id, name, style))"
+      "id, name, description, price, year, photo_url, photo_size, country:country_id(name), appellation:appellation_id(name), active, tags:wines_tags(wine_id, tag_id, tag:tag_id(id, name, style))"
     )
     .returns<WineWithForeign[]>();
 

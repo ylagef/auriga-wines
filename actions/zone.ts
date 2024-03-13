@@ -3,18 +3,18 @@
 import { createClient } from "@/utils/supabase/server";
 import { revalidatePath } from "next/cache";
 
-export const updateZone = async (_: any, formData: FormData) => {
+export const updateAppellation = async (_: any, formData: FormData) => {
   const supabase = createClient();
 
-  const zone = {
+  const appellation = {
     id: Number(formData.get("id")),
     name: formData.get("name") as string,
   };
 
   const { data, error, count, status, statusText } = await supabase
-    .from("zones")
-    .update({ name: zone.name, updated_at: new Date().toISOString() })
-    .eq("id", zone.id)
+    .from("appellations")
+    .update({ name: appellation.name, updated_at: new Date().toISOString() })
+    .eq("id", appellation.id)
     .select();
 
   if (error) {
@@ -29,6 +29,6 @@ export const updateZone = async (_: any, formData: FormData) => {
   }
 
   console.log(data, error, count, status, statusText);
-  revalidatePath(`/admin/zones`);
+  revalidatePath(`/admin/appellations`);
   return { success: true };
 };
